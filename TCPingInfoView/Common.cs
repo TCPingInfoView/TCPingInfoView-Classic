@@ -80,10 +80,10 @@ namespace TCPingInfoView
 				return null;
 			}
 
-			var hostname = await NetTest.GetHostName(ipport.Address);
-			if (hostname == ipport.Address.ToString())
+			var hostname = s[0].Split(':')[0];
+			if (IsIPv4Address(hostname))
 			{
-				hostname = s[0].Split(':')[0];
+				hostname = await NetTest.GetHostName(ipport.Address);
 			}
 
 			var res = new Data
