@@ -15,7 +15,8 @@ namespace TCPingInfoView
 			InitializeComponent();
 		}
 
-		public readonly int Timeout = 3000;
+		public int Timeout = 3000;
+		public int HighLatency = 300;
 		private List<Data> _list;
 
 		private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -41,6 +42,19 @@ namespace TCPingInfoView
 
 		private async void TestOne(int num)
 		{
+			if (dataGridView1.Rows[num].Cells[2].Value == null)
+			{
+				if (dataGridView1.Rows[num].Cells[0].Value is int temp)
+				{
+					var index = temp - 1;
+					_list[index].Ip = await NetTest.GetIP(_list[index].HostsName);
+					if (_list[index].Ip == null)
+					{
+						return;
+					}
+					dataGridView1.Rows[index].Cells[2].Value = new IPEndPoint(_list[index].Ip, _list[index].Port);
+				}
+			}
 			var ipe = dataGridView1.Rows[num].Cells[2].Value as IPEndPoint;
 
 			var latency = await NetTest.TCPing(ipe.Address, ipe.Port, Timeout);
@@ -48,7 +62,7 @@ namespace TCPingInfoView
 			{
 				var value = Convert.ToInt32(Math.Round(latency.Value));
 				dataGridView1.Rows[num].Cells[3].Value = value;
-				if (value <= 300)
+				if (value < HighLatency)
 				{
 					dataGridView1.Rows[num].Cells[3].Style.ForeColor = Color.Green;
 				}
@@ -68,7 +82,6 @@ namespace TCPingInfoView
 		private void LoadFromLine(int index)
 		{
 			dataGridView1.Rows[index].Cells[0].Value = index + 1;
-			dataGridView1.Rows[index].Cells[2].Value = _list[index].IpPort;
 			dataGridView1.Rows[index].Cells[4].Value = _list[index].Description;
 			var t = new Task(async () =>
 			{
@@ -76,15 +89,27 @@ namespace TCPingInfoView
 				{
 					_list[index].HostsName = await NetTest.GetHostName(IPAddress.Parse(_list[index].HostsName));
 				}
+				else
+				{
+					_list[index].Ip = await NetTest.GetIP(_list[index].HostsName);
+				}
 				dataGridView1.Rows[index].Cells[1].Value = _list[index].HostsName;
+				if (_list[index].Ip == null)
+				{
+					dataGridView1.Rows[index].Cells[2].Value = null;
+				}
+				else
+				{
+					dataGridView1.Rows[index].Cells[2].Value = new IPEndPoint(_list[index].Ip, _list[index].Port);
+				}
 			});
 			t.Start();
 		}
 
-		private async void LoadFromList(IEnumerable<string> sl)
+		private void LoadFromList(IEnumerable<string> sl)
 		{
 			dataGridView1.Rows.Clear();
-			var l = await Util.ToData(sl);
+			var l = Util.ToData(sl);
 			_list = l.ToList();
 			var length = _list.Count;
 			dataGridView1.Rows.Add(length);

@@ -5,7 +5,8 @@ namespace TCPingInfoView
 	public class Data
 	{
 		public string HostsName;
-		public IPEndPoint IpPort;
+		public IPAddress Ip;
+		public int Port;
 		public string Description;
 	}
 }

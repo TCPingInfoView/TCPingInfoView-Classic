@@ -58,7 +58,7 @@ namespace TCPingInfoView
 			return null;
 		}
 
-		public static async Task<Data> Stringline2Data(string line)
+		public static Data Stringline2Data(string line)
 		{
 			var s = line.Split(new[] { ' ' }, 2, StringSplitOptions.RemoveEmptyEntries);
 			if (s.Length < 1)
@@ -66,18 +66,46 @@ namespace TCPingInfoView
 				return null;
 			}
 
-			var ipport = await ToIPEndPoint(s[0], 443);
-			if (ipport == null)
+			string hostname;
+			IPAddress ip = null;
+			var port = 443;
+
+			var sp = s[0].Split(':');
+			if (sp.Length == 1 || sp.Length == 2)
+			{
+				hostname = sp[0];
+				if (IsIPv4Address(hostname))
+				{
+					ip = IPAddress.Parse(hostname);
+				}
+			}
+			else
 			{
 				return null;
 			}
+			if (sp.Length == 2)
+			{
+				try
+				{
+					port = Convert.ToInt32(sp[1]);
+				}
+				catch
+				{
+					return null;
+				}
 
-			var hostname = s[0].Split(':')[0];
+				if (!IsPort(port))
+				{
+					return null;
+				}
+			}
+
 
 			var res = new Data
 			{
 				HostsName = hostname,
-				IpPort = ipport,
+				Ip = ip,
+				Port = port,
 				Description = string.Empty
 			};
 
@@ -89,12 +117,12 @@ namespace TCPingInfoView
 			return res;
 		}
 
-		public static async Task<IEnumerable<Data>> ToData(IEnumerable<string> sl)
+		public static IEnumerable<Data> ToData(IEnumerable<string> sl)
 		{
 			var data = new List<Data>();
 			foreach (var line in sl)
 			{
-				var l = await Stringline2Data(line);
+				var l = Stringline2Data(line);
 				if (l != null)
 				{
 					data.Add(l);
