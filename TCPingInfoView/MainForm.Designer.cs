@@ -41,16 +41,18 @@
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.dataGridView1 = new System.Windows.Forms.DataGridView();
-			this.dataGridView2 = new System.Windows.Forms.DataGridView();
-			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
 			this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.dataGridView2 = new System.Windows.Forms.DataGridView();
 			this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+			this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
 			this.menuStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
@@ -142,6 +144,36 @@
 			this.dataGridView1.Size = new System.Drawing.Size(800, 380);
 			this.dataGridView1.TabIndex = 1;
 			// 
+			// Column1
+			// 
+			this.Column1.HeaderText = "列表顺序";
+			this.Column1.Name = "Column1";
+			this.Column1.ReadOnly = true;
+			// 
+			// Column2
+			// 
+			this.Column2.HeaderText = "主机名";
+			this.Column2.Name = "Column2";
+			this.Column2.ReadOnly = true;
+			// 
+			// Column3
+			// 
+			this.Column3.HeaderText = "IP:端口";
+			this.Column3.Name = "Column3";
+			this.Column3.ReadOnly = true;
+			// 
+			// Column5
+			// 
+			this.Column5.HeaderText = "延迟(ms)";
+			this.Column5.Name = "Column5";
+			this.Column5.ReadOnly = true;
+			// 
+			// Column6
+			// 
+			this.Column6.HeaderText = "说明";
+			this.Column6.Name = "Column6";
+			this.Column6.ReadOnly = true;
+			// 
 			// dataGridView2
 			// 
 			this.dataGridView2.AllowUserToAddRows = false;
@@ -182,6 +214,11 @@
 			this.dataGridView2.Size = new System.Drawing.Size(800, 60);
 			this.dataGridView2.TabIndex = 2;
 			// 
+			// Column4
+			// 
+			this.Column4.HeaderText = "Column4";
+			this.Column4.Name = "Column4";
+			// 
 			// statusStrip1
 			// 
 			this.statusStrip1.Location = new System.Drawing.Point(0, 490);
@@ -193,12 +230,24 @@
 			// toolStrip1
 			// 
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1});
+            this.toolStripButton3,
+            this.toolStripButton1,
+            this.toolStripButton2});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 25);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.Size = new System.Drawing.Size(800, 25);
 			this.toolStrip1.TabIndex = 4;
 			this.toolStrip1.Text = "toolStrip1";
+			// 
+			// toolStripButton3
+			// 
+			this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
+			this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripButton3.Name = "toolStripButton3";
+			this.toolStripButton3.Size = new System.Drawing.Size(36, 22);
+			this.toolStripButton3.Text = "载入";
+			this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
 			// 
 			// toolStripButton1
 			// 
@@ -210,40 +259,15 @@
 			this.toolStripButton1.Text = "测试";
 			this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
 			// 
-			// Column1
+			// toolStripButton2
 			// 
-			this.Column1.HeaderText = "列表顺序";
-			this.Column1.Name = "Column1";
-			this.Column1.ReadOnly = true;
-			// 
-			// Column2
-			// 
-			this.Column2.HeaderText = "主机名";
-			this.Column2.Name = "Column2";
-			this.Column2.ReadOnly = true;
-			// 
-			// Column3
-			// 
-			this.Column3.HeaderText = "IP:端口";
-			this.Column3.Name = "Column3";
-			this.Column3.ReadOnly = true;
-			// 
-			// Column5
-			// 
-			this.Column5.HeaderText = "延迟(ms)";
-			this.Column5.Name = "Column5";
-			this.Column5.ReadOnly = true;
-			// 
-			// Column6
-			// 
-			this.Column6.HeaderText = "说明";
-			this.Column6.Name = "Column6";
-			this.Column6.ReadOnly = true;
-			// 
-			// Column4
-			// 
-			this.Column4.HeaderText = "Column4";
-			this.Column4.Name = "Column4";
+			this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
+			this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripButton2.Name = "toolStripButton2";
+			this.toolStripButton2.Size = new System.Drawing.Size(36, 22);
+			this.toolStripButton2.Text = "退出";
+			this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
 			// 
 			// MainForm
 			// 
@@ -259,6 +283,7 @@
 			this.Name = "MainForm";
 			this.Text = "TCPingInfoView";
 			this.Load += new System.EventHandler(this.MainForm_Load);
+			this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -288,6 +313,8 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+		private System.Windows.Forms.ToolStripButton toolStripButton2;
+		private System.Windows.Forms.ToolStripButton toolStripButton3;
 	}
 }
 

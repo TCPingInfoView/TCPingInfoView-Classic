@@ -1,18 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace TCPingInfoView
 {
-	public class Data
-	{
-		public string HostsName;
-		public IPEndPoint IpPort;
-		public string Description;
-	}
-
-	public static class Common
+	public static class Util
 	{
 		private static readonly Regex Ipv4Pattern = new Regex("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){1}(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){2}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$");
 
@@ -23,7 +17,7 @@ namespace TCPingInfoView
 
 		public static bool IsPort(int port)
 		{
-			if (port >= IPEndPoint.MinPort && port <= IPEndPoint.MaxPort)
+			if (port >= IPEndPoint.MinPort + 1 && port <= IPEndPoint.MaxPort)
 			{
 				return true;
 			}
@@ -46,9 +40,7 @@ namespace TCPingInfoView
 				{
 					return null;
 				}
-				s[0] = ips[0].ToString();
-
-				var ip = IPAddress.Parse(s[0]);
+				var ip = ips[0];
 				if (s.Length == 2)
 				{
 					var port = Convert.ToInt32(s[1]);
@@ -74,17 +66,13 @@ namespace TCPingInfoView
 				return null;
 			}
 
-			var ipport = await ToIPEndPoint(s[0], 80);
+			var ipport = await ToIPEndPoint(s[0], 443);
 			if (ipport == null)
 			{
 				return null;
 			}
 
 			var hostname = s[0].Split(':')[0];
-			if (IsIPv4Address(hostname))
-			{
-				hostname = await NetTest.GetHostName(ipport.Address);
-			}
 
 			var res = new Data
 			{
@@ -99,6 +87,20 @@ namespace TCPingInfoView
 			}
 
 			return res;
+		}
+
+		public static async Task<IEnumerable<Data>> ToData(IEnumerable<string> sl)
+		{
+			var data = new List<Data>();
+			foreach (var line in sl)
+			{
+				var l = await Stringline2Data(line);
+				if (l != null)
+				{
+					data.Add(l);
+				}
+			}
+			return data;
 		}
 	}
 }
