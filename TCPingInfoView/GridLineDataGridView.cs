@@ -9,7 +9,6 @@ namespace TCPingInfoView
 		{
 			AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 			CellBorderStyle = DataGridViewCellBorderStyle.Single;
-			//RowHeadersVisible = false;
 		}
 
 		protected override void OnPaint(PaintEventArgs e)
@@ -25,7 +24,7 @@ namespace TCPingInfoView
 			var g = Graphics.FromImage(rowImg);
 			g.DrawRectangle(pen, rFrame);
 			g.FillRectangle(new SolidBrush(DefaultCellStyle.BackColor), rFill);
-			var w = - 1;
+			var w = 0;
 			if (RowHeadersVisible)
 			{
 				var rowHeader = new Rectangle(2, 2, RowHeadersWidth - 3, rowHeight);
