@@ -52,17 +52,9 @@ namespace TCPingInfoView
 
 		public static async Task<string> GetHostName(IPAddress ip)
 		{
-			string hostname;
-			try
-			{
-				var hostsEntry = await Dns.GetHostEntryAsync(ip);
-				hostname = hostsEntry.HostName;
-			}
-			catch
-			{
-				hostname = ip.ToString();
-			}
-			return hostname;
+			var res = ip.ToString();
+			await Task.Run(() => { res = Dns.Resolve(ip.ToString()).HostName; });
+			return res;
 		}
 
 		public static async Task<double?> TCPing(IPAddress ip, int port = 80, int timeout = 1000)
