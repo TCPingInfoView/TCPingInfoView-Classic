@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Net;
@@ -121,8 +120,6 @@ namespace TCPingInfoView
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
-			dataGridView1.BackgroundColor = dataGridView1.DefaultCellStyle.BackColor;
-			dataGridView2.BackgroundColor = dataGridView2.DefaultCellStyle.BackColor;
 			Needheight = Height - (dataGridView1.Height + dataGridView2.Height);
 			dataGridViewProportion = Convert.ToDouble(dataGridView1.Height) / Convert.ToDouble(dataGridView1.Height + dataGridView2.Height);
 			var sl = Read.ReadAddress(@"D:\Downloads\test.txt");

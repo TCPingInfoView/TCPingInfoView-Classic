@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Diagnostics;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace TCPingInfoView
@@ -9,11 +10,13 @@ namespace TCPingInfoView
 		{
 			AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 			CellBorderStyle = DataGridViewCellBorderStyle.Single;
+			//BackgroundColor = DefaultCellStyle.BackColor;
 		}
 
-		protected override void OnPaint(PaintEventArgs e)
+		protected override void PaintBackground(Graphics graphics, Rectangle clipBounds, Rectangle gridBounds)
 		{
-			base.OnPaint(e);
+			base.PaintBackground(graphics, clipBounds, gridBounds);
+
 			var rowHeight = RowTemplate.Height;
 			var h = ColumnHeadersHeight + rowHeight * RowCount;
 			var imgWidth = Width - 2;
@@ -31,15 +34,32 @@ namespace TCPingInfoView
 				g.FillRectangle(new SolidBrush(RowHeadersDefaultCellStyle.BackColor), rowHeader);
 				w = RowHeadersWidth - 1;
 			}
+
 			for (var j = 0; j < ColumnCount; ++j)
 			{
-				g.DrawLine(pen, new Point(w, 0), new Point(w, rowHeight));
+				g.DrawLine(pen, new Point(w, 0), new Point(w, 2 * rowHeight));
 				w += Columns[j].Width;
 			}
+
 			var loop = (Height - h) / rowHeight;
-			for (var j = 0; j < loop + 1; ++j)
+			if (loop <= 0)
 			{
-				e.Graphics.DrawImage(rowImg, 1, h + j * rowHeight);
+				Debug.WriteLine($@"{clipBounds.X} {clipBounds.Y} {clipBounds.Width} {clipBounds.Height}");
+				Debug.WriteLine($@"{gridBounds.X} {gridBounds.Y} {gridBounds.Width} {gridBounds.Height}");
+				Debug.WriteLine($@"{h}");
+				Debug.WriteLine($@"{Height}");
+				loop = (Height - clipBounds.Y) / rowHeight;
+				for (var j = 0; j < loop + 1; ++j)
+				{
+					graphics.DrawImage(rowImg, gridBounds.X, clipBounds.Y + j * rowHeight);
+				}
+			}
+			else
+			{
+				for (var j = 0; j < loop + 1; ++j)
+				{
+					graphics.DrawImage(rowImg, gridBounds.X, h + j * rowHeight);
+				}
 			}
 		}
 	}
