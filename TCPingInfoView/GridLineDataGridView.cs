@@ -10,7 +10,7 @@ namespace TCPingInfoView
 		{
 			AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 			CellBorderStyle = DataGridViewCellBorderStyle.Single;
-			//BackgroundColor = DefaultCellStyle.BackColor;
+			BackgroundColor = DefaultCellStyle.BackColor;
 		}
 
 		protected override void PaintBackground(Graphics graphics, Rectangle clipBounds, Rectangle gridBounds)
@@ -41,14 +41,15 @@ namespace TCPingInfoView
 				w += Columns[j].Width;
 			}
 
-			var loop = (Height - h) / rowHeight;
-			if (loop <= 0)
+			
+			if (Height <= h)
 			{
 				Debug.WriteLine($@"{clipBounds.X} {clipBounds.Y} {clipBounds.Width} {clipBounds.Height}");
 				Debug.WriteLine($@"{gridBounds.X} {gridBounds.Y} {gridBounds.Width} {gridBounds.Height}");
 				Debug.WriteLine($@"{h}");
 				Debug.WriteLine($@"{Height}");
-				loop = (Height - clipBounds.Y) / rowHeight;
+
+				var loop = (Height - clipBounds.Y) / rowHeight;
 				for (var j = 0; j < loop + 1; ++j)
 				{
 					graphics.DrawImage(rowImg, gridBounds.X, clipBounds.Y + j * rowHeight);
@@ -56,6 +57,7 @@ namespace TCPingInfoView
 			}
 			else
 			{
+				var loop = (Height - h) / rowHeight;
 				for (var j = 0; j < loop + 1; ++j)
 				{
 					graphics.DrawImage(rowImg, gridBounds.X, h + j * rowHeight);

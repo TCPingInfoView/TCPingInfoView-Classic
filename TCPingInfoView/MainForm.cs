@@ -89,20 +89,22 @@ namespace TCPingInfoView
 			{
 				if (Util.IsIPv4Address(_list[index].HostsName))
 				{
-					_list[index].HostsName = await NetTest.GetHostName(IPAddress.Parse(_list[index].HostsName));
-				}
-				else
-				{
-					_list[index].Ip = await NetTest.GetIP(_list[index].HostsName);
-				}
-				dataGridView1.Rows[index].Cells[1].Value = _list[index].HostsName;
-				if (_list[index].Ip == null)
-				{
-					dataGridView1.Rows[index].Cells[2].Value = null;
-				}
-				else
-				{
 					dataGridView1.Rows[index].Cells[2].Value = new IPEndPoint(_list[index].Ip, _list[index].Port);
+					_list[index].HostsName = await NetTest.GetHostName(IPAddress.Parse(_list[index].HostsName));
+					dataGridView1.Rows[index].Cells[1].Value = _list[index].HostsName;
+				}
+				else
+				{
+					dataGridView1.Rows[index].Cells[1].Value = _list[index].HostsName;
+					_list[index].Ip = await NetTest.GetIP(_list[index].HostsName);
+					if (_list[index].Ip == null)
+					{
+						dataGridView1.Rows[index].Cells[2].Value = null;
+					}
+					else
+					{
+						dataGridView1.Rows[index].Cells[2].Value = new IPEndPoint(_list[index].Ip, _list[index].Port);
+					}
 				}
 			});
 			t.Start();
@@ -152,9 +154,9 @@ namespace TCPingInfoView
 			var height = Height - Needheight;
 			dataGridView1.Height = Convert.ToInt32(dataGridViewProportion * height);
 			dataGridView2.Height = height - dataGridView1.Height;
-
 		}
-		private void MainForm_SizeChanged(object sender, EventArgs e)
+
+		private void MainForm_Resize(object sender, EventArgs e)
 		{
 			ChangeSize();
 		}
