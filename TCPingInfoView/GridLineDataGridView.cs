@@ -41,7 +41,7 @@ namespace TCPingInfoView
 				w += Columns[j].Width;
 			}
 
-			
+
 			if (Height <= h)
 			{
 				Debug.WriteLine($@"{clipBounds.X} {clipBounds.Y} {clipBounds.Width} {clipBounds.Height}");
