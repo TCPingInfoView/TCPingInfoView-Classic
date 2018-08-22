@@ -1,11 +1,16 @@
-﻿namespace TCPingInfoView
+﻿using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace TCPingInfoView
 {
 	partial class MainForm
 	{
 		/// <summary>
 		/// 必需的设计器变量。
 		/// </summary>
-		private System.ComponentModel.IContainer components = null;
+		private IContainer components = null;
 
 		/// <summary>
 		/// 清理所有正在使用的资源。
@@ -65,7 +70,7 @@
             this.File_MenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(800, 25);
+			this.menuStrip1.Size = new System.Drawing.Size(912, 25);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -82,27 +87,27 @@
 			// 从文件载入ToolStripMenuItem
 			// 
 			this.从文件载入ToolStripMenuItem.Name = "从文件载入ToolStripMenuItem";
-			this.从文件载入ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.从文件载入ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
 			this.从文件载入ToolStripMenuItem.Text = "从文件载入";
 			this.从文件载入ToolStripMenuItem.Click += new System.EventHandler(this.从文件载入ToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(133, 6);
 			// 
 			// 退出ToolStripMenuItem
 			// 
 			this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
-			this.退出ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.退出ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
 			this.退出ToolStripMenuItem.Text = "退出";
 			this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
 			// 
 			// statusStrip1
 			// 
-			this.statusStrip1.Location = new System.Drawing.Point(0, 490);
+			this.statusStrip1.Location = new System.Drawing.Point(0, 656);
 			this.statusStrip1.Name = "statusStrip1";
-			this.statusStrip1.Size = new System.Drawing.Size(800, 22);
+			this.statusStrip1.Size = new System.Drawing.Size(912, 22);
 			this.statusStrip1.TabIndex = 3;
 			this.statusStrip1.Text = "statusStrip1";
 			// 
@@ -114,7 +119,7 @@
             this.toolStripButton2});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 25);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(800, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(912, 25);
 			this.toolStrip1.TabIndex = 4;
 			this.toolStrip1.Text = "toolStrip1";
 			// 
@@ -176,7 +181,7 @@
 			this.dataGridView2.DefaultCellStyle = dataGridViewCellStyle2;
 			this.dataGridView2.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.dataGridView2.GridColor = System.Drawing.SystemColors.Control;
-			this.dataGridView2.Location = new System.Drawing.Point(0, 390);
+			this.dataGridView2.Location = new System.Drawing.Point(0, 545);
 			this.dataGridView2.Name = "dataGridView2";
 			this.dataGridView2.ReadOnly = true;
 			dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -190,7 +195,7 @@
 			this.dataGridView2.RowHeadersVisible = false;
 			this.dataGridView2.RowTemplate.Height = 23;
 			this.dataGridView2.RowTemplate.ReadOnly = true;
-			this.dataGridView2.Size = new System.Drawing.Size(800, 100);
+			this.dataGridView2.Size = new System.Drawing.Size(912, 111);
 			this.dataGridView2.TabIndex = 2;
 			// 
 			// Column4
@@ -249,7 +254,7 @@
 			this.dataGridView1.RowTemplate.Height = 23;
 			this.dataGridView1.RowTemplate.ReadOnly = true;
 			this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dataGridView1.Size = new System.Drawing.Size(800, 340);
+			this.dataGridView1.Size = new System.Drawing.Size(912, 495);
 			this.dataGridView1.TabIndex = 1;
 			this.dataGridView1.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDown);
 			this.dataGridView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.dataGridView1_DragDrop);
@@ -289,7 +294,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(800, 512);
+			this.ClientSize = new System.Drawing.Size(912, 678);
 			this.Controls.Add(this.dataGridView2);
 			this.Controls.Add(this.dataGridView1);
 			this.Controls.Add(this.toolStrip1);
@@ -313,24 +318,24 @@
 
 		#endregion
 
-		private System.Windows.Forms.MenuStrip menuStrip1;
-		private System.Windows.Forms.ToolStripMenuItem File_MenuItem;
-		private System.Windows.Forms.ToolStripMenuItem 从文件载入ToolStripMenuItem;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-		private System.Windows.Forms.ToolStripMenuItem 退出ToolStripMenuItem;
+		private MenuStrip menuStrip1;
+		private ToolStripMenuItem File_MenuItem;
+		private ToolStripMenuItem 从文件载入ToolStripMenuItem;
+		private ToolStripSeparator toolStripSeparator1;
+		private ToolStripMenuItem 退出ToolStripMenuItem;
 		private GridLineDataGridView dataGridView1;
 		private GridLineDataGridView dataGridView2;
-		private System.Windows.Forms.StatusStrip statusStrip1;
-		private System.Windows.Forms.ToolStrip toolStrip1;
-		private System.Windows.Forms.ToolStripButton toolStripButton1;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
-		private System.Windows.Forms.ToolStripButton toolStripButton2;
-		private System.Windows.Forms.ToolStripButton toolStripButton3;
+		private StatusStrip statusStrip1;
+		private ToolStrip toolStrip1;
+		private ToolStripButton toolStripButton1;
+		private DataGridViewTextBoxColumn Column1;
+		private DataGridViewTextBoxColumn Column2;
+		private DataGridViewTextBoxColumn Column3;
+		private DataGridViewTextBoxColumn Column5;
+		private DataGridViewTextBoxColumn Column6;
+		private DataGridViewTextBoxColumn Column4;
+		private ToolStripButton toolStripButton2;
+		private ToolStripButton toolStripButton3;
 	}
 }
 

@@ -30,7 +30,7 @@ namespace TCPingInfoView
 			public int bytes;
 		}
 
-		public static async Task<IPAddress> GetIP(string host)
+		public static async Task<IPAddress> GetIPAsync(string host)
 		{
 			try
 			{
@@ -50,14 +50,40 @@ namespace TCPingInfoView
 			}
 		}
 
-		public static async Task<string> GetHostName(IPAddress ip)
+		public static IPAddress GetIP(string host)
+		{
+			try
+			{
+				var ips = Dns.GetHostAddresses(host);
+				var res = ips[0];
+				Debug.WriteLine($@"DNS query {host} answer {res}");
+				return res;
+			}
+			catch (Exception ex)
+			{
+				while (ex.InnerException != null)
+				{
+					ex = ex.InnerException;
+				}
+
+				Debug.WriteLine($@"ERROR:{ex.Message}");
+				return null;
+			}
+		}
+
+		public static string GetHostName(IPAddress ip)
+		{
+			return Dns.Resolve(ip.ToString()).HostName;
+		}
+
+		public static async Task<string> GetHostNameAsync(IPAddress ip)
 		{
 			var res = ip.ToString();
 			await Task.Run(() => { res = Dns.Resolve(ip.ToString()).HostName; });
 			return res;
 		}
 
-		public static async Task<double?> TCPing(IPAddress ip, int port = 80, int timeout = 1000)
+		public static async Task<double?> TCPingAsync(IPAddress ip, int port = 80, int timeout = 1000)
 		{
 			if (ip == null)
 			{
@@ -75,6 +101,31 @@ namespace TCPingInfoView
 					Debug.WriteLine($@"TCPing {ip}:{port}:超时({t}ms > {timeout}ms)");
 					return null;
 				}
+				Debug.WriteLine($@"TCPing {ip}:{port}:{t:0.00}ms");
+				return t;
+			}
+		}
+
+		public static double? TCPing(IPAddress ip, int port = 80, int timeout = 1000)
+		{
+			if (ip == null)
+			{
+				return null;
+			}
+
+			using (var client = new TcpClient())
+			{
+				var stopwatch = new Stopwatch();
+				stopwatch.Start();
+				client.ConnectAsync(ip, port).Wait(timeout);
+				stopwatch.Stop();
+				var t = stopwatch.Elapsed.TotalMilliseconds;
+				if (client.Connected == false)
+				{
+					Debug.WriteLine($@"TCPing {ip}:{port}:超时({t}ms > {timeout}ms)");
+					return null;
+				}
+
 				Debug.WriteLine($@"TCPing {ip}:{port}:{t:0.00}ms");
 				return t;
 			}
@@ -125,7 +176,7 @@ namespace TCPingInfoView
 			var times = new List<double>();
 			for (uint i = 0; i < warmup; ++i)
 			{
-				var result = await TCPing(ip, port, timeout);
+				var result = await TCPingAsync(ip, port, timeout);
 				if (result != null)
 				{
 					Debug.WriteLine($@"[Warmup]Connected to {ip}:{port}:{result}ms");
@@ -133,7 +184,7 @@ namespace TCPingInfoView
 			}
 			for (uint i = 0; i < n; ++i)
 			{
-				var result = await TCPing(ip, port, timeout);
+				var result = await TCPingAsync(ip, port, timeout);
 				if (result != null)
 				{
 					Debug.WriteLine($@"Connected to {ip}:{port}:{result}ms");

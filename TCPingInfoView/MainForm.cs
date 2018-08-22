@@ -46,14 +46,14 @@ namespace TCPingInfoView
 			LoadAddressFromFile();
 		}
 
-		private async void TestOne(int num)
+		private void TestOne(int num)
 		{
 			if (dataGridView1.Rows[num].Cells[2].Value == null)
 			{
 				if (dataGridView1.Rows[num].Cells[0].Value is int temp)
 				{
 					var index = temp - 1;
-					_list[index].Ip = await NetTest.GetIP(_list[index].HostsName);
+					_list[index].Ip = NetTest.GetIP(_list[index].HostsName);
 					if (_list[index].Ip == null)
 					{
 						return;
@@ -62,8 +62,17 @@ namespace TCPingInfoView
 				}
 			}
 			var ipe = dataGridView1.Rows[num].Cells[2].Value as IPEndPoint;
+			double? latency = null;
 
-			var latency = await NetTest.TCPing(ipe.Address, ipe.Port, Timeout);
+			try
+			{
+				latency = NetTest.TCPing(ipe.Address, ipe.Port, Timeout);
+			}
+			catch
+			{
+				//ignore
+			}
+
 			if (latency != null)
 			{
 				var value = Convert.ToInt32(Math.Round(latency.Value));
@@ -89,36 +98,37 @@ namespace TCPingInfoView
 		{
 			dataGridView1.Rows[index].Cells[0].Value = index + 1;
 			dataGridView1.Rows[index].Cells[4].Value = _list[index].Description;
-			Task.Run(async () =>
+			if (Util.IsIPv4Address(_list[index].HostsName))
 			{
-				if (Util.IsIPv4Address(_list[index].HostsName))
+				dataGridView1.Rows[index].Cells[2].Value = new IPEndPoint(_list[index].Ip, _list[index].Port);
+				_list[index].HostsName = NetTest.GetHostName(IPAddress.Parse(_list[index].HostsName));
+				dataGridView1.Rows[index].Cells[1].Value = _list[index].HostsName;
+			}
+			else
+			{
+				dataGridView1.Rows[index].Cells[1].Value = _list[index].HostsName;
+				_list[index].Ip = NetTest.GetIP(_list[index].HostsName);
+				if (_list[index].Ip == null)
 				{
-					dataGridView1.Rows[index].Cells[2].Value = new IPEndPoint(_list[index].Ip, _list[index].Port);
-					_list[index].HostsName = await NetTest.GetHostName(IPAddress.Parse(_list[index].HostsName));
-					dataGridView1.Rows[index].Cells[1].Value = _list[index].HostsName;
+					dataGridView1.Rows[index].Cells[2].Value = null;
 				}
 				else
 				{
-					dataGridView1.Rows[index].Cells[1].Value = _list[index].HostsName;
-					_list[index].Ip = await NetTest.GetIP(_list[index].HostsName);
-					if (_list[index].Ip == null)
-					{
-						dataGridView1.Rows[index].Cells[2].Value = null;
-					}
-					else
-					{
-						dataGridView1.Rows[index].Cells[2].Value = new IPEndPoint(_list[index].Ip, _list[index].Port);
-					}
+					dataGridView1.Rows[index].Cells[2].Value = new IPEndPoint(_list[index].Ip, _list[index].Port);
 				}
-			});
+			}
 		}
 
 		private void LoadFromList(IEnumerable<string> sl)
 		{
-			_loadingFileTask?.Abort();
-			_testAllTask?.Abort();
-			while (_testAllTask != null) ;
-			
+			while (_loadingFileTask != null)
+			{
+
+			}
+			while (_testAllTask != null)
+			{
+
+			}
 
 			dataGridView1.Rows.Clear();
 			var l = Util.ToData(sl);
