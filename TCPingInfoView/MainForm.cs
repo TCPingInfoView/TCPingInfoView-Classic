@@ -4,7 +4,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -22,8 +21,10 @@ namespace TCPingInfoView
 		private int Needheight;
 		private double dataGridViewsProportion;
 		private List<Data> _list;
-		private Thread _loadingFileTask = null;
-		private Thread _testAllTask = null;
+		private int _loadingFileTask = 0;
+		private readonly object _lockloadingFileTask = new object();
+		private int _testAllTask = 0;
+		private readonly object _locktestAllTask = new object();
 
 		#region dataGridView1Cell
 
@@ -110,7 +111,7 @@ namespace TCPingInfoView
 			LoadAddressFromFile();
 		}
 
-		private void TestOne(int num)
+		private async void TestOne(int num)
 		{
 			if (GetIPport1(num) == null)
 			{
@@ -118,9 +119,13 @@ namespace TCPingInfoView
 				if (temp != null)
 				{
 					var index = temp.Value - 1;
-					_list[index].Ip = NetTest.GetIP(_list[index].HostsName);
+					_list[index].Ip = await NetTest.GetIPAsync(_list[index].HostsName);
 					if (_list[index].Ip == null)
 					{
+						lock (_locktestAllTask)
+						{
+							--_testAllTask;
+						}
 						return;
 					}
 					SetIPport1(index, new IPEndPoint(_list[index].Ip, _list[index].Port));
@@ -128,7 +133,6 @@ namespace TCPingInfoView
 			}
 			var ipe = GetIPport1(num);
 			double? latency = null;
-
 			try
 			{
 				latency = NetTest.TCPing(ipe.Address, ipe.Port, Timeout);
@@ -157,22 +161,27 @@ namespace TCPingInfoView
 				SetLatencyToolTip1(num, @"超时");
 				SetLatencyColor1(num, Color.Red);
 			}
+
+			lock (_locktestAllTask)
+			{
+				--_testAllTask;
+			}
 		}
 
-		private void LoadFromLine(int index)
+		private async void LoadFromLine(int index)
 		{
 			SetIndex1(index, index + 1);
 			SetDescription1(index, _list[index].Description);
 			if (Util.IsIPv4Address(_list[index].HostsName))
 			{
 				SetIPport1(index, new IPEndPoint(_list[index].Ip, _list[index].Port));
-				_list[index].HostsName = NetTest.GetHostName(IPAddress.Parse(_list[index].HostsName));
+				_list[index].HostsName = await NetTest.GetHostNameAsync(IPAddress.Parse(_list[index].HostsName));
 				SetHostname1(index, _list[index].HostsName);
 			}
 			else
 			{
 				SetHostname1(index, _list[index].HostsName);
-				_list[index].Ip = NetTest.GetIP(_list[index].HostsName);
+				_list[index].Ip = await NetTest.GetIPAsync(_list[index].HostsName);
 				if (_list[index].Ip == null)
 				{
 					SetIPport1(index, null);
@@ -182,30 +191,40 @@ namespace TCPingInfoView
 					SetIPport1(index, new IPEndPoint(_list[index].Ip, _list[index].Port));
 				}
 			}
+
+			lock (_lockloadingFileTask)
+			{
+				--_loadingFileTask;
+			}
 		}
 
 		private void LoadFromList(IEnumerable<string> sl)
 		{
-			while (_loadingFileTask != null)
+			while (true)
 			{
-
+				if (_loadingFileTask == 0)
+				{
+					break;
+				}
 			}
-			while (_testAllTask != null)
-			{
 
+			while (true)
+			{
+				if (_testAllTask == 0)
+				{
+					break;
+				}
 			}
 
 			dataGridView1.Rows.Clear();
 			var l = Util.ToData(sl);
 			_list = l.ToList();
 			var length = _list.Count;
+			_loadingFileTask = length;
 			dataGridView1.Rows.Add(length);
-
 			Task.Run(() =>
 			{
-				_loadingFileTask = Thread.CurrentThread;
 				Parallel.For(0, length, LoadFromLine);
-				_loadingFileTask = null;
 			});
 		}
 
@@ -224,11 +243,13 @@ namespace TCPingInfoView
 		private void TestAll()
 		{
 			var l = dataGridView1.Rows.Count;
+			lock (_locktestAllTask)
+			{
+				_testAllTask += l;
+			}
 			Task.Run(() =>
 			{
-				_testAllTask = Thread.CurrentThread;
 				Parallel.For(0, l, TestOne);
-				_testAllTask = null;
 			});
 		}
 
