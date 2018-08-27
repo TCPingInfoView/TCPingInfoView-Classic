@@ -20,18 +20,13 @@ namespace TCPingInfoView
 			var rowHeight = RowTemplate.Height;
 			var h = ColumnHeadersHeight + rowHeight * RowCount;
 			var imgWidth = Width - 2;
-			var rFrame = new Rectangle(0, 0, imgWidth, rowHeight);
-			var rFill = new Rectangle(1, 1, imgWidth - 2, rowHeight);
 			var pen = new Pen(GridColor, 1);
 			var rowImg = new Bitmap(imgWidth, rowHeight);
 			var g = Graphics.FromImage(rowImg);
-			g.DrawRectangle(pen, rFrame);
-			g.FillRectangle(new SolidBrush(Color.Transparent), rFill);
+
 			var w = 0;
 			if (RowHeadersVisible)
 			{
-				var rowHeader = new Rectangle(2, 2, RowHeadersWidth - 3, rowHeight);
-				g.FillRectangle(new SolidBrush(RowHeadersDefaultCellStyle.BackColor), rowHeader);
 				w = RowHeadersWidth - 1;
 			}
 
@@ -41,6 +36,7 @@ namespace TCPingInfoView
 				w += Columns[j].Width;
 			}
 
+			g.DrawLine(pen, new Point(0, 0), new Point(imgWidth, 0));
 
 			if (Height <= h)
 			{
