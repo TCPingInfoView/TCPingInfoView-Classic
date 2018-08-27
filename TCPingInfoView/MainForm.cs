@@ -20,10 +20,23 @@ namespace TCPingInfoView
 		public int Timeout = 3000;
 		public int HighLatency = 300;
 		private int Needheight;
-		private double dataGridViewProportion;
+		private double dataGridViewsProportion;
 		private List<Data> _list;
 		private Thread _loadingFileTask = null;
 		private Thread _testAllTask = null;
+
+		#region dataGridViewCell
+
+		private void SetdataGridView1Number(int row, int num)
+		{
+			dataGridView1.Rows[row].Cells[0].Value = num;
+		}
+
+		private int GetdataGridView1Number(int row)
+		{
+			return ((int?) dataGridView1.Rows[row].Cells[0].Value).Value;
+		}
+		#endregion
 
 		private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
 		{
@@ -147,7 +160,7 @@ namespace TCPingInfoView
 		private void MainForm_Load(object sender, EventArgs e)
 		{
 			Needheight = Height - (dataGridView1.Height + dataGridView2.Height);
-			dataGridViewProportion = Convert.ToDouble(dataGridView1.Height) / Convert.ToDouble(dataGridView1.Height + dataGridView2.Height);
+			dataGridViewsProportion = Convert.ToDouble(dataGridView1.Height) / Convert.ToDouble(dataGridView1.Height + dataGridView2.Height);
 			const string defaultPath = @"D:\Downloads\test.txt";
 			if (File.Exists(defaultPath))
 			{
@@ -185,7 +198,7 @@ namespace TCPingInfoView
 		private void ChangeSize()
 		{
 			var height = Height - Needheight;
-			dataGridView1.Height = Convert.ToInt32(dataGridViewProportion * height);
+			dataGridView1.Height = Convert.ToInt32(dataGridViewsProportion * height);
 			dataGridView2.Height = height - dataGridView1.Height;
 		}
 
