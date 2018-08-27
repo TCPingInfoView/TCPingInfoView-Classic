@@ -26,7 +26,7 @@ namespace TCPingInfoView
 			var rowImg = new Bitmap(imgWidth, rowHeight);
 			var g = Graphics.FromImage(rowImg);
 			g.DrawRectangle(pen, rFrame);
-			g.FillRectangle(new SolidBrush(DefaultCellStyle.BackColor), rFill);
+			g.FillRectangle(new SolidBrush(Color.Transparent), rFill);
 			var w = 0;
 			if (RowHeadersVisible)
 			{
