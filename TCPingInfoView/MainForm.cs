@@ -25,17 +25,68 @@ namespace TCPingInfoView
 		private Thread _loadingFileTask = null;
 		private Thread _testAllTask = null;
 
-		#region dataGridViewCell
+		#region dataGridView1Cell
 
-		private void SetdataGridView1Number(int row, int num)
+		private void SetIndex1(int row, int num)
 		{
 			dataGridView1.Rows[row].Cells[0].Value = num;
 		}
 
-		private int GetdataGridView1Number(int row)
+		private int? GetIndex1(int row)
 		{
-			return ((int?) dataGridView1.Rows[row].Cells[0].Value).Value;
+			return dataGridView1.Rows[row].Cells[0].Value as int?;
 		}
+
+		private void SetHostname1(int row, string hostname)
+		{
+			dataGridView1.Rows[row].Cells[1].Value = hostname;
+		}
+
+		private string GetHostname1(int row)
+		{
+			return dataGridView1.Rows[row].Cells[1].Value as string;
+		}
+
+		private void SetIPport1(int row, IPEndPoint ipEndPoint)
+		{
+			dataGridView1.Rows[row].Cells[2].Value = ipEndPoint;
+		}
+
+		private IPEndPoint GetIPport1(int row)
+		{
+			return dataGridView1.Rows[row].Cells[2].Value as IPEndPoint;
+		}
+
+		private void SetLatency1(int row, double latency)
+		{
+			dataGridView1.Rows[row].Cells[3].Value = latency;
+		}
+
+		private double? GetLatency1(int row)
+		{
+			return dataGridView1.Rows[row].Cells[3].Value as double?;
+		}
+
+		private void SetDescription1(int row, string str)
+		{
+			dataGridView1.Rows[row].Cells[4].Value = str;
+		}
+
+		private string GetDescription1(int row)
+		{
+			return dataGridView1.Rows[row].Cells[4].Value as string;
+		}
+
+		private void SetLatencyColor1(int row, Color color)
+		{
+			dataGridView1.Rows[row].Cells[3].Style.ForeColor = color;
+		}
+
+		private void SetLatencyToolTip1(int row, string str)
+		{
+			dataGridView1.Rows[row].Cells[3].ToolTipText = str;
+		}
+
 		#endregion
 
 		private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -61,20 +112,21 @@ namespace TCPingInfoView
 
 		private void TestOne(int num)
 		{
-			if (dataGridView1.Rows[num].Cells[2].Value == null)
+			if (GetIPport1(num) == null)
 			{
-				if (dataGridView1.Rows[num].Cells[0].Value is int temp)
+				var temp = GetIndex1(num);
+				if (temp != null)
 				{
-					var index = temp - 1;
+					var index = temp.Value - 1;
 					_list[index].Ip = NetTest.GetIP(_list[index].HostsName);
 					if (_list[index].Ip == null)
 					{
 						return;
 					}
-					dataGridView1.Rows[index].Cells[2].Value = new IPEndPoint(_list[index].Ip, _list[index].Port);
+					SetIPport1(index, new IPEndPoint(_list[index].Ip, _list[index].Port));
 				}
 			}
-			var ipe = dataGridView1.Rows[num].Cells[2].Value as IPEndPoint;
+			var ipe = GetIPport1(num);
 			double? latency = null;
 
 			try
@@ -89,45 +141,45 @@ namespace TCPingInfoView
 			if (latency != null)
 			{
 				var value = Convert.ToInt32(Math.Round(latency.Value));
-				dataGridView1.Rows[num].Cells[3].Value = value;
+				SetLatency1(num, value);
 				if (value < HighLatency)
 				{
-					dataGridView1.Rows[num].Cells[3].Style.ForeColor = Color.Green;
+					SetLatencyColor1(num, Color.Green);
 				}
 				else
 				{
-					dataGridView1.Rows[num].Cells[3].Style.ForeColor = Color.Coral;
+					SetLatencyColor1(num, Color.Coral);
 				}
 			}
 			else
 			{
-				dataGridView1.Rows[num].Cells[3].Value = Timeout;
-				dataGridView1.Rows[num].Cells[3].ToolTipText = @"超时";
-				dataGridView1.Rows[num].Cells[3].Style.ForeColor = Color.Red;
+				SetLatency1(num, Timeout);
+				SetLatencyToolTip1(num, @"超时");
+				SetLatencyColor1(num, Color.Red);
 			}
 		}
 
 		private void LoadFromLine(int index)
 		{
-			dataGridView1.Rows[index].Cells[0].Value = index + 1;
-			dataGridView1.Rows[index].Cells[4].Value = _list[index].Description;
+			SetIndex1(index, index + 1);
+			SetDescription1(index, _list[index].Description);
 			if (Util.IsIPv4Address(_list[index].HostsName))
 			{
-				dataGridView1.Rows[index].Cells[2].Value = new IPEndPoint(_list[index].Ip, _list[index].Port);
+				SetIPport1(index, new IPEndPoint(_list[index].Ip, _list[index].Port));
 				_list[index].HostsName = NetTest.GetHostName(IPAddress.Parse(_list[index].HostsName));
-				dataGridView1.Rows[index].Cells[1].Value = _list[index].HostsName;
+				SetHostname1(index, _list[index].HostsName);
 			}
 			else
 			{
-				dataGridView1.Rows[index].Cells[1].Value = _list[index].HostsName;
+				SetHostname1(index, _list[index].HostsName);
 				_list[index].Ip = NetTest.GetIP(_list[index].HostsName);
 				if (_list[index].Ip == null)
 				{
-					dataGridView1.Rows[index].Cells[2].Value = null;
+					SetIPport1(index, null);
 				}
 				else
 				{
-					dataGridView1.Rows[index].Cells[2].Value = new IPEndPoint(_list[index].Ip, _list[index].Port);
+					SetIPport1(index, new IPEndPoint(_list[index].Ip, _list[index].Port));
 				}
 			}
 		}
