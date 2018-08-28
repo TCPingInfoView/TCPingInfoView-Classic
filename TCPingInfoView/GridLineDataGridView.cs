@@ -4,6 +4,7 @@ using System.Windows.Forms;
 
 namespace TCPingInfoView
 {
+	[System.ComponentModel.DesignerCategory(@"Code")]
 	public class GridLineDataGridView : DataGridView
 	{
 		public GridLineDataGridView()
@@ -32,11 +33,9 @@ namespace TCPingInfoView
 
 			for (var j = 0; j < ColumnCount; ++j)
 			{
-				g.DrawLine(pen, new Point(w, 0), new Point(w, 2 * rowHeight));
+				g.DrawLine(pen, new Point(w, 0), new Point(w, rowHeight));
 				w += Columns[j].Width;
 			}
-
-			g.DrawLine(pen, new Point(0, 0), new Point(imgWidth, 0));
 
 			if (Height <= h)
 			{
@@ -53,6 +52,7 @@ namespace TCPingInfoView
 			}
 			else
 			{
+				g.DrawLine(pen, new Point(0, rowHeight - 1), new Point(imgWidth, rowHeight - 1));
 				var loop = (Height - h) / rowHeight;
 				for (var j = 0; j < loop + 1; ++j)
 				{

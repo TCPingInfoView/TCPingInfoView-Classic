@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace TCPingInfoView
 {
@@ -129,6 +130,11 @@ namespace TCPingInfoView
 				}
 			}
 			return data;
+		}
+
+		public static void Invoke(this Control control, MethodInvoker action)
+		{
+			control.Invoke(action);
 		}
 	}
 }

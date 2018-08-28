@@ -17,12 +17,20 @@ namespace TCPingInfoView
 		}
 
 		public int Timeout = 3000;
+		private Color TimeoutColor = Color.Red;
 		public int HighLatency = 300;
+		private Color HighLatencyColor = Color.Coral;
+		private Color LowLatencyColor = Color.Green;
+
 		private int Needheight;
 		private double dataGridViewsProportion;
 		private List<Data> _list;
+		private ConcurrentList<ConcurrentList<TCPingLog>> logs;
+
 		private int _loadingFileTask = 0;
 		private readonly object _lockloadingFileTask = new object();
+		private int _loadinglogsTask = 0;
+		private readonly object _lockloadinglogsTask = new object();
 		private int _testAllTask = 0;
 		private readonly object _locktestAllTask = new object();
 
@@ -30,62 +38,96 @@ namespace TCPingInfoView
 
 		private void SetIndex1(int row, int num)
 		{
-			dataGridView1.Rows[row].Cells[0].Value = num;
+			dataGridView1.Rows[row].Cells[@"Index"].Value = num;
 		}
 
 		private int? GetIndex1(int row)
 		{
-			return dataGridView1.Rows[row].Cells[0].Value as int?;
+			return dataGridView1.Rows[row].Cells[@"Index"].Value as int?;
 		}
 
 		private void SetHostname1(int row, string hostname)
 		{
-			dataGridView1.Rows[row].Cells[1].Value = hostname;
+			dataGridView1.Rows[row].Cells[@"Hostname"].Value = hostname;
 		}
 
 		private string GetHostname1(int row)
 		{
-			return dataGridView1.Rows[row].Cells[1].Value as string;
+			return dataGridView1.Rows[row].Cells[@"Hostname"].Value as string;
 		}
 
 		private void SetIPport1(int row, IPEndPoint ipEndPoint)
 		{
-			dataGridView1.Rows[row].Cells[2].Value = ipEndPoint;
+			dataGridView1.Rows[row].Cells[@"IPPort"].Value = ipEndPoint;
 		}
 
 		private IPEndPoint GetIPport1(int row)
 		{
-			return dataGridView1.Rows[row].Cells[2].Value as IPEndPoint;
+			return dataGridView1.Rows[row].Cells[@"IPPort"].Value as IPEndPoint;
 		}
 
 		private void SetLatency1(int row, double latency)
 		{
-			dataGridView1.Rows[row].Cells[3].Value = latency;
+			dataGridView1.Rows[row].Cells[@"Latency1"].Value = latency;
 		}
 
 		private double? GetLatency1(int row)
 		{
-			return dataGridView1.Rows[row].Cells[3].Value as double?;
-		}
-
-		private void SetDescription1(int row, string str)
-		{
-			dataGridView1.Rows[row].Cells[4].Value = str;
-		}
-
-		private string GetDescription1(int row)
-		{
-			return dataGridView1.Rows[row].Cells[4].Value as string;
+			return dataGridView1.Rows[row].Cells[@"Latency1"].Value as double?;
 		}
 
 		private void SetLatencyColor1(int row, Color color)
 		{
-			dataGridView1.Rows[row].Cells[3].Style.ForeColor = color;
+			dataGridView1.Rows[row].Cells[@"Latency1"].Style.ForeColor = color;
 		}
 
 		private void SetLatencyToolTip1(int row, string str)
 		{
-			dataGridView1.Rows[row].Cells[3].ToolTipText = str;
+			dataGridView1.Rows[row].Cells[@"Latency1"].ToolTipText = str;
+		}
+
+		private void SetDescription1(int row, string str)
+		{
+			dataGridView1.Rows[row].Cells[@"Description"].Value = str;
+		}
+
+		private string GetDescription1(int row)
+		{
+			return dataGridView1.Rows[row].Cells[@"Description"].Value as string;
+		}
+
+		#endregion
+
+		#region dataGridView2Cell
+
+		private void SetDate2(int row, DateTime num)
+		{
+			dataGridView2.Rows[row].Cells[@"Date"].Value = num;
+		}
+
+		private DateTime GetDate2(int row)
+		{
+			return (DateTime)dataGridView2.Rows[row].Cells[@"Date"].Value;
+		}
+
+		private void SetLatency2(int row, double latency)
+		{
+			dataGridView2.Rows[row].Cells[@"Latency2"].Value = latency;
+		}
+
+		private double? GetLatency2(int row)
+		{
+			return dataGridView2.Rows[row].Cells[@"Latency2"].Value as double?;
+		}
+
+		private void SetLatencyColor2(int row, Color color)
+		{
+			dataGridView2.Rows[row].Cells[@"Latency2"].Style.ForeColor = color;
+		}
+
+		private void SetLatencyToolTip2(int row, string str)
+		{
+			dataGridView2.Rows[row].Cells[@"Latency2"].ToolTipText = str;
 		}
 
 		#endregion
@@ -133,6 +175,7 @@ namespace TCPingInfoView
 			}
 			var ipe = GetIPport1(num);
 			double? latency = null;
+			var date = DateTime.Now;
 			try
 			{
 				latency = NetTest.TCPing(ipe.Address, ipe.Port, Timeout);
@@ -148,18 +191,43 @@ namespace TCPingInfoView
 				SetLatency1(num, value);
 				if (value < HighLatency)
 				{
-					SetLatencyColor1(num, Color.Green);
+					SetLatencyColor1(num, LowLatencyColor);
 				}
 				else
 				{
-					SetLatencyColor1(num, Color.Coral);
+					SetLatencyColor1(num, HighLatencyColor);
 				}
 			}
 			else
 			{
+				latency = Timeout;
 				SetLatency1(num, Timeout);
 				SetLatencyToolTip1(num, @"超时");
-				SetLatencyColor1(num, Color.Red);
+				SetLatencyColor1(num, TimeoutColor);
+			}
+
+			var log = new TCPingLog
+			{
+				Date = date,
+				Latenty = latency.Value
+			};
+			logs[num].Add(log);
+
+			if (dataGridView1.SelectedRows.Count == 1)
+			{
+				var index1 = dataGridView1.SelectedRows[0].Index;
+				if (index1 == num)
+				{
+					dataGridView1.Invoke(() =>
+					{
+						var index2 = dataGridView2.Rows.Add();
+						lock (_lockloadinglogsTask)
+						{
+							++_loadinglogsTask;
+						}
+						LoadLog(index2, log);
+					});
+				}
 			}
 
 			lock (_locktestAllTask)
@@ -216,12 +284,26 @@ namespace TCPingInfoView
 				}
 			}
 
+			while (true)
+			{
+				if (_loadinglogsTask == 0)
+				{
+					break;
+				}
+			}
+
 			dataGridView1.Rows.Clear();
+			dataGridView2.Rows.Clear();
 			var l = Util.ToData(sl);
 			_list = l.ToList();
 			var length = _list.Count;
-			_loadingFileTask = length;
+			_loadingFileTask += length;
 			dataGridView1.Rows.Add(length);
+			logs = new ConcurrentList<ConcurrentList<TCPingLog>>();
+			for (var i = 0; i < length; ++i)
+			{
+				logs.Add(new ConcurrentList<TCPingLog>());
+			}
 			Task.Run(() =>
 			{
 				Parallel.For(0, length, LoadFromLine);
@@ -251,6 +333,55 @@ namespace TCPingInfoView
 			{
 				Parallel.For(0, l, TestOne);
 			});
+		}
+
+		private void LoadLog(int i, TCPingLog log)
+		{
+			SetDate2(i, log.Date);
+			var latency = Convert.ToInt32(Math.Round(log.Latenty));
+			SetLatency2(i, latency);
+			if (latency < HighLatency)
+			{
+				SetLatencyColor2(i, LowLatencyColor);
+			}
+			else if (latency < Timeout)
+			{
+				SetLatencyColor2(i, HighLatencyColor);
+			}
+			else
+			{
+				SetLatencyColor2(i, TimeoutColor);
+			}
+
+			lock (_lockloadinglogsTask)
+			{
+				--_loadinglogsTask;
+			}
+		}
+
+		private void LoadLogs(int index)
+		{
+			while (true)
+			{
+				if (_loadinglogsTask == 0)
+				{
+					break;
+				}
+			}
+			dataGridView2.Rows.Clear();
+			var length = logs[index].Count;
+			if (length > 0)
+			{
+				_loadinglogsTask += length;
+				dataGridView2.Rows.Add(length);
+				Task.Run(() =>
+				{
+					Parallel.For(0, length, i =>
+					{
+						LoadLog(i, logs[index][i]);
+					});
+				});
+			}
 		}
 
 		private void toolStripButton1_Click(object sender, EventArgs e)
@@ -286,6 +417,8 @@ namespace TCPingInfoView
 			{
 				return;
 			}
+
+			LoadLogs(e.RowIndex);
 
 			if (e.Button == MouseButtons.Right)
 			{

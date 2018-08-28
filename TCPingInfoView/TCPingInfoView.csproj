@@ -47,9 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GridLineDataGridView.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="ConcurrentList.cs" />
+    <Compile Include="GridLineDataGridView.cs" />
+    <Compile Include="TCPingLog.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="MainForm.cs">
