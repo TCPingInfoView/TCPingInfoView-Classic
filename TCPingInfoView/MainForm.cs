@@ -16,16 +16,16 @@ namespace TCPingInfoView
 			InitializeComponent();
 		}
 
-		public int Timeout = 3000;
-		private Color TimeoutColor = Color.Red;
-		public int HighLatency = 300;
-		private Color HighLatencyColor = Color.Coral;
-		private Color LowLatencyColor = Color.Green;
+		public static int Timeout = 3000;
+		public static int HighLatency = 300;
+		public static Color TimeoutColor = Color.Red;
+		public static Color HighLatencyColor = Color.Coral;
+		public static Color LowLatencyColor = Color.Green;
 
 		private int Needheight;
 		private double dataGridViewsProportion;
 		private List<Data> _list;
-		private ConcurrentList<ConcurrentList<TCPingLog>> logs;
+		private ConcurrentList<TCPingLog> logs;
 
 		private int _loadingFileTask = 0;
 		private readonly object _lockloadingFileTask = new object();
@@ -66,9 +66,22 @@ namespace TCPingInfoView
 			return dataGridView1.Rows[row].Cells[@"IPPort"].Value as IPEndPoint;
 		}
 
-		private void SetLatency1(int row, double latency)
+		private void SetLatency1(int row, int latency)
 		{
 			dataGridView1.Rows[row].Cells[@"Latency1"].Value = latency;
+			if (latency == Timeout)
+			{
+				SetLatencyToolTip1(row, @"超时");
+				SetLatencyColor1(row, TimeoutColor);
+			}
+			else if (latency < HighLatency)
+			{
+				SetLatencyColor1(row, LowLatencyColor);
+			}
+			else
+			{
+				SetLatencyColor1(row, HighLatencyColor);
+			}
 		}
 
 		private double? GetLatency1(int row)
@@ -96,6 +109,11 @@ namespace TCPingInfoView
 			return dataGridView1.Rows[row].Cells[@"Description"].Value as string;
 		}
 
+		private void SetFailedP1(int row, string str)
+		{
+			dataGridView1.Rows[row].Cells[@"FailedP"].Value = str;
+		}
+
 		#endregion
 
 		#region dataGridView2Cell
@@ -110,9 +128,22 @@ namespace TCPingInfoView
 			return (DateTime)dataGridView2.Rows[row].Cells[@"Date"].Value;
 		}
 
-		private void SetLatency2(int row, double latency)
+		private void SetLatency2(int row, int latency)
 		{
 			dataGridView2.Rows[row].Cells[@"Latency2"].Value = latency;
+			if (latency == Timeout)
+			{
+				SetLatencyToolTip2(row, @"超时");
+				SetLatencyColor2(row, TimeoutColor);
+			}
+			else if (latency < HighLatency)
+			{
+				SetLatencyColor2(row, LowLatencyColor);
+			}
+			else
+			{
+				SetLatencyColor2(row, HighLatencyColor);
+			}
 		}
 
 		private double? GetLatency2(int row)
@@ -189,29 +220,29 @@ namespace TCPingInfoView
 			{
 				var value = Convert.ToInt32(Math.Round(latency.Value));
 				SetLatency1(num, value);
-				if (value < HighLatency)
-				{
-					SetLatencyColor1(num, LowLatencyColor);
-				}
-				else
-				{
-					SetLatencyColor1(num, HighLatencyColor);
-				}
 			}
 			else
 			{
 				latency = Timeout;
-				SetLatency1(num, Timeout);
-				SetLatencyToolTip1(num, @"超时");
-				SetLatencyColor1(num, TimeoutColor);
 			}
 
-			var log = new TCPingLog
+			var log = new TCPingInfo
 			{
 				Date = date,
 				Latenty = latency.Value
 			};
 			logs[num].Add(log);
+
+			SetLatency1(num, (int)latency.Value);
+			var failedP = logs[num].FailedP;
+			if (Math.Abs(failedP) > 0.0)
+			{
+				SetFailedP1(num, failedP.ToString(@"P"));
+			}
+			else
+			{
+				SetFailedP1(num, @"0%");
+			}
 
 			if (dataGridView1.SelectedRows.Count == 1)
 			{
@@ -299,10 +330,11 @@ namespace TCPingInfoView
 			var length = _list.Count;
 			_loadingFileTask += length;
 			dataGridView1.Rows.Add(length);
-			logs = new ConcurrentList<ConcurrentList<TCPingLog>>();
+			logs = new ConcurrentList<TCPingLog>();
 			for (var i = 0; i < length; ++i)
 			{
-				logs.Add(new ConcurrentList<TCPingLog>());
+				var emptylog = new TCPingLog();
+				logs.Add(emptylog);
 			}
 			Task.Run(() =>
 			{
@@ -335,7 +367,7 @@ namespace TCPingInfoView
 			});
 		}
 
-		private void LoadLog(int i, TCPingLog log)
+		private void LoadLog(int i, TCPingInfo log)
 		{
 			SetDate2(i, log.Date);
 			var latency = Convert.ToInt32(Math.Round(log.Latenty));
@@ -369,7 +401,7 @@ namespace TCPingInfoView
 				}
 			}
 			dataGridView2.Rows.Clear();
-			var length = logs[index].Count;
+			var length = logs[index].Info.Count;
 			if (length > 0)
 			{
 				_loadinglogsTask += length;
@@ -378,7 +410,7 @@ namespace TCPingInfoView
 				{
 					Parallel.For(0, length, i =>
 					{
-						LoadLog(i, logs[index][i]);
+						LoadLog(i, logs[index].Info[i]);
 					});
 				});
 			}

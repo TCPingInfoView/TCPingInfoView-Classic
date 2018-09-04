@@ -51,12 +51,13 @@ namespace TCPingInfoView
 			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
 			this.dataGridView2 = new TCPingInfoView.GridLineDataGridView();
-			this.dataGridView1 = new TCPingInfoView.GridLineDataGridView();
 			this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Latency2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.dataGridView1 = new TCPingInfoView.GridLineDataGridView();
 			this.Index = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Hostname = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.IPPort = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.FailedP = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Latency1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.menuStrip1.SuspendLayout();
@@ -158,6 +159,7 @@ namespace TCPingInfoView
 			// 
 			this.dataGridView2.AllowUserToAddRows = false;
 			this.dataGridView2.AllowUserToDeleteRows = false;
+			this.dataGridView2.AllowUserToResizeRows = false;
 			this.dataGridView2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
 			this.dataGridView2.BackgroundColor = System.Drawing.SystemColors.Window;
 			this.dataGridView2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -199,8 +201,21 @@ namespace TCPingInfoView
 			this.dataGridView2.RowHeadersVisible = false;
 			this.dataGridView2.RowTemplate.Height = 23;
 			this.dataGridView2.RowTemplate.ReadOnly = true;
+			this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.dataGridView2.Size = new System.Drawing.Size(912, 111);
 			this.dataGridView2.TabIndex = 2;
+			// 
+			// Date
+			// 
+			this.Date.HeaderText = "TCP 连接时间";
+			this.Date.Name = "Date";
+			this.Date.ReadOnly = true;
+			// 
+			// Latency2
+			// 
+			this.Latency2.HeaderText = "延迟";
+			this.Latency2.Name = "Latency2";
+			this.Latency2.ReadOnly = true;
 			// 
 			// dataGridView1
 			// 
@@ -224,6 +239,7 @@ namespace TCPingInfoView
             this.Index,
             this.Hostname,
             this.IPPort,
+            this.FailedP,
             this.Latency1,
             this.Description});
 			dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -259,18 +275,6 @@ namespace TCPingInfoView
 			this.dataGridView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.dataGridView1_DragDrop);
 			this.dataGridView1.DragEnter += new System.Windows.Forms.DragEventHandler(this.dataGridView1_DragEnter);
 			// 
-			// Date
-			// 
-			this.Date.HeaderText = "TCP 连接时间";
-			this.Date.Name = "Date";
-			this.Date.ReadOnly = true;
-			// 
-			// Latency2
-			// 
-			this.Latency2.HeaderText = "延迟";
-			this.Latency2.Name = "Latency2";
-			this.Latency2.ReadOnly = true;
-			// 
 			// Index
 			// 
 			this.Index.HeaderText = "列表顺序";
@@ -288,6 +292,12 @@ namespace TCPingInfoView
 			this.IPPort.HeaderText = "IP:端口";
 			this.IPPort.Name = "IPPort";
 			this.IPPort.ReadOnly = true;
+			// 
+			// FailedP
+			// 
+			this.FailedP.HeaderText = "失败率";
+			this.FailedP.Name = "FailedP";
+			this.FailedP.ReadOnly = true;
 			// 
 			// Latency1
 			// 
@@ -346,6 +356,7 @@ namespace TCPingInfoView
 		private DataGridViewTextBoxColumn Index;
 		private DataGridViewTextBoxColumn Hostname;
 		private DataGridViewTextBoxColumn IPPort;
+		private DataGridViewTextBoxColumn FailedP;
 		private DataGridViewTextBoxColumn Latency1;
 		private DataGridViewTextBoxColumn Description;
 	}
