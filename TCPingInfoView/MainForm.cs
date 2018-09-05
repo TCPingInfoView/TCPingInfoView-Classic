@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TCPingInfoView.Properties;
+using Timer = System.Threading.Timer;
 
 namespace TCPingInfoView
 {
@@ -14,7 +16,11 @@ namespace TCPingInfoView
 		public MainForm()
 		{
 			InitializeComponent();
+			Icon = Resources.huaji128;
+			notifyIcon1.Icon = Resources.huaji128;
 		}
+
+		public static bool QClose = false;
 
 		public static int Timeout = 3000;
 		public static int HighLatency = 300;
@@ -476,6 +482,118 @@ namespace TCPingInfoView
 			{
 				e.Effect = DragDropEffects.None;
 			}
+		}
+
+		private void TriggerRun()
+		{
+			Start_Button.Enabled = false;
+			StartStop_MenuItem.Enabled = false;
+			VoidMethodDelegate method;
+			if (Start_Button.Text == @"开始")
+			{
+				method = StartPing;
+			}
+			else
+			{
+				method = StopPing;
+			}
+
+			var t = new Task(() => { method(); });
+			t.Start();
+			t.ContinueWith(task =>
+			{
+				BeginInvoke(new VoidMethodDelegate(() =>
+				{
+					Start_Button.Enabled = true;
+					StartStop_MenuItem.Enabled = true;
+				}));
+			});
+		}
+
+		private void Start_Button_Click(object sender, EventArgs e)
+		{
+			TriggerRun();
+		}
+
+		private delegate void VoidMethodDelegate();
+		private Timer TestAllTimer;
+		private const int second = 1000;
+		private const int minute = 60 * second;
+		public int interval = 1 * minute;
+
+		private void StartCore(object state)
+		{
+			TestAll();
+		}
+
+		private void StartPing()
+		{
+			TestAllTimer?.Dispose();
+			TestAllTimer = new Timer(StartCore, null, 0, interval);
+			Start_Button.Text = @"停止";
+			StartStop_MenuItem.Text = @"停止";
+		}
+
+		private void StopPing()
+		{
+			TestAllTimer?.Dispose();
+			Start_Button.Text = @"开始";
+			StartStop_MenuItem.Text = @"开始";
+		}
+
+		private void TriggerMainFormDisplay()
+		{
+			Visible = !Visible;
+			if (WindowState == FormWindowState.Minimized)
+				WindowState = FormWindowState.Normal;
+		}
+
+		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (!QClose)
+			{
+				e.Cancel = true;
+				TriggerMainFormDisplay();
+				return;
+			}
+			if (e.CloseReason == CloseReason.UserClosing)
+			{
+				var dr = MessageBox.Show(@"「是」退出，「否」最小化", @"是否退出？", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+				if (dr == DialogResult.Yes)
+				{
+					Dispose();
+					Application.Exit();
+				}
+				else if (dr == DialogResult.No)
+				{
+					e.Cancel = true;
+					TriggerMainFormDisplay();
+				}
+				else
+				{
+					e.Cancel = true;
+				}
+			}
+		}
+
+		private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+		{
+			TriggerMainFormDisplay();
+		}
+
+		private void ShowHide_MenuItem_Click(object sender, EventArgs e)
+		{
+			TriggerMainFormDisplay();
+		}
+
+		private void StartStop_MenuItem_Click(object sender, EventArgs e)
+		{
+			TriggerRun();
+		}
+
+		private void Exit_MenuItem_Click(object sender, EventArgs e)
+		{
+			Environment.Exit(0);
 		}
 	}
 }
