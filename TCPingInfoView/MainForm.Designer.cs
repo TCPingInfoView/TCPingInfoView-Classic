@@ -35,18 +35,16 @@ namespace TCPingInfoView
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle31 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle32 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle33 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle34 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle35 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle36 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.File_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.从文件载入ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
@@ -54,11 +52,13 @@ namespace TCPingInfoView
 			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
 			this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
 			this.NotifyIcon_MenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.ShowHide_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.dataGridView2 = new TCPingInfoView.GridLineDataGridView();
-			this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Latency2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.StartStop_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.Exit_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.DatelistView = new System.Windows.Forms.ListView();
+			this.Date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.Latency2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.dataGridView1 = new TCPingInfoView.GridLineDataGridView();
 			this.Index = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Hostname = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -66,14 +66,10 @@ namespace TCPingInfoView
 			this.FailedP = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Latency1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Exit_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.StartStop_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.menuStrip1.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
 			this.NotifyIcon_MenuStrip.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -125,6 +121,12 @@ namespace TCPingInfoView
 			this.statusStrip1.Size = new System.Drawing.Size(912, 22);
 			this.statusStrip1.TabIndex = 3;
 			this.statusStrip1.Text = "statusStrip1";
+			// 
+			// toolStripStatusLabel1
+			// 
+			this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+			this.toolStripStatusLabel1.Size = new System.Drawing.Size(277, 17);
+			this.toolStripStatusLabel1.Text = "https://github.com/HMBSbige/TCPingInfoView";
 			// 
 			// toolStrip1
 			// 
@@ -194,81 +196,59 @@ namespace TCPingInfoView
             this.toolStripSeparator2,
             this.Exit_MenuItem});
 			this.NotifyIcon_MenuStrip.Name = "NotifyIcon_MenuStrip";
-			this.NotifyIcon_MenuStrip.Size = new System.Drawing.Size(181, 98);
-			// 
-			// toolStripSeparator2
-			// 
-			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(199, 6);
+			this.NotifyIcon_MenuStrip.Size = new System.Drawing.Size(130, 76);
 			// 
 			// ShowHide_MenuItem
 			// 
 			this.ShowHide_MenuItem.Name = "ShowHide_MenuItem";
-			this.ShowHide_MenuItem.Size = new System.Drawing.Size(180, 22);
+			this.ShowHide_MenuItem.Size = new System.Drawing.Size(129, 22);
 			this.ShowHide_MenuItem.Text = "显示/隐藏";
 			this.ShowHide_MenuItem.Click += new System.EventHandler(this.ShowHide_MenuItem_Click);
 			// 
-			// dataGridView2
+			// StartStop_MenuItem
 			// 
-			this.dataGridView2.AllowUserToAddRows = false;
-			this.dataGridView2.AllowUserToDeleteRows = false;
-			this.dataGridView2.AllowUserToResizeRows = false;
-			this.dataGridView2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-			this.dataGridView2.BackgroundColor = System.Drawing.SystemColors.Window;
-			this.dataGridView2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.dataGridView2.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-			dataGridViewCellStyle31.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle31.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle31.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			dataGridViewCellStyle31.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle31.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle31.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle31.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.dataGridView2.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle31;
-			this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+			this.StartStop_MenuItem.Name = "StartStop_MenuItem";
+			this.StartStop_MenuItem.Size = new System.Drawing.Size(129, 22);
+			this.StartStop_MenuItem.Text = "开始";
+			this.StartStop_MenuItem.Click += new System.EventHandler(this.StartStop_MenuItem_Click);
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(126, 6);
+			// 
+			// Exit_MenuItem
+			// 
+			this.Exit_MenuItem.Name = "Exit_MenuItem";
+			this.Exit_MenuItem.Size = new System.Drawing.Size(129, 22);
+			this.Exit_MenuItem.Text = "退出";
+			this.Exit_MenuItem.Click += new System.EventHandler(this.Exit_MenuItem_Click);
+			// 
+			// DatelistView
+			// 
+			this.DatelistView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Date,
             this.Latency2});
-			dataGridViewCellStyle32.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle32.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle32.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			dataGridViewCellStyle32.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle32.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle32.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle32.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.dataGridView2.DefaultCellStyle = dataGridViewCellStyle32;
-			this.dataGridView2.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.dataGridView2.GridColor = System.Drawing.SystemColors.Control;
-			this.dataGridView2.Location = new System.Drawing.Point(0, 545);
-			this.dataGridView2.MultiSelect = false;
-			this.dataGridView2.Name = "dataGridView2";
-			this.dataGridView2.ReadOnly = true;
-			this.dataGridView2.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-			dataGridViewCellStyle33.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle33.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle33.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			dataGridViewCellStyle33.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle33.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle33.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle33.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.dataGridView2.RowHeadersDefaultCellStyle = dataGridViewCellStyle33;
-			this.dataGridView2.RowHeadersVisible = false;
-			this.dataGridView2.RowTemplate.Height = 23;
-			this.dataGridView2.RowTemplate.ReadOnly = true;
-			this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dataGridView2.Size = new System.Drawing.Size(912, 111);
-			this.dataGridView2.TabIndex = 2;
+			this.DatelistView.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.DatelistView.FullRowSelect = true;
+			this.DatelistView.GridLines = true;
+			this.DatelistView.Location = new System.Drawing.Point(0, 551);
+			this.DatelistView.MultiSelect = false;
+			this.DatelistView.Name = "DatelistView";
+			this.DatelistView.ShowItemToolTips = true;
+			this.DatelistView.Size = new System.Drawing.Size(912, 105);
+			this.DatelistView.TabIndex = 5;
+			this.DatelistView.UseCompatibleStateImageBehavior = false;
+			this.DatelistView.View = System.Windows.Forms.View.Details;
 			// 
 			// Date
 			// 
-			this.Date.HeaderText = "TCP 连接时间";
-			this.Date.Name = "Date";
-			this.Date.ReadOnly = true;
+			this.Date.Text = "TCPing 通信时间";
+			this.Date.Width = 170;
 			// 
 			// Latency2
 			// 
-			this.Latency2.HeaderText = "延迟";
-			this.Latency2.Name = "Latency2";
-			this.Latency2.ReadOnly = true;
+			this.Latency2.Text = "延迟(ms)";
 			// 
 			// dataGridView1
 			// 
@@ -280,14 +260,14 @@ namespace TCPingInfoView
 			this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
 			this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.dataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-			dataGridViewCellStyle34.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle34.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle34.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			dataGridViewCellStyle34.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle34.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle34.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle34.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle34;
+			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
 			this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Index,
             this.Hostname,
@@ -295,14 +275,14 @@ namespace TCPingInfoView
             this.FailedP,
             this.Latency1,
             this.Description});
-			dataGridViewCellStyle35.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle35.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle35.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			dataGridViewCellStyle35.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle35.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle35.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle35.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle35;
+			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
 			this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.dataGridView1.GridColor = System.Drawing.SystemColors.Control;
 			this.dataGridView1.Location = new System.Drawing.Point(0, 50);
@@ -310,19 +290,19 @@ namespace TCPingInfoView
 			this.dataGridView1.Name = "dataGridView1";
 			this.dataGridView1.ReadOnly = true;
 			this.dataGridView1.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-			dataGridViewCellStyle36.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle36.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle36.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			dataGridViewCellStyle36.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle36.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle36.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle36.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle36;
+			dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle3.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
 			this.dataGridView1.RowHeadersVisible = false;
 			this.dataGridView1.RowTemplate.Height = 23;
 			this.dataGridView1.RowTemplate.ReadOnly = true;
 			this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dataGridView1.Size = new System.Drawing.Size(912, 495);
+			this.dataGridView1.Size = new System.Drawing.Size(912, 501);
 			this.dataGridView1.TabIndex = 1;
 			this.dataGridView1.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDown);
 			this.dataGridView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.dataGridView1_DragDrop);
@@ -364,32 +344,12 @@ namespace TCPingInfoView
 			this.Description.Name = "Description";
 			this.Description.ReadOnly = true;
 			// 
-			// Exit_MenuItem
-			// 
-			this.Exit_MenuItem.Name = "Exit_MenuItem";
-			this.Exit_MenuItem.Size = new System.Drawing.Size(180, 22);
-			this.Exit_MenuItem.Text = "退出";
-			this.Exit_MenuItem.Click += new System.EventHandler(this.Exit_MenuItem_Click);
-			// 
-			// StartStop_MenuItem
-			// 
-			this.StartStop_MenuItem.Name = "StartStop_MenuItem";
-			this.StartStop_MenuItem.Size = new System.Drawing.Size(180, 22);
-			this.StartStop_MenuItem.Text = "开始";
-			this.StartStop_MenuItem.Click += new System.EventHandler(this.StartStop_MenuItem_Click);
-			// 
-			// toolStripStatusLabel1
-			// 
-			this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-			this.toolStripStatusLabel1.Size = new System.Drawing.Size(277, 17);
-			this.toolStripStatusLabel1.Text = "https://github.com/HMBSbige/TCPingInfoView";
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(912, 678);
-			this.Controls.Add(this.dataGridView2);
+			this.Controls.Add(this.DatelistView);
 			this.Controls.Add(this.dataGridView1);
 			this.Controls.Add(this.toolStrip1);
 			this.Controls.Add(this.menuStrip1);
@@ -407,7 +367,6 @@ namespace TCPingInfoView
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
 			this.NotifyIcon_MenuStrip.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -422,14 +381,11 @@ namespace TCPingInfoView
 		private ToolStripSeparator toolStripSeparator1;
 		private ToolStripMenuItem 退出ToolStripMenuItem;
 		private GridLineDataGridView dataGridView1;
-		private GridLineDataGridView dataGridView2;
 		private StatusStrip statusStrip1;
 		private ToolStrip toolStrip1;
 		private ToolStripButton toolStripButton1;
 		private ToolStripButton toolStripButton2;
 		private ToolStripButton toolStripButton3;
-		private DataGridViewTextBoxColumn Date;
-		private DataGridViewTextBoxColumn Latency2;
 		private DataGridViewTextBoxColumn Index;
 		private DataGridViewTextBoxColumn Hostname;
 		private DataGridViewTextBoxColumn IPPort;
@@ -444,6 +400,9 @@ namespace TCPingInfoView
 		private ToolStripMenuItem StartStop_MenuItem;
 		private ToolStripMenuItem Exit_MenuItem;
 		private ToolStripStatusLabel toolStripStatusLabel1;
+		private ListView DatelistView;
+		private ColumnHeader Date;
+		private ColumnHeader Latency2;
 	}
 }
 

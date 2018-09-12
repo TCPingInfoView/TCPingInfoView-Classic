@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -19,6 +20,8 @@ namespace TCPingInfoView
 			Icon = Resources.huaji128;
 			notifyIcon1.Icon = Resources.huaji128;
 		}
+
+		private delegate void VoidMethod_Delegate();
 
 		public static bool QClose = false;
 
@@ -122,49 +125,55 @@ namespace TCPingInfoView
 
 		#endregion
 
-		#region dataGridView2Cell
+		#region DatelistView
 
 		private void SetDate2(int row, DateTime num)
 		{
-			dataGridView2.Rows[row].Cells[@"Date"].Value = num;
+			BeginInvoke(new VoidMethod_Delegate(() =>
+			{
+				DatelistView.BeginUpdate();
+				DatelistView.Items[row].SubItems[0].Text = num.ToString(CultureInfo.CurrentCulture);
+				DatelistView.EndUpdate();
+			}));
 		}
 
 		private DateTime GetDate2(int row)
 		{
-			return (DateTime)dataGridView2.Rows[row].Cells[@"Date"].Value;
+			return DateTime.Parse(DatelistView.Items[row].SubItems[0].Text);
 		}
 
 		private void SetLatency2(int row, int latency)
 		{
-			dataGridView2.Rows[row].Cells[@"Latency2"].Value = latency;
-			if (latency == Timeout)
+			BeginInvoke(new VoidMethod_Delegate(() =>
 			{
-				SetLatencyToolTip2(row, @"超时");
-				SetLatencyColor2(row, TimeoutColor);
-			}
-			else if (latency < HighLatency)
-			{
-				SetLatencyColor2(row, LowLatencyColor);
-			}
-			else
-			{
-				SetLatencyColor2(row, HighLatencyColor);
-			}
+				DatelistView.BeginUpdate();
+				DatelistView.Items[row].SubItems[1].Text = latency.ToString();
+				if (latency == Timeout)
+				{
+					SetLatencyColor2(row, TimeoutColor);
+				}
+				else if (latency < HighLatency)
+				{
+					SetLatencyColor2(row, LowLatencyColor);
+				}
+				else
+				{
+					SetLatencyColor2(row, HighLatencyColor);
+				}
+
+				DatelistView.EndUpdate();
+			}));
 		}
 
 		private double? GetLatency2(int row)
 		{
-			return dataGridView2.Rows[row].Cells[@"Latency2"].Value as double?;
+			return Convert.ToDouble(DatelistView.Items[row].SubItems[1].Text);
 		}
 
 		private void SetLatencyColor2(int row, Color color)
 		{
-			dataGridView2.Rows[row].Cells[@"Latency2"].Style.ForeColor = color;
-		}
-
-		private void SetLatencyToolTip2(int row, string str)
-		{
-			dataGridView2.Rows[row].Cells[@"Latency2"].ToolTipText = str;
+			DatelistView.Items[row].UseItemStyleForSubItems = false;
+			DatelistView.Items[row].SubItems[1].ForeColor = color;
 		}
 
 		#endregion
@@ -257,7 +266,8 @@ namespace TCPingInfoView
 				{
 					dataGridView1.Invoke(() =>
 					{
-						var index2 = dataGridView2.Rows.Add();
+						var emptyDatelistView = new ListViewItem { SubItems = { new ListViewItem.ListViewSubItem() } };
+						var index2 = DatelistView.Items.Add(emptyDatelistView).Index;
 						lock (_lockloadinglogsTask)
 						{
 							++_loadinglogsTask;
@@ -330,7 +340,7 @@ namespace TCPingInfoView
 			}
 
 			dataGridView1.Rows.Clear();
-			dataGridView2.Rows.Clear();
+			DatelistView.Items.Clear();
 			var l = Util.ToData(sl);
 			_list = l.ToList();
 			var length = _list.Count;
@@ -350,8 +360,8 @@ namespace TCPingInfoView
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
-			Needheight = Height - (dataGridView1.Height + dataGridView2.Height);
-			dataGridViewsProportion = Convert.ToDouble(dataGridView1.Height) / Convert.ToDouble(dataGridView1.Height + dataGridView2.Height);
+			Needheight = Height - (dataGridView1.Height + DatelistView.Height);
+			dataGridViewsProportion = Convert.ToDouble(dataGridView1.Height) / Convert.ToDouble(dataGridView1.Height + DatelistView.Height);
 			const string defaultPath = @"D:\Downloads\test.txt";
 			if (File.Exists(defaultPath))
 			{
@@ -362,7 +372,7 @@ namespace TCPingInfoView
 
 		private void TestAll()
 		{
-			var l = dataGridView1.Rows.Count;
+			var l = _list.Count;
 			lock (_locktestAllTask)
 			{
 				_testAllTask += l;
@@ -378,18 +388,6 @@ namespace TCPingInfoView
 			SetDate2(i, log.Date);
 			var latency = Convert.ToInt32(Math.Round(log.Latenty));
 			SetLatency2(i, latency);
-			if (latency < HighLatency)
-			{
-				SetLatencyColor2(i, LowLatencyColor);
-			}
-			else if (latency < Timeout)
-			{
-				SetLatencyColor2(i, HighLatencyColor);
-			}
-			else
-			{
-				SetLatencyColor2(i, TimeoutColor);
-			}
 
 			lock (_lockloadinglogsTask)
 			{
@@ -406,12 +404,17 @@ namespace TCPingInfoView
 					break;
 				}
 			}
-			dataGridView2.Rows.Clear();
+			DatelistView.Items.Clear();
 			var length = logs[index].Info.Count;
 			if (length > 0)
 			{
 				_loadinglogsTask += length;
-				dataGridView2.Rows.Add(length);
+
+				for (var i = 0; i < length; ++i)
+				{
+					var emptyDatelistView = new ListViewItem { SubItems = { new ListViewItem.ListViewSubItem() } };
+					DatelistView.Items.Add(emptyDatelistView);
+				}
 				Task.Run(() =>
 				{
 					Parallel.For(0, length, i =>
@@ -441,7 +444,7 @@ namespace TCPingInfoView
 		{
 			var height = Height - Needheight;
 			dataGridView1.Height = Convert.ToInt32(dataGridViewsProportion * height);
-			dataGridView2.Height = height - dataGridView1.Height;
+			DatelistView.Height = height - dataGridView1.Height;
 		}
 
 		private void MainForm_Resize(object sender, EventArgs e)
