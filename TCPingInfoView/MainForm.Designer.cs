@@ -35,9 +35,6 @@ namespace TCPingInfoView
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.File_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.从文件载入ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,21 +53,20 @@ namespace TCPingInfoView
 			this.StartStop_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.Exit_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.DatelistView = new System.Windows.Forms.ListView();
+			this.DatelistView = new DoubleBufferListView();
 			this.Date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.Latency2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.dataGridView1 = new TCPingInfoView.GridLineDataGridView();
-			this.Index = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Hostname = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.IPPort = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.FailedP = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Latency1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.MainlistView = new DoubleBufferListView();
+			this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.menuStrip1.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
 			this.NotifyIcon_MenuStrip.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// menuStrip1
@@ -229,14 +225,14 @@ namespace TCPingInfoView
 			this.DatelistView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Date,
             this.Latency2});
-			this.DatelistView.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.DatelistView.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.DatelistView.FullRowSelect = true;
 			this.DatelistView.GridLines = true;
-			this.DatelistView.Location = new System.Drawing.Point(0, 551);
+			this.DatelistView.Location = new System.Drawing.Point(0, 504);
 			this.DatelistView.MultiSelect = false;
 			this.DatelistView.Name = "DatelistView";
 			this.DatelistView.ShowItemToolTips = true;
-			this.DatelistView.Size = new System.Drawing.Size(912, 105);
+			this.DatelistView.Size = new System.Drawing.Size(912, 152);
 			this.DatelistView.TabIndex = 5;
 			this.DatelistView.UseCompatibleStateImageBehavior = false;
 			this.DatelistView.View = System.Windows.Forms.View.Details;
@@ -250,107 +246,66 @@ namespace TCPingInfoView
 			// 
 			this.Latency2.Text = "延迟(ms)";
 			// 
-			// dataGridView1
+			// MainlistView
 			// 
-			this.dataGridView1.AllowDrop = true;
-			this.dataGridView1.AllowUserToAddRows = false;
-			this.dataGridView1.AllowUserToDeleteRows = false;
-			this.dataGridView1.AllowUserToResizeRows = false;
-			this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-			this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
-			this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.dataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-			this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Index,
-            this.Hostname,
-            this.IPPort,
-            this.FailedP,
-            this.Latency1,
-            this.Description});
-			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
-			this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.dataGridView1.GridColor = System.Drawing.SystemColors.Control;
-			this.dataGridView1.Location = new System.Drawing.Point(0, 50);
-			this.dataGridView1.MultiSelect = false;
-			this.dataGridView1.Name = "dataGridView1";
-			this.dataGridView1.ReadOnly = true;
-			this.dataGridView1.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-			dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle3.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
-			this.dataGridView1.RowHeadersVisible = false;
-			this.dataGridView1.RowTemplate.Height = 23;
-			this.dataGridView1.RowTemplate.ReadOnly = true;
-			this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dataGridView1.Size = new System.Drawing.Size(912, 501);
-			this.dataGridView1.TabIndex = 1;
-			this.dataGridView1.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDown);
-			this.dataGridView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.dataGridView1_DragDrop);
-			this.dataGridView1.DragEnter += new System.Windows.Forms.DragEventHandler(this.dataGridView1_DragEnter);
+			this.MainlistView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3,
+            this.columnHeader4,
+            this.columnHeader5,
+            this.columnHeader6});
+			this.MainlistView.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.MainlistView.FullRowSelect = true;
+			this.MainlistView.GridLines = true;
+			this.MainlistView.Location = new System.Drawing.Point(0, 50);
+			this.MainlistView.MultiSelect = false;
+			this.MainlistView.Name = "MainlistView";
+			this.MainlistView.ShowItemToolTips = true;
+			this.MainlistView.Size = new System.Drawing.Size(912, 454);
+			this.MainlistView.TabIndex = 6;
+			this.MainlistView.UseCompatibleStateImageBehavior = false;
+			this.MainlistView.View = System.Windows.Forms.View.Details;
+			this.MainlistView.SelectedIndexChanged += new System.EventHandler(this.MainlistView_SelectedIndexChanged);
+			this.MainlistView.DragDrop += new System.Windows.Forms.DragEventHandler(this.MainlistView_DragDrop);
+			this.MainlistView.DragEnter += new System.Windows.Forms.DragEventHandler(this.MainlistView_DragEnter);
 			// 
-			// Index
+			// columnHeader1
 			// 
-			this.Index.HeaderText = "列表顺序";
-			this.Index.Name = "Index";
-			this.Index.ReadOnly = true;
+			this.columnHeader1.Text = "列表顺序";
+			this.columnHeader1.Width = 68;
 			// 
-			// Hostname
+			// columnHeader2
 			// 
-			this.Hostname.HeaderText = "主机名";
-			this.Hostname.Name = "Hostname";
-			this.Hostname.ReadOnly = true;
+			this.columnHeader2.Text = "主机名";
+			this.columnHeader2.Width = 129;
 			// 
-			// IPPort
+			// columnHeader3
 			// 
-			this.IPPort.HeaderText = "IP:端口";
-			this.IPPort.Name = "IPPort";
-			this.IPPort.ReadOnly = true;
+			this.columnHeader3.Text = "IP:端口";
+			this.columnHeader3.Width = 95;
 			// 
-			// FailedP
+			// columnHeader4
 			// 
-			this.FailedP.HeaderText = "失败率";
-			this.FailedP.Name = "FailedP";
-			this.FailedP.ReadOnly = true;
+			this.columnHeader4.Text = "失败率";
+			this.columnHeader4.Width = 54;
 			// 
-			// Latency1
+			// columnHeader5
 			// 
-			this.Latency1.HeaderText = "延迟(ms)";
-			this.Latency1.Name = "Latency1";
-			this.Latency1.ReadOnly = true;
+			this.columnHeader5.Text = "延迟(ms)";
 			// 
-			// Description
+			// columnHeader6
 			// 
-			this.Description.HeaderText = "说明";
-			this.Description.Name = "Description";
-			this.Description.ReadOnly = true;
+			this.columnHeader6.Text = "说明";
+			this.columnHeader6.Width = 141;
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(912, 678);
+			this.Controls.Add(this.MainlistView);
 			this.Controls.Add(this.DatelistView);
-			this.Controls.Add(this.dataGridView1);
 			this.Controls.Add(this.toolStrip1);
 			this.Controls.Add(this.menuStrip1);
 			this.Controls.Add(this.statusStrip1);
@@ -367,7 +322,6 @@ namespace TCPingInfoView
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
 			this.NotifyIcon_MenuStrip.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -380,18 +334,11 @@ namespace TCPingInfoView
 		private ToolStripMenuItem 从文件载入ToolStripMenuItem;
 		private ToolStripSeparator toolStripSeparator1;
 		private ToolStripMenuItem 退出ToolStripMenuItem;
-		private GridLineDataGridView dataGridView1;
 		private StatusStrip statusStrip1;
 		private ToolStrip toolStrip1;
 		private ToolStripButton toolStripButton1;
 		private ToolStripButton toolStripButton2;
 		private ToolStripButton toolStripButton3;
-		private DataGridViewTextBoxColumn Index;
-		private DataGridViewTextBoxColumn Hostname;
-		private DataGridViewTextBoxColumn IPPort;
-		private DataGridViewTextBoxColumn FailedP;
-		private DataGridViewTextBoxColumn Latency1;
-		private DataGridViewTextBoxColumn Description;
 		private ToolStripButton Start_Button;
 		private NotifyIcon notifyIcon1;
 		private ContextMenuStrip NotifyIcon_MenuStrip;
@@ -400,9 +347,16 @@ namespace TCPingInfoView
 		private ToolStripMenuItem StartStop_MenuItem;
 		private ToolStripMenuItem Exit_MenuItem;
 		private ToolStripStatusLabel toolStripStatusLabel1;
-		private ListView DatelistView;
+		private DoubleBufferListView DatelistView;
 		private ColumnHeader Date;
 		private ColumnHeader Latency2;
+		private DoubleBufferListView MainlistView;
+		private ColumnHeader columnHeader1;
+		private ColumnHeader columnHeader2;
+		private ColumnHeader columnHeader3;
+		private ColumnHeader columnHeader4;
+		private ColumnHeader columnHeader5;
+		private ColumnHeader columnHeader6;
 	}
 }
 

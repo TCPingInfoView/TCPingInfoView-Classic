@@ -43,84 +43,122 @@ namespace TCPingInfoView
 		private int _testAllTask = 0;
 		private readonly object _locktestAllTask = new object();
 
-		#region dataGridView1Cell
+		#region MainlistView
 
 		private void SetIndex1(int row, int num)
 		{
-			dataGridView1.Rows[row].Cells[@"Index"].Value = num;
+			BeginInvoke(new VoidMethod_Delegate(() =>
+			{
+				MainlistView.Items[row].SubItems[0].Text = num.ToString();
+			}));
 		}
 
 		private int? GetIndex1(int row)
 		{
-			return dataGridView1.Rows[row].Cells[@"Index"].Value as int?;
+			int? res = null;
+			Invoke(new VoidMethod_Delegate(() =>
+			{
+				res = Convert.ToInt32(MainlistView.Items[row].SubItems[0].Text);
+			}));
+			return res;
 		}
 
 		private void SetHostname1(int row, string hostname)
 		{
-			dataGridView1.Rows[row].Cells[@"Hostname"].Value = hostname;
+			BeginInvoke(new VoidMethod_Delegate(() =>
+			{
+				MainlistView.Items[row].SubItems[1].Text = hostname;
+			}));
 		}
 
 		private string GetHostname1(int row)
 		{
-			return dataGridView1.Rows[row].Cells[@"Hostname"].Value as string;
+			string res = null;
+			Invoke(new VoidMethod_Delegate(() =>
+			{
+				res = MainlistView.Items[row].SubItems[1].Text;
+			}));
+			return res;
 		}
 
 		private void SetIPport1(int row, IPEndPoint ipEndPoint)
 		{
-			dataGridView1.Rows[row].Cells[@"IPPort"].Value = ipEndPoint;
+			BeginInvoke(new VoidMethod_Delegate(() =>
+			{
+				MainlistView.Items[row].SubItems[2].Text = ipEndPoint.ToString();
+			}));
 		}
 
 		private IPEndPoint GetIPport1(int row)
 		{
-			return dataGridView1.Rows[row].Cells[@"IPPort"].Value as IPEndPoint;
+			IPEndPoint res = null;
+			Invoke(new VoidMethod_Delegate(() =>
+			{
+				res = Util.ToIPEndPoint(MainlistView.Items[row].SubItems[2].Text, 443);
+			}));
+			return res;
 		}
 
 		private void SetLatency1(int row, int latency)
 		{
-			dataGridView1.Rows[row].Cells[@"Latency1"].Value = latency;
-			if (latency == Timeout)
+			BeginInvoke(new VoidMethod_Delegate(() =>
 			{
-				SetLatencyToolTip1(row, @"超时");
-				SetLatencyColor1(row, TimeoutColor);
-			}
-			else if (latency < HighLatency)
-			{
-				SetLatencyColor1(row, LowLatencyColor);
-			}
-			else
-			{
-				SetLatencyColor1(row, HighLatencyColor);
-			}
+				MainlistView.Items[row].SubItems[4].Text = latency.ToString();
+				if (latency == Timeout)
+				{
+					SetLatencyColor1(row, TimeoutColor);
+				}
+				else if (latency < HighLatency)
+				{
+					SetLatencyColor1(row, LowLatencyColor);
+				}
+				else
+				{
+					SetLatencyColor1(row, HighLatencyColor);
+				}
+			}));
 		}
 
 		private double? GetLatency1(int row)
 		{
-			return dataGridView1.Rows[row].Cells[@"Latency1"].Value as double?;
+			double? res = null;
+			Invoke(new VoidMethod_Delegate(() =>
+			{
+				res = Convert.ToDouble(MainlistView.Items[row].SubItems[4].Text);
+			}));
+			return res;
 		}
 
 		private void SetLatencyColor1(int row, Color color)
 		{
-			dataGridView1.Rows[row].Cells[@"Latency1"].Style.ForeColor = color;
-		}
-
-		private void SetLatencyToolTip1(int row, string str)
-		{
-			dataGridView1.Rows[row].Cells[@"Latency1"].ToolTipText = str;
+			MainlistView.Items[row].UseItemStyleForSubItems = false;
+			MainlistView.Items[row].SubItems[4].ForeColor = color;
 		}
 
 		private void SetDescription1(int row, string str)
 		{
-			dataGridView1.Rows[row].Cells[@"Description"].Value = str;
+			BeginInvoke(new VoidMethod_Delegate(() =>
+			{
+				MainlistView.Items[row].SubItems[5].Text = str;
+			}));
 		}
 
 		private string GetDescription1(int row)
 		{
-			return dataGridView1.Rows[row].Cells[@"Description"].Value as string;
+			string res = null;
+			Invoke(new VoidMethod_Delegate(() =>
+			{
+				res = MainlistView.Items[row].SubItems[5].Text;
+			}));
+			return res;
 		}
 
 		private void SetFailedP1(int row, string str)
 		{
-			dataGridView1.Rows[row].Cells[@"FailedP"].Value = str;
+			BeginInvoke(new VoidMethod_Delegate(() =>
+			{
+				MainlistView.Items[row].SubItems[3].Text = str;
+			}));
 		}
 
 		#endregion
@@ -131,22 +169,24 @@ namespace TCPingInfoView
 		{
 			BeginInvoke(new VoidMethod_Delegate(() =>
 			{
-				DatelistView.BeginUpdate();
 				DatelistView.Items[row].SubItems[0].Text = num.ToString(CultureInfo.CurrentCulture);
-				DatelistView.EndUpdate();
 			}));
 		}
 
 		private DateTime GetDate2(int row)
 		{
-			return DateTime.Parse(DatelistView.Items[row].SubItems[0].Text);
+			var res = new DateTime();
+			Invoke(new VoidMethod_Delegate(() =>
+			{
+				res = DateTime.Parse(DatelistView.Items[row].SubItems[0].Text);
+			}));
+			return res;
 		}
 
 		private void SetLatency2(int row, int latency)
 		{
 			BeginInvoke(new VoidMethod_Delegate(() =>
 			{
-				DatelistView.BeginUpdate();
 				DatelistView.Items[row].SubItems[1].Text = latency.ToString();
 				if (latency == Timeout)
 				{
@@ -160,14 +200,17 @@ namespace TCPingInfoView
 				{
 					SetLatencyColor2(row, HighLatencyColor);
 				}
-
-				DatelistView.EndUpdate();
 			}));
 		}
 
 		private double? GetLatency2(int row)
 		{
-			return Convert.ToDouble(DatelistView.Items[row].SubItems[1].Text);
+			double? res = null;
+			Invoke(new VoidMethod_Delegate(() =>
+			{
+				res = Convert.ToDouble(DatelistView.Items[row].SubItems[1].Text);
+			}));
+			return res;
 		}
 
 		private void SetLatencyColor2(int row, Color color)
@@ -259,12 +302,12 @@ namespace TCPingInfoView
 				SetFailedP1(num, @"0%");
 			}
 
-			if (dataGridView1.SelectedRows.Count == 1)
+			MainlistView.Invoke(() =>
 			{
-				var index1 = dataGridView1.SelectedRows[0].Index;
-				if (index1 == num)
+				if (MainlistView.SelectedItems.Count == 1)
 				{
-					dataGridView1.Invoke(() =>
+					var index1 = MainlistView.SelectedItems[0].Index;
+					if (index1 == num)
 					{
 						var emptyDatelistView = new ListViewItem { SubItems = { new ListViewItem.ListViewSubItem() } };
 						var index2 = DatelistView.Items.Add(emptyDatelistView).Index;
@@ -272,10 +315,12 @@ namespace TCPingInfoView
 						{
 							++_loadinglogsTask;
 						}
+
 						LoadLog(index2, log);
-					});
+					}
 				}
-			}
+			});
+
 
 			lock (_locktestAllTask)
 			{
@@ -339,13 +384,28 @@ namespace TCPingInfoView
 				}
 			}
 
-			dataGridView1.Rows.Clear();
+			MainlistView.Items.Clear();
 			DatelistView.Items.Clear();
 			var l = Util.ToData(sl);
 			_list = l.ToList();
 			var length = _list.Count;
 			_loadingFileTask += length;
-			dataGridView1.Rows.Add(length);
+			for (var i = 0; i < length; ++i)
+			{
+				var emptyDatelistView = new ListViewItem
+				{
+					SubItems =
+					{
+							new ListViewItem.ListViewSubItem(),
+							new ListViewItem.ListViewSubItem(),
+							new ListViewItem.ListViewSubItem(),
+							new ListViewItem.ListViewSubItem(),
+							new ListViewItem.ListViewSubItem(),
+							new ListViewItem.ListViewSubItem(),
+					}
+				};
+				MainlistView.Items.Add(emptyDatelistView);
+			}
 			logs = new ConcurrentList<TCPingLog>();
 			for (var i = 0; i < length; ++i)
 			{
@@ -360,8 +420,8 @@ namespace TCPingInfoView
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
-			Needheight = Height - (dataGridView1.Height + DatelistView.Height);
-			dataGridViewsProportion = Convert.ToDouble(dataGridView1.Height) / Convert.ToDouble(dataGridView1.Height + DatelistView.Height);
+			Needheight = Height - (MainlistView.Height + DatelistView.Height);
+			dataGridViewsProportion = Convert.ToDouble(MainlistView.Height) / Convert.ToDouble(MainlistView.Height + DatelistView.Height);
 			const string defaultPath = @"D:\Downloads\test.txt";
 			if (File.Exists(defaultPath))
 			{
@@ -443,48 +503,13 @@ namespace TCPingInfoView
 		private void ChangeSize()
 		{
 			var height = Height - Needheight;
-			dataGridView1.Height = Convert.ToInt32(dataGridViewsProportion * height);
-			DatelistView.Height = height - dataGridView1.Height;
+			MainlistView.Height = Convert.ToInt32(dataGridViewsProportion * height);
+			DatelistView.Height = height - MainlistView.Height;
 		}
 
 		private void MainForm_Resize(object sender, EventArgs e)
 		{
 			ChangeSize();
-		}
-
-		private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
-		{
-			if (e.RowIndex < 0)
-			{
-				return;
-			}
-
-			LoadLogs(e.RowIndex);
-
-			if (e.Button == MouseButtons.Right)
-			{
-				dataGridView1.ClearSelection();
-				dataGridView1.Rows[e.RowIndex].Selected = true;
-			}
-		}
-
-		private void dataGridView1_DragDrop(object sender, DragEventArgs e)
-		{
-			var path = ((Array)e.Data.GetData(DataFormats.FileDrop)).GetValue(0).ToString();
-			var sl = Read.ReadAddress(path);
-			LoadFromList(sl);
-		}
-
-		private void dataGridView1_DragEnter(object sender, DragEventArgs e)
-		{
-			if (e.Data.GetDataPresent(DataFormats.FileDrop))
-			{
-				e.Effect = DragDropEffects.Link;
-			}
-			else
-			{
-				e.Effect = DragDropEffects.None;
-			}
 		}
 
 		private void TriggerRun()
@@ -597,6 +622,35 @@ namespace TCPingInfoView
 		private void Exit_MenuItem_Click(object sender, EventArgs e)
 		{
 			Environment.Exit(0);
+		}
+
+		private void MainlistView_DragDrop(object sender, DragEventArgs e)
+		{
+			var path = ((Array)e.Data.GetData(DataFormats.FileDrop)).GetValue(0).ToString();
+			var sl = Read.ReadAddress(path);
+			LoadFromList(sl);
+		}
+
+		private void MainlistView_DragEnter(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+			{
+				e.Effect = DragDropEffects.Link;
+			}
+			else
+			{
+				e.Effect = DragDropEffects.None;
+			}
+		}
+
+		private void MainlistView_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (MainlistView.SelectedIndices.Count <= 0)
+			{
+				return;
+			}
+
+			LoadLogs(MainlistView.SelectedIndices[0]);
 		}
 	}
 }

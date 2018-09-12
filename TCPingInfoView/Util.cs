@@ -26,7 +26,35 @@ namespace TCPingInfoView
 			return false;
 		}
 
-		public static async Task<IPEndPoint> ToIPEndPoint(string str, int defaultport)
+		public static IPEndPoint ToIPEndPoint(string str, int defaultport)
+		{
+			if (string.IsNullOrWhiteSpace(str) || !IsPort(defaultport))
+			{
+				return null;
+			}
+
+			var s = str.Split(':');
+			if (s.Length == 1 || s.Length == 2)
+			{
+				var ip = IPAddress.Parse(s[0]);
+				if (s.Length == 2)
+				{
+					var port = Convert.ToInt32(s[1]);
+					if (IsPort(port))
+					{
+						return new IPEndPoint(ip, port);
+					}
+				}
+				else
+				{
+					return new IPEndPoint(ip, defaultport);
+				}
+			}
+
+			return null;
+		}
+
+		public static async Task<IPEndPoint> ToIPEndPointAsync(string str, int defaultport)
 		{
 			if (string.IsNullOrWhiteSpace(str) || !IsPort(defaultport))
 			{

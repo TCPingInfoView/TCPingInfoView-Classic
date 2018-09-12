@@ -48,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConcurrentList.cs" />
-    <Compile Include="GridLineDataGridView.cs" />
+    <Compile Include="DoubleBufferListView.cs" />
     <Compile Include="TCPingLog.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Data.cs" />
