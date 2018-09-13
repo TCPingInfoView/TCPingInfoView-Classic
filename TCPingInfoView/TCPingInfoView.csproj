@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="ConcurrentList.cs" />
     <Compile Include="DoubleBufferListView.cs" />
+    <Compile Include="ListViewItemComparer.cs" />
     <Compile Include="TCPingLog.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Data.cs" />

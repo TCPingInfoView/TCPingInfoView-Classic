@@ -18,7 +18,7 @@ namespace TCPingInfoView
 		{
 			InitializeComponent();
 			Icon = Resources.TCPing;
-			notifyIcon1.Icon = Resources.TCPing;
+			notifyIcon1.Icon = Icon;
 		}
 
 		private delegate void VoidMethod_Delegate();
@@ -32,7 +32,7 @@ namespace TCPingInfoView
 		public static Color LowLatencyColor = Color.Green;
 
 		private int Needheight;
-		private double dataGridViewsProportion;
+		private double listViewsProportion;
 		private List<Data> _list;
 		private ConcurrentList<TCPingLog> logs;
 
@@ -43,14 +43,29 @@ namespace TCPingInfoView
 		private int _testAllTask = 0;
 		private readonly object _locktestAllTask = new object();
 
+		private readonly object _lockloadingMainList = new object();
+
+		private delegate void VoidMethodDelegate();
+
+		private Timer TestAllTimer;
+		private const int second = 1000;
+		private const int minute = 60 * second;
+		public int interval = 1 * minute;
+
+		private int xPos_MainlistView, yPos_MainlistView;
+
 		#region MainlistView
 
-		private void SetIndex1(int row, int num)
+		private int FindRealRow(int row)
 		{
-			BeginInvoke(new VoidMethod_Delegate(() =>
+			for (var i = 0; i < _list.Count; ++i)
 			{
-				MainlistView.Items[row].SubItems[0].Text = num.ToString();
-			}));
+				if (row + 1 == GetIndex1(i))
+				{
+					return i;
+				}
+			}
+			throw new Exception(@"Logical Error");
 		}
 
 		private int? GetIndex1(int row)
@@ -65,10 +80,14 @@ namespace TCPingInfoView
 
 		private void SetHostname1(int row, string hostname)
 		{
-			BeginInvoke(new VoidMethod_Delegate(() =>
+			lock (_lockloadingMainList)
 			{
-				MainlistView.Items[row].SubItems[1].Text = hostname;
-			}));
+				BeginInvoke(new VoidMethod_Delegate(() =>
+				{
+					row = FindRealRow(row);
+					MainlistView.Items[row].SubItems[1].Text = hostname;
+				}));
+			}
 		}
 
 		private string GetHostname1(int row)
@@ -85,6 +104,7 @@ namespace TCPingInfoView
 		{
 			BeginInvoke(new VoidMethod_Delegate(() =>
 			{
+				row = FindRealRow(row);
 				MainlistView.Items[row].SubItems[2].Text = ipEndPoint.ToString();
 			}));
 		}
@@ -94,6 +114,7 @@ namespace TCPingInfoView
 			IPEndPoint res = null;
 			Invoke(new VoidMethod_Delegate(() =>
 			{
+				row = FindRealRow(row);
 				res = Util.ToIPEndPoint(MainlistView.Items[row].SubItems[2].Text, 443);
 			}));
 			return res;
@@ -101,25 +122,29 @@ namespace TCPingInfoView
 
 		private void SetLatency1(int row, int latency)
 		{
-			BeginInvoke(new VoidMethod_Delegate(() =>
+			lock (_lockloadingMainList)
 			{
-				MainlistView.Items[row].SubItems[4].Text = latency.ToString();
-				if (latency == Timeout)
+				BeginInvoke(new VoidMethod_Delegate(() =>
 				{
-					SetLatencyColor1(row, TimeoutColor);
-					MainlistView.Items[row].ImageIndex = 1;
-				}
-				else if (latency < HighLatency)
-				{
-					SetLatencyColor1(row, LowLatencyColor);
-					MainlistView.Items[row].ImageIndex = 0;
-				}
-				else
-				{
-					SetLatencyColor1(row, HighLatencyColor);
-					MainlistView.Items[row].ImageIndex = 0;
-				}
-			}));
+					row = FindRealRow(row);
+					MainlistView.Items[row].SubItems[4].Text = latency.ToString();
+					if (latency == Timeout)
+					{
+						SetLatencyColor1(row, TimeoutColor);
+						MainlistView.Items[row].ImageIndex = 1;
+					}
+					else if (latency < HighLatency)
+					{
+						SetLatencyColor1(row, LowLatencyColor);
+						MainlistView.Items[row].ImageIndex = 0;
+					}
+					else
+					{
+						SetLatencyColor1(row, HighLatencyColor);
+						MainlistView.Items[row].ImageIndex = 0;
+					}
+				}));
+			}
 		}
 
 		private double? GetLatency1(int row)
@@ -140,10 +165,14 @@ namespace TCPingInfoView
 
 		private void SetDescription1(int row, string str)
 		{
-			BeginInvoke(new VoidMethod_Delegate(() =>
+			lock (_lockloadingMainList)
 			{
-				MainlistView.Items[row].SubItems[5].Text = str;
-			}));
+				BeginInvoke(new VoidMethod_Delegate(() =>
+				{
+					row = FindRealRow(row);
+					MainlistView.Items[row].SubItems[5].Text = str;
+				}));
+			}
 		}
 
 		private string GetDescription1(int row)
@@ -156,12 +185,25 @@ namespace TCPingInfoView
 			return res;
 		}
 
-		private void SetFailedP1(int row, string str)
+		private void SetFailedP1(int row, double failedP)
 		{
-			BeginInvoke(new VoidMethod_Delegate(() =>
+			lock (_lockloadingMainList)
 			{
-				MainlistView.Items[row].SubItems[3].Text = str;
-			}));
+				BeginInvoke(new VoidMethod_Delegate(() =>
+				{
+					row = FindRealRow(row);
+					string str;
+					if (Math.Abs(failedP) > 0.0)
+					{
+						str = failedP.ToString(@"P");
+					}
+					else
+					{
+						str = @"0%";
+					}
+					MainlistView.Items[row].SubItems[3].Text = str;
+				}));
+			}
 		}
 
 		#endregion
@@ -250,25 +292,19 @@ namespace TCPingInfoView
 
 		private async void TestOne(int num)
 		{
-			if (GetIPport1(num) == null)
+			if (_list[num].Ip == null)
 			{
-				var temp = GetIndex1(num);
-				if (temp != null)
+				await LoadFromLine(num);
+				if (_list[num].Ip == null)
 				{
-					var index = temp.Value - 1;
-					_list[index].Ip = await NetTest.GetIPAsync(_list[index].HostsName);
-					if (_list[index].Ip == null)
+					lock (_locktestAllTask)
 					{
-						lock (_locktestAllTask)
-						{
-							--_testAllTask;
-						}
-						return;
+						--_testAllTask;
 					}
-					SetIPport1(index, new IPEndPoint(_list[index].Ip, _list[index].Port));
+					return;
 				}
 			}
-			var ipe = GetIPport1(num);
+			var ipe = new IPEndPoint(_list[num].Ip, _list[num].Port);
 			double? latency = null;
 			var date = DateTime.Now;
 			try
@@ -282,8 +318,7 @@ namespace TCPingInfoView
 
 			if (latency != null)
 			{
-				var value = Convert.ToInt32(Math.Round(latency.Value));
-				SetLatency1(num, value);
+				latency = Convert.ToInt32(Math.Round(latency.Value));
 			}
 			else
 			{
@@ -298,22 +333,14 @@ namespace TCPingInfoView
 			logs[num].Add(log);
 
 			SetLatency1(num, (int)latency.Value);
-			var failedP = logs[num].FailedP;
-			if (Math.Abs(failedP) > 0.0)
-			{
-				SetFailedP1(num, failedP.ToString(@"P"));
-			}
-			else
-			{
-				SetFailedP1(num, @"0%");
-			}
+			SetFailedP1(num, logs[num].FailedP);
 
 			MainlistView.Invoke(() =>
 			{
 				if (MainlistView.SelectedItems.Count == 1)
 				{
 					var index1 = MainlistView.SelectedItems[0].Index;
-					if (index1 == num)
+					if (index1 == FindRealRow(num))
 					{
 						var emptyDatelistView = new ListViewItem { SubItems = { new ListViewItem.ListViewSubItem() } };
 						var index2 = DatelistView.Items.Add(emptyDatelistView).Index;
@@ -334,9 +361,8 @@ namespace TCPingInfoView
 			}
 		}
 
-		private async void LoadFromLine(int index)
+		private async Task LoadFromLine(int index)
 		{
-			SetIndex1(index, index + 1);
 			SetDescription1(index, _list[index].Description);
 			if (Util.IsIPv4Address(_list[index].HostsName))
 			{
@@ -400,9 +426,9 @@ namespace TCPingInfoView
 			{
 				var emptyDatelistView = new ListViewItem
 				{
+					Text = $@"{i + 1}",
 					SubItems =
 					{
-							new ListViewItem.ListViewSubItem(),
 							new ListViewItem.ListViewSubItem(),
 							new ListViewItem.ListViewSubItem(),
 							new ListViewItem.ListViewSubItem(),
@@ -420,14 +446,16 @@ namespace TCPingInfoView
 			}
 			Task.Run(() =>
 			{
-				Parallel.For(0, length, LoadFromLine);
+#pragma warning disable 4014
+				Parallel.For(0, length, (i) => LoadFromLine(i));
+#pragma warning restore 4014
 			});
 		}
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
 			Needheight = Height - (MainlistView.Height + DatelistView.Height);
-			dataGridViewsProportion = Convert.ToDouble(MainlistView.Height) / Convert.ToDouble(MainlistView.Height + DatelistView.Height);
+			listViewsProportion = Convert.ToDouble(MainlistView.Height) / Convert.ToDouble(MainlistView.Height + DatelistView.Height);
 			const string defaultPath = @"D:\Downloads\test.txt";
 			if (File.Exists(defaultPath))
 			{
@@ -471,6 +499,10 @@ namespace TCPingInfoView
 				}
 			}
 			DatelistView.Items.Clear();
+			if (index < 0)
+			{
+				return;
+			}
 			var length = logs[index].Info.Count;
 			if (length > 0)
 			{
@@ -509,7 +541,7 @@ namespace TCPingInfoView
 		private void ChangeSize()
 		{
 			var height = Height - Needheight;
-			MainlistView.Height = Convert.ToInt32(dataGridViewsProportion * height);
+			MainlistView.Height = Convert.ToInt32(listViewsProportion * height);
 			DatelistView.Height = height - MainlistView.Height;
 		}
 
@@ -548,12 +580,6 @@ namespace TCPingInfoView
 		{
 			TriggerRun();
 		}
-
-		private delegate void VoidMethodDelegate();
-		private Timer TestAllTimer;
-		private const int second = 1000;
-		private const int minute = 60 * second;
-		public int interval = 1 * minute;
 
 		private void StartCore(object state)
 		{
@@ -658,7 +684,60 @@ namespace TCPingInfoView
 				return;
 			}
 
-			LoadLogs(MainlistView.SelectedIndices[0]);
+			// ReSharper disable once PossibleInvalidOperationException
+			LoadLogs(GetIndex1(MainlistView.SelectedIndices[0]).Value - 1);
+		}
+
+		private void MainlistView_ColumnClick(object sender, ColumnClickEventArgs e)
+		{
+			lock (_lockloadingMainList)
+			{
+				Type type;
+				if (e.Column == 0)
+				{
+					type = typeof(int);
+				}
+				else if (e.Column == 3)
+				{
+					type = typeof(double);
+				}
+				else if (e.Column == 4)
+				{
+					type = typeof(int);
+				}
+				else
+				{
+					type = typeof(string);
+				}
+
+				MainlistView.ListViewItemSorter = new ListViewItemComparer(e.Column, MainlistView.Sorting, type);
+
+				if (MainlistView.Sorting == SortOrder.Ascending)
+				{
+					MainlistView.Sorting = SortOrder.Descending;
+				}
+				else
+				{
+					MainlistView.Sorting = SortOrder.Ascending;
+				}
+
+				MainlistView.Sort();
+			}
+		}
+
+		private void MainlistView_MouseDown(object sender, MouseEventArgs e)
+		{
+			//Hit no item
+			if (MainlistView.HitTest(xPos_MainlistView, yPos_MainlistView).Item == null)
+			{
+				LoadLogs(-1);
+			}
+		}
+
+		private void MainlistView_MouseMove(object sender, MouseEventArgs e)
+		{
+			xPos_MainlistView = e.X;
+			yPos_MainlistView = e.Y;
 		}
 	}
 }
