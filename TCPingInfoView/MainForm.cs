@@ -17,8 +17,8 @@ namespace TCPingInfoView
 		public MainForm()
 		{
 			InitializeComponent();
-			Icon = Resources.huaji128;
-			notifyIcon1.Icon = Resources.huaji128;
+			Icon = Resources.TCPing;
+			notifyIcon1.Icon = Resources.TCPing;
 		}
 
 		private delegate void VoidMethod_Delegate();
@@ -107,14 +107,17 @@ namespace TCPingInfoView
 				if (latency == Timeout)
 				{
 					SetLatencyColor1(row, TimeoutColor);
+					MainlistView.Items[row].ImageIndex = 1;
 				}
 				else if (latency < HighLatency)
 				{
 					SetLatencyColor1(row, LowLatencyColor);
+					MainlistView.Items[row].ImageIndex = 0;
 				}
 				else
 				{
 					SetLatencyColor1(row, HighLatencyColor);
+					MainlistView.Items[row].ImageIndex = 0;
 				}
 			}));
 		}
@@ -191,14 +194,17 @@ namespace TCPingInfoView
 				if (latency == Timeout)
 				{
 					SetLatencyColor2(row, TimeoutColor);
+					DatelistView.Items[row].ImageIndex = 1;
 				}
 				else if (latency < HighLatency)
 				{
 					SetLatencyColor2(row, LowLatencyColor);
+					DatelistView.Items[row].ImageIndex = 0;
 				}
 				else
 				{
 					SetLatencyColor2(row, HighLatencyColor);
+					DatelistView.Items[row].ImageIndex = 0;
 				}
 			}));
 		}
@@ -559,6 +565,7 @@ namespace TCPingInfoView
 			TestAllTimer?.Dispose();
 			TestAllTimer = new Timer(StartCore, null, 0, interval);
 			Start_Button.Text = @"停止";
+			Start_Button.Image = Resources.Stop;
 			StartStop_MenuItem.Text = @"停止";
 		}
 
@@ -566,6 +573,7 @@ namespace TCPingInfoView
 		{
 			TestAllTimer?.Dispose();
 			Start_Button.Text = @"开始";
+			Start_Button.Image = Resources.Start;
 			StartStop_MenuItem.Text = @"开始";
 		}
 

@@ -43,20 +43,21 @@ namespace TCPingInfoView
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-			this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
-			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+			this.Load_Button = new System.Windows.Forms.ToolStripButton();
+			this.Test_Button = new System.Windows.Forms.ToolStripButton();
 			this.Start_Button = new System.Windows.Forms.ToolStripButton();
-			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+			this.Exit_Button = new System.Windows.Forms.ToolStripButton();
 			this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
 			this.NotifyIcon_MenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.ShowHide_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.StartStop_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.Exit_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.DatelistView = new DoubleBufferListView();
+			this.DatelistView = new TCPingInfoView.DoubleBufferListView();
 			this.Date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.Latency2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.MainlistView = new DoubleBufferListView();
+			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+			this.MainlistView = new TCPingInfoView.DoubleBufferListView();
 			this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -127,55 +128,55 @@ namespace TCPingInfoView
 			// toolStrip1
 			// 
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton3,
-            this.toolStripButton1,
+            this.Load_Button,
+            this.Test_Button,
             this.Start_Button,
-            this.toolStripButton2});
+            this.Exit_Button});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 25);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.Size = new System.Drawing.Size(912, 25);
 			this.toolStrip1.TabIndex = 4;
 			this.toolStrip1.Text = "toolStrip1";
 			// 
-			// toolStripButton3
+			// Load_Button
 			// 
-			this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
-			this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton3.Name = "toolStripButton3";
-			this.toolStripButton3.Size = new System.Drawing.Size(36, 22);
-			this.toolStripButton3.Text = "载入";
-			this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
+			this.Load_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.Load_Button.Image = ((System.Drawing.Image)(resources.GetObject("Load_Button.Image")));
+			this.Load_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.Load_Button.Name = "Load_Button";
+			this.Load_Button.Size = new System.Drawing.Size(36, 22);
+			this.Load_Button.Text = "载入";
+			this.Load_Button.Click += new System.EventHandler(this.toolStripButton3_Click);
 			// 
-			// toolStripButton1
+			// Test_Button
 			// 
-			this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-			this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton1.Name = "toolStripButton1";
-			this.toolStripButton1.Size = new System.Drawing.Size(36, 22);
-			this.toolStripButton1.Text = "测试";
-			this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+			this.Test_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.Test_Button.Image = global::TCPingInfoView.Properties.Resources.Test;
+			this.Test_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.Test_Button.Name = "Test_Button";
+			this.Test_Button.Size = new System.Drawing.Size(23, 22);
+			this.Test_Button.Text = "测试";
+			this.Test_Button.Click += new System.EventHandler(this.toolStripButton1_Click);
 			// 
 			// Start_Button
 			// 
-			this.Start_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.Start_Button.Image = ((System.Drawing.Image)(resources.GetObject("Start_Button.Image")));
+			this.Start_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.Start_Button.Image = global::TCPingInfoView.Properties.Resources.Start;
 			this.Start_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.Start_Button.Name = "Start_Button";
-			this.Start_Button.Size = new System.Drawing.Size(36, 22);
+			this.Start_Button.Size = new System.Drawing.Size(23, 22);
 			this.Start_Button.Text = "开始";
 			this.Start_Button.Click += new System.EventHandler(this.Start_Button_Click);
 			// 
-			// toolStripButton2
+			// Exit_Button
 			// 
-			this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
-			this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton2.Name = "toolStripButton2";
-			this.toolStripButton2.Size = new System.Drawing.Size(36, 22);
-			this.toolStripButton2.Text = "退出";
-			this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
+			this.Exit_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.Exit_Button.Image = ((System.Drawing.Image)(resources.GetObject("Exit_Button.Image")));
+			this.Exit_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.Exit_Button.Name = "Exit_Button";
+			this.Exit_Button.Size = new System.Drawing.Size(36, 22);
+			this.Exit_Button.Text = "退出";
+			this.Exit_Button.Click += new System.EventHandler(this.toolStripButton2_Click);
 			// 
 			// notifyIcon1
 			// 
@@ -231,8 +232,10 @@ namespace TCPingInfoView
 			this.DatelistView.Location = new System.Drawing.Point(0, 504);
 			this.DatelistView.MultiSelect = false;
 			this.DatelistView.Name = "DatelistView";
+			this.DatelistView.OwnerDraw = true;
 			this.DatelistView.ShowItemToolTips = true;
 			this.DatelistView.Size = new System.Drawing.Size(912, 152);
+			this.DatelistView.SmallImageList = this.imageList1;
 			this.DatelistView.TabIndex = 5;
 			this.DatelistView.UseCompatibleStateImageBehavior = false;
 			this.DatelistView.View = System.Windows.Forms.View.Details;
@@ -245,6 +248,13 @@ namespace TCPingInfoView
 			// Latency2
 			// 
 			this.Latency2.Text = "延迟(ms)";
+			// 
+			// imageList1
+			// 
+			this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+			this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+			this.imageList1.Images.SetKeyName(0, "Succeed.png");
+			this.imageList1.Images.SetKeyName(1, "Failed.png");
 			// 
 			// MainlistView
 			// 
@@ -261,8 +271,10 @@ namespace TCPingInfoView
 			this.MainlistView.Location = new System.Drawing.Point(0, 50);
 			this.MainlistView.MultiSelect = false;
 			this.MainlistView.Name = "MainlistView";
+			this.MainlistView.OwnerDraw = true;
 			this.MainlistView.ShowItemToolTips = true;
 			this.MainlistView.Size = new System.Drawing.Size(912, 454);
+			this.MainlistView.SmallImageList = this.imageList1;
 			this.MainlistView.TabIndex = 6;
 			this.MainlistView.UseCompatibleStateImageBehavior = false;
 			this.MainlistView.View = System.Windows.Forms.View.Details;
@@ -336,9 +348,9 @@ namespace TCPingInfoView
 		private ToolStripMenuItem 退出ToolStripMenuItem;
 		private StatusStrip statusStrip1;
 		private ToolStrip toolStrip1;
-		private ToolStripButton toolStripButton1;
-		private ToolStripButton toolStripButton2;
-		private ToolStripButton toolStripButton3;
+		private ToolStripButton Test_Button;
+		private ToolStripButton Exit_Button;
+		private ToolStripButton Load_Button;
 		private ToolStripButton Start_Button;
 		private NotifyIcon notifyIcon1;
 		private ContextMenuStrip NotifyIcon_MenuStrip;
@@ -357,6 +369,7 @@ namespace TCPingInfoView
 		private ColumnHeader columnHeader4;
 		private ColumnHeader columnHeader5;
 		private ColumnHeader columnHeader6;
+		private ImageList imageList1;
 	}
 }
 
