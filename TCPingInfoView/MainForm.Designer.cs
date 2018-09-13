@@ -53,9 +53,6 @@ namespace TCPingInfoView
 			this.StartStop_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.Exit_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.DatelistView = new TCPingInfoView.DoubleBufferListView();
-			this.Date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.Latency2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
 			this.MainlistView = new TCPingInfoView.DoubleBufferListView();
 			this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -64,6 +61,9 @@ namespace TCPingInfoView
 			this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.DatelistView = new TCPingInfoView.DoubleBufferListView();
+			this.Date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.Latency2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.menuStrip1.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
@@ -221,34 +221,6 @@ namespace TCPingInfoView
 			this.Exit_MenuItem.Text = "退出";
 			this.Exit_MenuItem.Click += new System.EventHandler(this.Exit_MenuItem_Click);
 			// 
-			// DatelistView
-			// 
-			this.DatelistView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.Date,
-            this.Latency2});
-			this.DatelistView.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.DatelistView.FullRowSelect = true;
-			this.DatelistView.GridLines = true;
-			this.DatelistView.Location = new System.Drawing.Point(0, 504);
-			this.DatelistView.MultiSelect = false;
-			this.DatelistView.Name = "DatelistView";
-			this.DatelistView.OwnerDraw = true;
-			this.DatelistView.ShowItemToolTips = true;
-			this.DatelistView.Size = new System.Drawing.Size(912, 152);
-			this.DatelistView.SmallImageList = this.imageList1;
-			this.DatelistView.TabIndex = 5;
-			this.DatelistView.UseCompatibleStateImageBehavior = false;
-			this.DatelistView.View = System.Windows.Forms.View.Details;
-			// 
-			// Date
-			// 
-			this.Date.Text = "TCPing 通信时间";
-			this.Date.Width = 170;
-			// 
-			// Latency2
-			// 
-			this.Latency2.Text = "延迟(ms)";
-			// 
 			// imageList1
 			// 
 			this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
@@ -310,6 +282,34 @@ namespace TCPingInfoView
 			// 
 			this.columnHeader6.Text = "说明";
 			this.columnHeader6.Width = 141;
+			// 
+			// DatelistView
+			// 
+			this.DatelistView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.Date,
+            this.Latency2});
+			this.DatelistView.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.DatelistView.FullRowSelect = true;
+			this.DatelistView.GridLines = true;
+			this.DatelistView.Location = new System.Drawing.Point(0, 504);
+			this.DatelistView.MultiSelect = false;
+			this.DatelistView.Name = "DatelistView";
+			this.DatelistView.OwnerDraw = true;
+			this.DatelistView.ShowItemToolTips = true;
+			this.DatelistView.Size = new System.Drawing.Size(912, 152);
+			this.DatelistView.SmallImageList = this.imageList1;
+			this.DatelistView.TabIndex = 5;
+			this.DatelistView.UseCompatibleStateImageBehavior = false;
+			this.DatelistView.View = System.Windows.Forms.View.Details;
+			// 
+			// Date
+			// 
+			this.Date.Text = "TCPing 通信时间";
+			this.Date.Width = 170;
+			// 
+			// Latency2
+			// 
+			this.Latency2.Text = "延迟(ms)";
 			// 
 			// MainForm
 			// 
