@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TCPingInfoView.Properties;
@@ -387,34 +388,42 @@ namespace TCPingInfoView
 			lock (_lockloadingFileTask)
 			{
 				--_loadingFileTask;
+				Monitor.Pulse(_lockloadingFileTask);
 			}
 		}
 
 		private void LoadFromList(IEnumerable<string> sl)
 		{
-			while (true)
+			lock (_lockloadingFileTask)
 			{
-				if (_loadingFileTask == 0)
+				while (_loadingFileTask != 0)
 				{
-					break;
+					Monitor.Wait(_lockloadingFileTask);
 				}
 			}
 
-			while (true)
+			lock (_locktestAllTask)
 			{
-				if (_testAllTask == 0)
+				while (true)
 				{
-					break;
+					if (_testAllTask == 0)
+					{
+						break;
+					}
 				}
 			}
 
-			while (true)
+			lock (_lockloadinglogsTask)
 			{
-				if (_loadinglogsTask == 0)
+				while (true)
 				{
-					break;
+					if (_loadinglogsTask == 0)
+					{
+						break;
+					}
 				}
 			}
+
 
 			MainlistView.Items.Clear();
 			DatelistView.Items.Clear();
@@ -470,6 +479,7 @@ namespace TCPingInfoView
 			lock (_locktestAllTask)
 			{
 				_testAllTask += l;
+				Monitor.Pulse(_locktestAllTask);
 			}
 			Task.Run(() =>
 			{
