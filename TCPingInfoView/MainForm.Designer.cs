@@ -64,6 +64,7 @@ namespace TCPingInfoView
 			this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.splitter1 = new System.Windows.Forms.Splitter();
 			this.menuStrip1.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
@@ -233,15 +234,15 @@ namespace TCPingInfoView
 			this.DatelistView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Date,
             this.Latency2});
-			this.DatelistView.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.DatelistView.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.DatelistView.FullRowSelect = true;
 			this.DatelistView.GridLines = true;
-			this.DatelistView.Location = new System.Drawing.Point(0, 504);
+			this.DatelistView.Location = new System.Drawing.Point(0, 527);
 			this.DatelistView.MultiSelect = false;
 			this.DatelistView.Name = "DatelistView";
 			this.DatelistView.OwnerDraw = true;
 			this.DatelistView.ShowItemToolTips = true;
-			this.DatelistView.Size = new System.Drawing.Size(912, 152);
+			this.DatelistView.Size = new System.Drawing.Size(912, 129);
 			this.DatelistView.SmallImageList = this.imageList1;
 			this.DatelistView.TabIndex = 5;
 			this.DatelistView.UseCompatibleStateImageBehavior = false;
@@ -265,7 +266,7 @@ namespace TCPingInfoView
             this.columnHeader4,
             this.columnHeader5,
             this.columnHeader6});
-			this.MainlistView.Dock = System.Windows.Forms.DockStyle.Top;
+			this.MainlistView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.MainlistView.FullRowSelect = true;
 			this.MainlistView.GridLines = true;
 			this.MainlistView.Location = new System.Drawing.Point(0, 50);
@@ -273,7 +274,7 @@ namespace TCPingInfoView
 			this.MainlistView.Name = "MainlistView";
 			this.MainlistView.OwnerDraw = true;
 			this.MainlistView.ShowItemToolTips = true;
-			this.MainlistView.Size = new System.Drawing.Size(912, 454);
+			this.MainlistView.Size = new System.Drawing.Size(912, 474);
 			this.MainlistView.SmallImageList = this.imageList1;
 			this.MainlistView.TabIndex = 6;
 			this.MainlistView.UseCompatibleStateImageBehavior = false;
@@ -314,13 +315,23 @@ namespace TCPingInfoView
 			this.columnHeader6.Text = "说明";
 			this.columnHeader6.Width = 141;
 			// 
+			// splitter1
+			// 
+			this.splitter1.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.splitter1.Location = new System.Drawing.Point(0, 524);
+			this.splitter1.Name = "splitter1";
+			this.splitter1.Size = new System.Drawing.Size(912, 3);
+			this.splitter1.TabIndex = 7;
+			this.splitter1.TabStop = false;
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(912, 678);
-			this.Controls.Add(this.DatelistView);
 			this.Controls.Add(this.MainlistView);
+			this.Controls.Add(this.splitter1);
+			this.Controls.Add(this.DatelistView);
 			this.Controls.Add(this.toolStrip1);
 			this.Controls.Add(this.menuStrip1);
 			this.Controls.Add(this.statusStrip1);
@@ -373,6 +384,7 @@ namespace TCPingInfoView
 		private ColumnHeader columnHeader5;
 		private ColumnHeader columnHeader6;
 		private ImageList imageList1;
+		private Splitter splitter1;
 	}
 }
 
