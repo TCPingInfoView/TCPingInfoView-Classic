@@ -259,6 +259,7 @@ namespace TCPingInfoView
 			// 
 			// MainlistView
 			// 
+			this.MainlistView.AllowDrop = true;
 			this.MainlistView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
