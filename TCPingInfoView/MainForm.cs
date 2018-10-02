@@ -270,10 +270,23 @@ namespace TCPingInfoView
 
 		#endregion
 
-		private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
+		#region 窗口第一次载入
+
+		private void MainForm_Load(object sender, EventArgs e)
 		{
-			Environment.Exit(0);
+			Needheight = Height - (MainlistView.Height + DatelistView.Height);
+			listViewsProportion = Convert.ToDouble(MainlistView.Height) / Convert.ToDouble(MainlistView.Height + DatelistView.Height);
+			const string defaultPath = @"D:\Downloads\test.txt";
+			if (File.Exists(defaultPath))
+			{
+				var sl = Read.ReadAddress(defaultPath);
+				LoadFromList(sl);
+			}
 		}
+
+		#endregion
+
+		#region 选择文件载入
 
 		private void LoadAddressFromFile()
 		{
@@ -282,6 +295,7 @@ namespace TCPingInfoView
 			{
 				return;
 			}
+
 			var sl = Read.ReadAddress(path);
 			LoadFromList(sl);
 		}
@@ -291,76 +305,14 @@ namespace TCPingInfoView
 			LoadAddressFromFile();
 		}
 
-		private async void TestOne(int num)
+		private void toolStripButton3_Click(object sender, EventArgs e)
 		{
-			if (_list[num].Ip == null)
-			{
-				await LoadFromLine(num);
-				if (_list[num].Ip == null)
-				{
-					lock (_locktestAllTask)
-					{
-						--_testAllTask;
-					}
-					return;
-				}
-			}
-			var ipe = new IPEndPoint(_list[num].Ip, _list[num].Port);
-			double? latency = null;
-			var date = DateTime.Now;
-			try
-			{
-				latency = NetTest.TCPing(ipe.Address, ipe.Port, Timeout);
-			}
-			catch
-			{
-				//ignore
-			}
-
-			if (latency != null)
-			{
-				latency = Convert.ToInt32(Math.Round(latency.Value));
-			}
-			else
-			{
-				latency = Timeout;
-			}
-
-			var log = new TCPingInfo
-			{
-				Date = date,
-				Latenty = latency.Value
-			};
-			logs[num].Add(log);
-
-			SetLatency1(num, (int)latency.Value);
-			SetFailedP1(num, logs[num].FailedP);
-
-			MainlistView.Invoke(() =>
-			{
-				if (MainlistView.SelectedItems.Count == 1)
-				{
-					var index1 = MainlistView.SelectedItems[0].Index;
-					if (index1 == FindRealRow(num))
-					{
-						var emptyDatelistView = new ListViewItem { SubItems = { new ListViewItem.ListViewSubItem() } };
-						var index2 = DatelistView.Items.Add(emptyDatelistView).Index;
-						lock (_lockloadinglogsTask)
-						{
-							++_loadinglogsTask;
-						}
-
-						LoadLog(index2, log);
-					}
-				}
-			});
-
-
-			lock (_locktestAllTask)
-			{
-				--_testAllTask;
-			}
+			LoadAddressFromFile();
 		}
+
+		#endregion
+
+		#region 载入主表格
 
 		private async Task LoadFromLine(int index)
 		{
@@ -461,15 +413,80 @@ namespace TCPingInfoView
 			});
 		}
 
-		private void MainForm_Load(object sender, EventArgs e)
+		#endregion
+
+		#region 测试所有
+
+		private async void TestOne(int num)
 		{
-			Needheight = Height - (MainlistView.Height + DatelistView.Height);
-			listViewsProportion = Convert.ToDouble(MainlistView.Height) / Convert.ToDouble(MainlistView.Height + DatelistView.Height);
-			const string defaultPath = @"D:\Downloads\test.txt";
-			if (File.Exists(defaultPath))
+			if (_list[num].Ip == null)
 			{
-				var sl = Read.ReadAddress(defaultPath);
-				LoadFromList(sl);
+				await LoadFromLine(num);
+				if (_list[num].Ip == null)
+				{
+					lock (_locktestAllTask)
+					{
+						--_testAllTask;
+					}
+
+					return;
+				}
+			}
+
+			var ipe = new IPEndPoint(_list[num].Ip, _list[num].Port);
+			double? latency = null;
+			var date = DateTime.Now;
+			try
+			{
+				latency = NetTest.TCPing(ipe.Address, ipe.Port, Timeout);
+			}
+			catch
+			{
+				//ignore
+			}
+
+			if (latency != null)
+			{
+				latency = Convert.ToInt32(Math.Round(latency.Value));
+			}
+			else
+			{
+				latency = Timeout;
+			}
+
+			var log = new TCPingInfo
+			{
+					Date = date,
+					Latenty = latency.Value
+			};
+			logs[num].Add(log);
+
+			SetLatency1(num, (int) latency.Value);
+			SetFailedP1(num, logs[num].FailedP);
+
+			MainlistView.Invoke(() =>
+			{
+				if (MainlistView.SelectedItems.Count == 1)
+				{
+					var index1 = MainlistView.SelectedItems[0].Index;
+					if (index1 == FindRealRow(num))
+					{
+						var emptyDatelistView = new ListViewItem {SubItems = {new ListViewItem.ListViewSubItem()}};
+						var index2 = DatelistView.Items.Add(emptyDatelistView).Index;
+						lock (_lockloadinglogsTask)
+						{
+							++_loadinglogsTask;
+						}
+
+						LoadLog(index2, log);
+					}
+				}
+			});
+
+
+			lock (_locktestAllTask)
+			{
+				--_testAllTask;
 			}
 		}
 
@@ -481,56 +498,8 @@ namespace TCPingInfoView
 				_testAllTask += l;
 				Monitor.Pulse(_locktestAllTask);
 			}
-			Task.Run(() =>
-			{
-				Parallel.For(0, l, TestOne);
-			});
-		}
 
-		private void LoadLog(int i, TCPingInfo log)
-		{
-			SetDate2(i, log.Date);
-			var latency = Convert.ToInt32(Math.Round(log.Latenty));
-			SetLatency2(i, latency);
-
-			lock (_lockloadinglogsTask)
-			{
-				--_loadinglogsTask;
-			}
-		}
-
-		private void LoadLogs(int index)
-		{
-			while (true)
-			{
-				if (_loadinglogsTask == 0)
-				{
-					break;
-				}
-			}
-			DatelistView.Items.Clear();
-			if (index < 0)
-			{
-				return;
-			}
-			var length = logs[index].Info.Count;
-			if (length > 0)
-			{
-				_loadinglogsTask += length;
-
-				for (var i = 0; i < length; ++i)
-				{
-					var emptyDatelistView = new ListViewItem { SubItems = { new ListViewItem.ListViewSubItem() } };
-					DatelistView.Items.Add(emptyDatelistView);
-				}
-				Task.Run(() =>
-				{
-					Parallel.For(0, length, i =>
-					{
-						LoadLog(i, logs[index].Info[i]);
-					});
-				});
-			}
+			Task.Run(() => { Parallel.For(0, l, TestOne); });
 		}
 
 		private void toolStripButton1_Click(object sender, EventArgs e)
@@ -538,15 +507,9 @@ namespace TCPingInfoView
 			TestAll();
 		}
 
-		private void toolStripButton2_Click(object sender, EventArgs e)
-		{
-			Environment.Exit(0);
-		}
+		#endregion
 
-		private void toolStripButton3_Click(object sender, EventArgs e)
-		{
-			LoadAddressFromFile();
-		}
+		#region 保持两表格的比例
 
 		private void ChangeSize()
 		{
@@ -558,6 +521,98 @@ namespace TCPingInfoView
 		private void MainForm_Resize(object sender, EventArgs e)
 		{
 			ChangeSize();
+		}
+
+		#endregion
+
+		/// <summary>
+		/// 关闭前是否确认
+		/// </summary>
+		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (e.CloseReason == CloseReason.UserClosing)
+			{
+				if (!QClose)
+				{
+					e.Cancel = true;
+					TriggerMainFormDisplay();
+					return;
+				}
+				var dr = MessageBox.Show(@"「是」退出，「否」最小化", @"是否退出？", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+				if (dr == DialogResult.Yes)
+				{
+					Dispose();
+					Application.Exit();
+				}
+				else if (dr == DialogResult.No)
+				{
+					e.Cancel = true;
+					TriggerMainFormDisplay();
+				}
+				else
+				{
+					e.Cancel = true;
+				}
+			}
+		}
+
+		#region 主窗口显示隐藏
+
+		private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+		{
+			TriggerMainFormDisplay();
+		}
+
+		private void ShowHide_MenuItem_Click(object sender, EventArgs e)
+		{
+			TriggerMainFormDisplay();
+		}
+
+		private void TriggerMainFormDisplay()
+		{
+			Visible = !Visible;
+			if (WindowState == FormWindowState.Minimized)
+			{
+				WindowState = FormWindowState.Normal;
+			}
+			TopMost = true;
+			TopMost = false;
+		}
+
+		#endregion
+
+		#region 循环Ping
+
+		private void Start_Button_Click(object sender, EventArgs e)
+		{
+			TriggerRun();
+		}
+
+		private void StartStop_MenuItem_Click(object sender, EventArgs e)
+		{
+			TriggerRun();
+		}
+
+		private void StartCore(object state)
+		{
+			TestAll();
+		}
+
+		private void StartPing()
+		{
+			TestAllTimer?.Dispose();
+			TestAllTimer = new Timer(StartCore, null, 0, interval);
+			Start_Button.Text = @"停止";
+			Start_Button.Image = Resources.Stop;
+			StartStop_MenuItem.Text = @"停止";
+		}
+
+		private void StopPing()
+		{
+			TestAllTimer?.Dispose();
+			Start_Button.Text = @"开始";
+			Start_Button.Image = Resources.Start;
+			StartStop_MenuItem.Text = @"开始";
 		}
 
 		private void TriggerRun()
@@ -586,87 +641,28 @@ namespace TCPingInfoView
 			});
 		}
 
-		private void Start_Button_Click(object sender, EventArgs e)
-		{
-			TriggerRun();
-		}
+		#endregion
 
-		private void StartCore(object state)
-		{
-			TestAll();
-		}
-
-		private void StartPing()
-		{
-			TestAllTimer?.Dispose();
-			TestAllTimer = new Timer(StartCore, null, 0, interval);
-			Start_Button.Text = @"停止";
-			Start_Button.Image = Resources.Stop;
-			StartStop_MenuItem.Text = @"停止";
-		}
-
-		private void StopPing()
-		{
-			TestAllTimer?.Dispose();
-			Start_Button.Text = @"开始";
-			Start_Button.Image = Resources.Start;
-			StartStop_MenuItem.Text = @"开始";
-		}
-
-		private void TriggerMainFormDisplay()
-		{
-			Visible = !Visible;
-			if (WindowState == FormWindowState.Minimized)
-				WindowState = FormWindowState.Normal;
-		}
-
-		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-		{
-			if (!QClose)
-			{
-				e.Cancel = true;
-				TriggerMainFormDisplay();
-				return;
-			}
-			if (e.CloseReason == CloseReason.UserClosing)
-			{
-				var dr = MessageBox.Show(@"「是」退出，「否」最小化", @"是否退出？", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-				if (dr == DialogResult.Yes)
-				{
-					Dispose();
-					Application.Exit();
-				}
-				else if (dr == DialogResult.No)
-				{
-					e.Cancel = true;
-					TriggerMainFormDisplay();
-				}
-				else
-				{
-					e.Cancel = true;
-				}
-			}
-		}
-
-		private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
-		{
-			TriggerMainFormDisplay();
-		}
-
-		private void ShowHide_MenuItem_Click(object sender, EventArgs e)
-		{
-			TriggerMainFormDisplay();
-		}
-
-		private void StartStop_MenuItem_Click(object sender, EventArgs e)
-		{
-			TriggerRun();
-		}
+		#region 退出程序
 
 		private void Exit_MenuItem_Click(object sender, EventArgs e)
 		{
 			Environment.Exit(0);
 		}
+
+		private void toolStripButton2_Click(object sender, EventArgs e)
+		{
+			Environment.Exit(0);
+		}
+
+		private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Environment.Exit(0);
+		}
+
+		#endregion
+
+		#region 文件拖拽进主列表
 
 		private void MainlistView_DragDrop(object sender, DragEventArgs e)
 		{
@@ -687,6 +683,10 @@ namespace TCPingInfoView
 			}
 		}
 
+		#endregion
+
+		#region 加载时间列表
+
 		private void MainlistView_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (MainlistView.SelectedIndices.Count <= 0)
@@ -697,6 +697,53 @@ namespace TCPingInfoView
 			// ReSharper disable once PossibleInvalidOperationException
 			LoadLogs(GetIndex1(MainlistView.SelectedIndices[0]).Value - 1);
 		}
+
+		private void LoadLog(int i, TCPingInfo log)
+		{
+			SetDate2(i, log.Date);
+			var latency = Convert.ToInt32(Math.Round(log.Latenty));
+			SetLatency2(i, latency);
+
+			lock (_lockloadinglogsTask)
+			{
+				--_loadinglogsTask;
+			}
+		}
+
+		private void LoadLogs(int index)
+		{
+			while (true)
+			{
+				if (_loadinglogsTask == 0)
+				{
+					break;
+				}
+			}
+
+			DatelistView.Items.Clear();
+			if (index < 0)
+			{
+				return;
+			}
+
+			var length = logs[index].Info.Count;
+			if (length > 0)
+			{
+				_loadinglogsTask += length;
+
+				for (var i = 0; i < length; ++i)
+				{
+					var emptyDatelistView = new ListViewItem { SubItems = { new ListViewItem.ListViewSubItem() } };
+					DatelistView.Items.Add(emptyDatelistView);
+				}
+
+				Task.Run(() => { Parallel.For(0, length, i => { LoadLog(i, logs[index].Info[i]); }); });
+			}
+		}
+
+		#endregion
+
+		#region 主列表排序
 
 		private void MainlistView_ColumnClick(object sender, ColumnClickEventArgs e)
 		{
@@ -735,6 +782,10 @@ namespace TCPingInfoView
 			}
 		}
 
+		#endregion
+
+		#region 点击空白处清空时间列表
+
 		private void MainlistView_MouseDown(object sender, MouseEventArgs e)
 		{
 			//Hit no item
@@ -749,5 +800,7 @@ namespace TCPingInfoView
 			xPos_MainlistView = e.X;
 			yPos_MainlistView = e.Y;
 		}
+
+		#endregion
 	}
 }
