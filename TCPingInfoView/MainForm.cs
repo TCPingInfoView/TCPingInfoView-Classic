@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -72,7 +71,7 @@ namespace TCPingInfoView
 		private int? GetIndex1(int row)
 		{
 			int? res = null;
-			Invoke(new VoidMethod_Delegate(() =>
+			MainlistView.Invoke(new VoidMethod_Delegate(() =>
 			{
 				res = Convert.ToInt32(MainlistView.Items[row].SubItems[0].Text);
 			}));
@@ -81,9 +80,9 @@ namespace TCPingInfoView
 
 		private void SetHostname1(int row, string hostname)
 		{
-			lock (_lockloadingMainList)
+			//lock (_lockloadingMainList)
 			{
-				BeginInvoke(new VoidMethod_Delegate(() =>
+				MainlistView.Invoke(new VoidMethod_Delegate(() =>
 				{
 					row = FindRealRow(row);
 					MainlistView.Items[row].SubItems[1].Text = hostname;
@@ -94,7 +93,7 @@ namespace TCPingInfoView
 		private string GetHostname1(int row)
 		{
 			string res = null;
-			Invoke(new VoidMethod_Delegate(() =>
+			MainlistView.Invoke(new VoidMethod_Delegate(() =>
 			{
 				res = MainlistView.Items[row].SubItems[1].Text;
 			}));
@@ -103,7 +102,7 @@ namespace TCPingInfoView
 
 		private void SetIPport1(int row, IPEndPoint ipEndPoint)
 		{
-			BeginInvoke(new VoidMethod_Delegate(() =>
+			MainlistView.Invoke(new VoidMethod_Delegate(() =>
 			{
 				row = FindRealRow(row);
 				MainlistView.Items[row].SubItems[2].Text = ipEndPoint.ToString();
@@ -113,7 +112,7 @@ namespace TCPingInfoView
 		private IPEndPoint GetIPport1(int row)
 		{
 			IPEndPoint res = null;
-			Invoke(new VoidMethod_Delegate(() =>
+			MainlistView.Invoke(new VoidMethod_Delegate(() =>
 			{
 				row = FindRealRow(row);
 				res = Util.ToIPEndPoint(MainlistView.Items[row].SubItems[2].Text, 443);
@@ -123,9 +122,9 @@ namespace TCPingInfoView
 
 		private void SetLatency1(int row, int latency)
 		{
-			lock (_lockloadingMainList)
+			//lock (_lockloadingMainList)
 			{
-				BeginInvoke(new VoidMethod_Delegate(() =>
+				MainlistView.Invoke(new VoidMethod_Delegate(() =>
 				{
 					row = FindRealRow(row);
 					MainlistView.Items[row].SubItems[4].Text = latency.ToString();
@@ -151,7 +150,7 @@ namespace TCPingInfoView
 		private double? GetLatency1(int row)
 		{
 			double? res = null;
-			Invoke(new VoidMethod_Delegate(() =>
+			MainlistView.Invoke(new VoidMethod_Delegate(() =>
 			{
 				res = Convert.ToDouble(MainlistView.Items[row].SubItems[4].Text);
 			}));
@@ -166,9 +165,9 @@ namespace TCPingInfoView
 
 		private void SetDescription1(int row, string str)
 		{
-			lock (_lockloadingMainList)
+			//lock (_lockloadingMainList)
 			{
-				BeginInvoke(new VoidMethod_Delegate(() =>
+				MainlistView.Invoke(new VoidMethod_Delegate(() =>
 				{
 					row = FindRealRow(row);
 					MainlistView.Items[row].SubItems[5].Text = str;
@@ -179,7 +178,7 @@ namespace TCPingInfoView
 		private string GetDescription1(int row)
 		{
 			string res = null;
-			Invoke(new VoidMethod_Delegate(() =>
+			MainlistView.Invoke(new VoidMethod_Delegate(() =>
 			{
 				res = MainlistView.Items[row].SubItems[5].Text;
 			}));
@@ -188,9 +187,9 @@ namespace TCPingInfoView
 
 		private void SetFailedP1(int row, double failedP)
 		{
-			lock (_lockloadingMainList)
+			//lock (_lockloadingMainList)
 			{
-				BeginInvoke(new VoidMethod_Delegate(() =>
+				MainlistView.Invoke(new VoidMethod_Delegate(() =>
 				{
 					row = FindRealRow(row);
 					string str;
@@ -279,8 +278,8 @@ namespace TCPingInfoView
 			const string defaultPath = @"D:\Downloads\test.txt";
 			if (File.Exists(defaultPath))
 			{
-				var sl = Read.ReadAddress(defaultPath);
-				LoadFromList(sl);
+				_list = Read.ReadAddressFromFile(defaultPath);
+				LoadFromList();
 			}
 		}
 
@@ -296,8 +295,8 @@ namespace TCPingInfoView
 				return;
 			}
 
-			var sl = Read.ReadAddress(path);
-			LoadFromList(sl);
+			_list = Read.ReadAddressFromFile(path);
+			LoadFromList();
 		}
 
 		private void 从文件载入ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -317,13 +316,14 @@ namespace TCPingInfoView
 		private async Task LoadFromLine(int index)
 		{
 			SetDescription1(index, _list[index].Description);
-			if (Util.IsIPv4Address(_list[index].HostsName))
+			if (Util.IsIPv4Address(_list[index].HostsName))//如果hostname是IP地址则反查DNS
 			{
 				SetIPport1(index, new IPEndPoint(_list[index].Ip, _list[index].Port));
+				SetHostname1(index, _list[index].HostsName);
 				_list[index].HostsName = await NetTest.GetHostNameAsync(IPAddress.Parse(_list[index].HostsName));
 				SetHostname1(index, _list[index].HostsName);
 			}
-			else
+			else//如果hostname是域名则查询IP地址
 			{
 				SetHostname1(index, _list[index].HostsName);
 				_list[index].Ip = await NetTest.GetIPAsync(_list[index].HostsName);
@@ -344,15 +344,18 @@ namespace TCPingInfoView
 			}
 		}
 
-		private void LoadFromList(IEnumerable<string> sl)
+		/// <summary>
+		/// 等待所有未处理的线程，清空所有列表，加载列表
+		/// </summary>
+		private void LoadFromList()
 		{
-			lock (_lockloadingFileTask)
-			{
-				while (_loadingFileTask != 0)
-				{
-					Monitor.Wait(_lockloadingFileTask);
-				}
-			}
+			//lock (_lockloadingFileTask)
+			//{
+			//	while (_loadingFileTask != 0)
+			//	{
+			//		Monitor.Wait(_lockloadingFileTask);
+			//	}
+			//}
 
 			lock (_locktestAllTask)
 			{
@@ -379,8 +382,6 @@ namespace TCPingInfoView
 
 			MainlistView.Items.Clear();
 			DatelistView.Items.Clear();
-			var l = Util.ToData(sl);
-			_list = l.ToList();
 			var length = _list.Count;
 			_loadingFileTask += length;
 			for (var i = 0; i < length; ++i)
@@ -456,12 +457,12 @@ namespace TCPingInfoView
 
 			var log = new TCPingInfo
 			{
-					Date = date,
-					Latenty = latency.Value
+				Date = date,
+				Latenty = latency.Value
 			};
 			logs[num].Add(log);
 
-			SetLatency1(num, (int) latency.Value);
+			SetLatency1(num, (int)latency.Value);
 			SetFailedP1(num, logs[num].FailedP);
 
 			MainlistView.Invoke(() =>
@@ -471,7 +472,7 @@ namespace TCPingInfoView
 					var index1 = MainlistView.SelectedItems[0].Index;
 					if (index1 == FindRealRow(num))
 					{
-						var emptyDatelistView = new ListViewItem {SubItems = {new ListViewItem.ListViewSubItem()}};
+						var emptyDatelistView = new ListViewItem { SubItems = { new ListViewItem.ListViewSubItem() } };
 						var index2 = DatelistView.Items.Add(emptyDatelistView).Index;
 						lock (_lockloadinglogsTask)
 						{
@@ -667,8 +668,8 @@ namespace TCPingInfoView
 		private void MainlistView_DragDrop(object sender, DragEventArgs e)
 		{
 			var path = ((Array)e.Data.GetData(DataFormats.FileDrop)).GetValue(0).ToString();
-			var sl = Read.ReadAddress(path);
-			LoadFromList(sl);
+			_list = Read.ReadAddressFromFile(path);
+			LoadFromList();
 		}
 
 		private void MainlistView_DragEnter(object sender, DragEventArgs e)
