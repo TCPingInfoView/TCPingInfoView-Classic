@@ -8,9 +8,10 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>TCPingInfoView</RootNamespace>
     <AssemblyName>TCPingInfoView</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -50,10 +51,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BindingCollection.cs" />
     <Compile Include="ConcurrentList.cs" />
-    <Compile Include="DoubleBufferListView.cs" />
-    <Compile Include="ListViewItemComparer.cs" />
+    <Compile Include="DateTable.cs" />
+    <Compile Include="MainTable.cs" />
+    <Compile Include="DoubleBufferDataGridView.cs" />
     <Compile Include="TCPingLog.cs" />
+    <Compile Include="TextAndImageColumn.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="MainForm.cs">

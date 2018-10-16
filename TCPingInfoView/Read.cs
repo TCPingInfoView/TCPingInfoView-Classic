@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -8,7 +7,7 @@ namespace TCPingInfoView
 {
 	public static class Read
 	{
-		public static List<Data> ReadAddressFromFile(string path)
+		public static ConcurrentList<Data> ReadAddressFromFile(string path)
 		{
 			var sl = new List<string>();
 			using (var sr = new StreamReader(path, Encoding.UTF8))
@@ -20,8 +19,7 @@ namespace TCPingInfoView
 				}
 			}
 
-			var l = Util.ToData(sl);
-			return l.ToList();
+			return Util.ToData(sl);
 		}
 
 		public static string GetFilePath()

@@ -146,9 +146,9 @@ namespace TCPingInfoView
 			return res;
 		}
 
-		public static IEnumerable<Data> ToData(IEnumerable<string> sl)
+		public static ConcurrentList<Data> ToData(IEnumerable<string> sl)
 		{
-			var data = new List<Data>();
+			var data = new ConcurrentList<Data>();
 			foreach (var line in sl)
 			{
 				var l = Stringline2Data(line);
@@ -158,6 +158,65 @@ namespace TCPingInfoView
 				}
 			}
 			return data;
+		}
+
+		public static ConcurrentList<MainTable> ToMainTable(ConcurrentList<Data> data)
+		{
+			var res = new ConcurrentList<MainTable>();
+			for (var i = 0; i < data.Count; ++i)
+			{
+				var r = new MainTable
+				{
+					Index = i + 1,
+					HostsName = data[i].HostsName,
+					FailedP = @"0%",
+					Latency = 0,
+					Description = data[i].Description
+				};
+				if (data[i].Ip == null)
+				{
+					r.Endpoint = string.Empty;
+				}
+				else
+				{
+					r.Endpoint = $@"{data[i].Ip}:{data[i].Port}";
+				}
+				res.Add(r);
+			}
+			return res;
+		}
+
+		public static int GetRowIndexAt(DataGridView dataGridView1, int mouseLocationY)
+		{
+			if (dataGridView1.FirstDisplayedScrollingRowIndex < 0)
+			{
+				return -1;
+			}
+
+			if (dataGridView1.ColumnHeadersVisible && mouseLocationY <= dataGridView1.ColumnHeadersHeight)
+			{
+				return -1;
+			}
+
+			var index = dataGridView1.FirstDisplayedScrollingRowIndex;
+			var displayedCount = dataGridView1.DisplayedRowCount(true);
+			for (var k = 1; k <= displayedCount;)
+			{
+				if (dataGridView1.Rows[index].Visible)
+				{
+					var rect = dataGridView1.GetRowDisplayRectangle(index, true); // 取该区域的显示部分区域   
+					if (rect.Top <= mouseLocationY && mouseLocationY < rect.Bottom)
+					{
+						return index;
+					}
+
+					++k;
+				}
+
+				++index;
+			}
+
+			return -1;
 		}
 
 		public static void Invoke(this Control control, MethodInvoker action)

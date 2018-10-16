@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace TCPingInfoView
 {
-	public class TCPingInfo
-	{
-		public DateTime Date;
-		public double Latenty;
-	}
-
 	public class TCPingLog
 	{
-		public readonly List<TCPingInfo> Info;
+		private readonly ConcurrentList<DateTable> _info;
 		private double TotalPing = 0;
 		public int Count = 0;
 		public int SucceedCount = 0;
@@ -22,16 +15,18 @@ namespace TCPingInfoView
 
 		public double Average => TotalPing / SucceedCount;
 		public double FailedP => (double)FailedCount / Count;
-		public double SucceedP => (double) SucceedCount / Count;
+		public double SucceedP => (double)SucceedCount / Count;
+
+		public IEnumerable<DateTable> Info => _info;
 
 		public TCPingLog()
 		{
-			Info = new List<TCPingInfo>();
+			_info = new ConcurrentList<DateTable>();
 		}
 
-		public void Add(TCPingInfo info)
+		public void Add(DateTable info)
 		{
-			Info.Add(info);
+			_info.Add(info);
 			++Count;
 			if (info.Latenty < MainForm.Timeout)
 			{

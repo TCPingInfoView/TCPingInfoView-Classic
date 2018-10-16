@@ -71,11 +71,29 @@ namespace TCPingInfoView
 			}
 		}
 
-		public static string GetHostName(IPAddress ip)
+		private delegate IPHostEntry GetHostEntryHandler(string ip);
+		public static string GetHostName(IPAddress ip, int timeout)
 		{
-			return Dns.Resolve(ip.ToString()).HostName;
+			try
+			{
+				var callback = new GetHostEntryHandler(Dns.GetHostEntry);
+				var result = callback.BeginInvoke(ip.ToString(), null, null);
+				if (result.AsyncWaitHandle.WaitOne(timeout, false))
+				{
+					return callback.EndInvoke(result).HostName;
+				}
+				else
+				{
+					return ip.ToString();
+				}
+			}
+			catch (Exception)
+			{
+				return ip.ToString();
+			}
 		}
 
+		[Obsolete]
 		public static async Task<string> GetHostNameAsync(IPAddress ip)
 		{
 			var res = ip.ToString();

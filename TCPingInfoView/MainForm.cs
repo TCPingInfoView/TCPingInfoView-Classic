@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,6 +25,7 @@ namespace TCPingInfoView
 
 		public static bool QClose = false;
 
+		public static int ReverseDNSTimeout = 1000;
 		public static int Timeout = 3000;
 		public static int HighLatency = 300;
 		public static Color TimeoutColor = Color.Red;
@@ -33,17 +34,19 @@ namespace TCPingInfoView
 
 		private int Needheight;
 		private double listViewsProportion;
-		private List<Data> _list;
-		private ConcurrentList<TCPingLog> logs;
 
-		private int _loadingFileTask = 0;
-		private readonly object _lockloadingFileTask = new object();
-		private int _loadinglogsTask = 0;
-		private readonly object _lockloadinglogsTask = new object();
-		private int _testAllTask = 0;
-		private readonly object _locktestAllTask = new object();
+		private readonly BindingCollection<MainTable> Maintable = new BindingCollection<MainTable>();
+		private ConcurrentList<MainTable> maintable = new ConcurrentList<MainTable>();
+		private ConcurrentList<Data> rawtable = new ConcurrentList<Data>();
 
-		private readonly object _lockloadingMainList = new object();
+
+		private ConcurrentList<Task> PingTasks = new ConcurrentList<Task>();
+		private static CancellationTokenSource cts_PingTask = new CancellationTokenSource();
+
+		private readonly BindingCollection<DateTable> Datetable = new BindingCollection<DateTable>();
+		private ConcurrentList<DateTable> datetable = new ConcurrentList<DateTable>();
+
+		private ConcurrentList<TCPingLog> logs = new ConcurrentList<TCPingLog>();
 
 		private delegate void VoidMethodDelegate();
 
@@ -52,233 +55,52 @@ namespace TCPingInfoView
 		private const int minute = 60 * second;
 		public int interval = 1 * minute;
 
-		private int xPos_MainlistView, yPos_MainlistView;
-
-		#region MainlistView
-
-		private int FindRealRow(int row)
-		{
-			for (var i = 0; i < _list.Count; ++i)
-			{
-				if (row + 1 == GetIndex1(i))
-				{
-					return i;
-				}
-			}
-			throw new Exception(@"Logical Error");
-		}
-
-		private int? GetIndex1(int row)
-		{
-			int? res = null;
-			MainlistView.Invoke(new VoidMethod_Delegate(() =>
-			{
-				res = Convert.ToInt32(MainlistView.Items[row].SubItems[0].Text);
-			}));
-			return res;
-		}
-
-		private void SetHostname1(int row, string hostname)
-		{
-			//lock (_lockloadingMainList)
-			{
-				MainlistView.Invoke(new VoidMethod_Delegate(() =>
-				{
-					row = FindRealRow(row);
-					MainlistView.Items[row].SubItems[1].Text = hostname;
-				}));
-			}
-		}
-
-		private string GetHostname1(int row)
-		{
-			string res = null;
-			MainlistView.Invoke(new VoidMethod_Delegate(() =>
-			{
-				res = MainlistView.Items[row].SubItems[1].Text;
-			}));
-			return res;
-		}
-
-		private void SetIPport1(int row, IPEndPoint ipEndPoint)
-		{
-			MainlistView.Invoke(new VoidMethod_Delegate(() =>
-			{
-				row = FindRealRow(row);
-				MainlistView.Items[row].SubItems[2].Text = ipEndPoint.ToString();
-			}));
-		}
-
-		private IPEndPoint GetIPport1(int row)
-		{
-			IPEndPoint res = null;
-			MainlistView.Invoke(new VoidMethod_Delegate(() =>
-			{
-				row = FindRealRow(row);
-				res = Util.ToIPEndPoint(MainlistView.Items[row].SubItems[2].Text, 443);
-			}));
-			return res;
-		}
-
-		private void SetLatency1(int row, int latency)
-		{
-			//lock (_lockloadingMainList)
-			{
-				MainlistView.Invoke(new VoidMethod_Delegate(() =>
-				{
-					row = FindRealRow(row);
-					MainlistView.Items[row].SubItems[4].Text = latency.ToString();
-					if (latency == Timeout)
-					{
-						SetLatencyColor1(row, TimeoutColor);
-						MainlistView.Items[row].ImageIndex = 1;
-					}
-					else if (latency < HighLatency)
-					{
-						SetLatencyColor1(row, LowLatencyColor);
-						MainlistView.Items[row].ImageIndex = 0;
-					}
-					else
-					{
-						SetLatencyColor1(row, HighLatencyColor);
-						MainlistView.Items[row].ImageIndex = 0;
-					}
-				}));
-			}
-		}
-
-		private double? GetLatency1(int row)
-		{
-			double? res = null;
-			MainlistView.Invoke(new VoidMethod_Delegate(() =>
-			{
-				res = Convert.ToDouble(MainlistView.Items[row].SubItems[4].Text);
-			}));
-			return res;
-		}
-
-		private void SetLatencyColor1(int row, Color color)
-		{
-			MainlistView.Items[row].UseItemStyleForSubItems = false;
-			MainlistView.Items[row].SubItems[4].ForeColor = color;
-		}
-
-		private void SetDescription1(int row, string str)
-		{
-			//lock (_lockloadingMainList)
-			{
-				MainlistView.Invoke(new VoidMethod_Delegate(() =>
-				{
-					row = FindRealRow(row);
-					MainlistView.Items[row].SubItems[5].Text = str;
-				}));
-			}
-		}
-
-		private string GetDescription1(int row)
-		{
-			string res = null;
-			MainlistView.Invoke(new VoidMethod_Delegate(() =>
-			{
-				res = MainlistView.Items[row].SubItems[5].Text;
-			}));
-			return res;
-		}
-
-		private void SetFailedP1(int row, double failedP)
-		{
-			//lock (_lockloadingMainList)
-			{
-				MainlistView.Invoke(new VoidMethod_Delegate(() =>
-				{
-					row = FindRealRow(row);
-					string str;
-					if (Math.Abs(failedP) > 0.0)
-					{
-						str = failedP.ToString(@"P");
-					}
-					else
-					{
-						str = @"0%";
-					}
-					MainlistView.Items[row].SubItems[3].Text = str;
-				}));
-			}
-		}
-
-		#endregion
-
-		#region DatelistView
-
-		private void SetDate2(int row, DateTime num)
-		{
-			BeginInvoke(new VoidMethod_Delegate(() =>
-			{
-				DatelistView.Items[row].SubItems[0].Text = num.ToString(CultureInfo.CurrentCulture);
-			}));
-		}
-
-		private DateTime GetDate2(int row)
-		{
-			var res = new DateTime();
-			Invoke(new VoidMethod_Delegate(() =>
-			{
-				res = DateTime.Parse(DatelistView.Items[row].SubItems[0].Text);
-			}));
-			return res;
-		}
-
-		private void SetLatency2(int row, int latency)
-		{
-			BeginInvoke(new VoidMethod_Delegate(() =>
-			{
-				DatelistView.Items[row].SubItems[1].Text = latency.ToString();
-				if (latency == Timeout)
-				{
-					SetLatencyColor2(row, TimeoutColor);
-					DatelistView.Items[row].ImageIndex = 1;
-				}
-				else if (latency < HighLatency)
-				{
-					SetLatencyColor2(row, LowLatencyColor);
-					DatelistView.Items[row].ImageIndex = 0;
-				}
-				else
-				{
-					SetLatencyColor2(row, HighLatencyColor);
-					DatelistView.Items[row].ImageIndex = 0;
-				}
-			}));
-		}
-
-		private double? GetLatency2(int row)
-		{
-			double? res = null;
-			Invoke(new VoidMethod_Delegate(() =>
-			{
-				res = Convert.ToDouble(DatelistView.Items[row].SubItems[1].Text);
-			}));
-			return res;
-		}
-
-		private void SetLatencyColor2(int row, Color color)
-		{
-			DatelistView.Items[row].UseItemStyleForSubItems = false;
-			DatelistView.Items[row].SubItems[1].ForeColor = color;
-		}
-
-		#endregion
 
 		#region 窗口第一次载入
+
+		private void LoadMainlistView()
+		{
+			MainlistView.Columns[0].HeaderText = @"列表顺序";
+			MainlistView.Columns[1].HeaderText = @"主机名";
+			MainlistView.Columns[2].HeaderText = @"IP:端口";
+			MainlistView.Columns[3].HeaderText = @"失败率";
+			MainlistView.Columns[4].HeaderText = @"延迟(ms)";
+			MainlistView.Columns[5].HeaderText = @"说明";
+
+			MainlistView.Columns[0].DataPropertyName = @"Index";
+			MainlistView.Columns[1].DataPropertyName = @"HostsName";
+			MainlistView.Columns[2].DataPropertyName = @"Endpoint";
+			MainlistView.Columns[3].DataPropertyName = @"FailedP";
+			MainlistView.Columns[4].DataPropertyName = @"Latency";
+			MainlistView.Columns[5].DataPropertyName = @"Description";
+		}
+
+		private void LoadDatelistView()
+		{
+			DatelistView.Columns[0].HeaderText = @"TCPing 通信时间";
+			DatelistView.Columns[1].HeaderText = @"延迟(ms)";
+
+			DatelistView.Columns[0].DataPropertyName = @"Date";
+			DatelistView.Columns[1].DataPropertyName = @"Latenty";
+		}
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
 			Needheight = Height - (MainlistView.Height + DatelistView.Height);
 			listViewsProportion = Convert.ToDouble(MainlistView.Height) / Convert.ToDouble(MainlistView.Height + DatelistView.Height);
-			const string defaultPath = @"D:\Downloads\test.txt";
+
+			MainlistView.AutoGenerateColumns = false;
+			MainlistView.DataSource = Maintable;
+			LoadMainlistView();
+
+			DatelistView.AutoGenerateColumns = false;
+			DatelistView.DataSource = Datetable;
+			LoadDatelistView();
+
+			const string defaultPath = @".\test.txt";
 			if (File.Exists(defaultPath))
 			{
-				_list = Read.ReadAddressFromFile(defaultPath);
+				rawtable = Read.ReadAddressFromFile(defaultPath);
 				LoadFromList();
 			}
 		}
@@ -295,7 +117,7 @@ namespace TCPingInfoView
 				return;
 			}
 
-			_list = Read.ReadAddressFromFile(path);
+			rawtable = Read.ReadAddressFromFile(path);
 			LoadFromList();
 		}
 
@@ -313,34 +135,14 @@ namespace TCPingInfoView
 
 		#region 载入主表格
 
-		private async Task LoadFromLine(int index)
+		private void ToMainTable(IEnumerable<MainTable> table)
 		{
-			SetDescription1(index, _list[index].Description);
-			if (Util.IsIPv4Address(_list[index].HostsName))//如果hostname是IP地址则反查DNS
+			foreach (var item in table)
 			{
-				SetIPport1(index, new IPEndPoint(_list[index].Ip, _list[index].Port));
-				SetHostname1(index, _list[index].HostsName);
-				_list[index].HostsName = await NetTest.GetHostNameAsync(IPAddress.Parse(_list[index].HostsName));
-				SetHostname1(index, _list[index].HostsName);
-			}
-			else//如果hostname是域名则查询IP地址
-			{
-				SetHostname1(index, _list[index].HostsName);
-				_list[index].Ip = await NetTest.GetIPAsync(_list[index].HostsName);
-				if (_list[index].Ip == null)
+				if (Maintable.All(x => x.Index != item.Index))
 				{
-					SetIPport1(index, null);
+					Maintable.Add(item);
 				}
-				else
-				{
-					SetIPport1(index, new IPEndPoint(_list[index].Ip, _list[index].Port));
-				}
-			}
-
-			lock (_lockloadingFileTask)
-			{
-				--_loadingFileTask;
-				Monitor.Pulse(_lockloadingFileTask);
 			}
 		}
 
@@ -349,168 +151,185 @@ namespace TCPingInfoView
 		/// </summary>
 		private void LoadFromList()
 		{
-			//lock (_lockloadingFileTask)
-			//{
-			//	while (_loadingFileTask != 0)
-			//	{
-			//		Monitor.Wait(_lockloadingFileTask);
-			//	}
-			//}
+			StopPing();
+			cts_PingTask.Cancel();
+			Task.WaitAll(PingTasks.ToArray());
+			cts_PingTask.Dispose();
+			cts_PingTask = new CancellationTokenSource();
+			PingTasks = new ConcurrentList<Task>();
 
-			lock (_locktestAllTask)
-			{
-				while (true)
-				{
-					if (_testAllTask == 0)
-					{
-						break;
-					}
-				}
-			}
+			Maintable.Clear();
+			Datetable.Clear();
 
-			lock (_lockloadinglogsTask)
-			{
-				while (true)
-				{
-					if (_loadinglogsTask == 0)
-					{
-						break;
-					}
-				}
-			}
-
-
-			MainlistView.Items.Clear();
-			DatelistView.Items.Clear();
-			var length = _list.Count;
-			_loadingFileTask += length;
-			for (var i = 0; i < length; ++i)
-			{
-				var emptyDatelistView = new ListViewItem
-				{
-					Text = $@"{i + 1}",
-					SubItems =
-					{
-							new ListViewItem.ListViewSubItem(),
-							new ListViewItem.ListViewSubItem(),
-							new ListViewItem.ListViewSubItem(),
-							new ListViewItem.ListViewSubItem(),
-							new ListViewItem.ListViewSubItem(),
-					}
-				};
-				MainlistView.Items.Add(emptyDatelistView);
-			}
 			logs = new ConcurrentList<TCPingLog>();
-			for (var i = 0; i < length; ++i)
+			for (var i = 0; i < rawtable.Count; ++i)
 			{
-				var emptylog = new TCPingLog();
-				logs.Add(emptylog);
+				logs.Add(new TCPingLog());
 			}
-			Task.Run(() =>
+
+			maintable = Util.ToMainTable(rawtable);
+			ToMainTable(maintable);
+			if (rawtable.Count > 0)
 			{
-#pragma warning disable 4014
-				Parallel.For(0, length, (i) => LoadFromLine(i));
-#pragma warning restore 4014
-			});
+				MainlistView.Rows[0].Selected = true;
+			}
+			FirstPing();
 		}
 
 		#endregion
 
-		#region 测试所有
+		#region TCPing 核心
 
-		private async void TestOne(int num)
+		private void FirstPing()
 		{
-			if (_list[num].Ip == null)
+			var t = new Task(() =>
 			{
-				await LoadFromLine(num);
-				if (_list[num].Ip == null)
+				Parallel.For(0, maintable.Count, (i, state) =>
 				{
-					lock (_locktestAllTask)
+					try
 					{
-						--_testAllTask;
+						cts_PingTask.Token.ThrowIfCancellationRequested();
+					}
+					catch (OperationCanceledException)
+					{
+						state.Stop();
+						return;
 					}
 
-					return;
-				}
-			}
-
-			var ipe = new IPEndPoint(_list[num].Ip, _list[num].Port);
-			double? latency = null;
-			var date = DateTime.Now;
-			try
-			{
-				latency = NetTest.TCPing(ipe.Address, ipe.Port, Timeout);
-			}
-			catch
-			{
-				//ignore
-			}
-
-			if (latency != null)
-			{
-				latency = Convert.ToInt32(Math.Round(latency.Value));
-			}
-			else
-			{
-				latency = Timeout;
-			}
-
-			var log = new TCPingInfo
-			{
-				Date = date,
-				Latenty = latency.Value
-			};
-			logs[num].Add(log);
-
-			SetLatency1(num, (int)latency.Value);
-			SetFailedP1(num, logs[num].FailedP);
-
-			MainlistView.Invoke(() =>
-			{
-				if (MainlistView.SelectedItems.Count == 1)
-				{
-					var index1 = MainlistView.SelectedItems[0].Index;
-					if (index1 == FindRealRow(num))
+					if (Util.IsIPv4Address(maintable[i].HostsName)) //反查DNS
 					{
-						var emptyDatelistView = new ListViewItem { SubItems = { new ListViewItem.ListViewSubItem() } };
-						var index2 = DatelistView.Items.Add(emptyDatelistView).Index;
-						lock (_lockloadinglogsTask)
+						PingOne(i);
+
+						try
 						{
-							++_loadinglogsTask;
+							cts_PingTask.Token.ThrowIfCancellationRequested();
+						}
+						catch (OperationCanceledException)
+						{
+							state.Stop();
+							return;
 						}
 
-						LoadLog(index2, log);
+						maintable[i].HostsName = NetTest.GetHostName(IPAddress.Parse(maintable[i].HostsName), ReverseDNSTimeout);
+					}
+					else
+					{
+						var ip = NetTest.GetIP(maintable[i].HostsName);
+
+						try
+						{
+							cts_PingTask.Token.ThrowIfCancellationRequested();
+						}
+						catch (OperationCanceledException)
+						{
+							state.Stop();
+							return;
+						}
+
+						maintable[i].Endpoint = $@"{ip}:{rawtable[i].Port}";
+						PingOne(i);
+					}
+
+					try
+					{
+						cts_PingTask.Token.ThrowIfCancellationRequested();
+					}
+					catch (OperationCanceledException)
+					{
+						state.Stop();
+					}
+				});
+			});
+			PingTasks.Add(t);
+			t.Start();
+		}
+
+		private void PingOne(int index)
+		{
+			if (maintable[index].Endpoint != string.Empty)
+			{
+				var ipe = Util.ToIPEndPoint(maintable[index].Endpoint, 443);
+				double? latency = null;
+				var res = Timeout;
+				var time = DateTime.Now;
+				try
+				{
+					latency = NetTest.TCPing(ipe.Address, ipe.Port, Timeout);
+				}
+				catch
+				{
+					// ignored
+				}
+
+				if (latency != null)
+				{
+					res = Convert.ToInt32(Math.Round(latency.Value));
+				}
+
+				var log = new DateTable
+				{
+					Date = time,
+					Latenty = res
+				};
+				logs[index].Add(log);
+
+				var fp = logs[index].FailedP;
+				var fpStr = fp > 0.0 ? fp.ToString(@"P") : @"0%";
+
+				maintable[index].FailedP = fpStr;
+				maintable[index].Latency = res;
+
+				if (MainlistView.SelectedRows.Count > 0)
+				{
+					var i = MainlistView.SelectedRows[0].Cells[0].Value as int?;
+					if (i == index)
+					{
+						DatelistView.Invoke(() => { LoadLogs(index); });
 					}
 				}
-			});
-
-
-			lock (_locktestAllTask)
-			{
-				--_testAllTask;
 			}
 		}
 
-		private void TestAll()
+		private void PingAll()
 		{
-			var l = _list.Count;
-			lock (_locktestAllTask)
+			var t = new Task(() =>
 			{
-				_testAllTask += l;
-				Monitor.Pulse(_locktestAllTask);
-			}
+				Parallel.For(0, maintable.Count, (i, state) =>
+				{
+					try
+					{
+						cts_PingTask.Token.ThrowIfCancellationRequested();
+					}
+					catch (OperationCanceledException)
+					{
+						state.Stop();
+						return;
+					}
 
-			Task.Run(() => { Parallel.For(0, l, TestOne); });
+					PingOne(i);
+
+					try
+					{
+						cts_PingTask.Token.ThrowIfCancellationRequested();
+					}
+					catch (OperationCanceledException)
+					{
+						state.Stop();
+					}
+				});
+			});
+			PingTasks.Add(t);
+			t.Start();
 		}
 
 		private void toolStripButton1_Click(object sender, EventArgs e)
 		{
-			TestAll();
+			PingAll();
 		}
 
 		#endregion
 
-		#region 保持两表格的比例
+		#region 保持两表格的比例(待实现)
 
 		private void ChangeSize()
 		{
@@ -521,41 +340,10 @@ namespace TCPingInfoView
 
 		private void MainForm_Resize(object sender, EventArgs e)
 		{
-			ChangeSize();
+			//ChangeSize();
 		}
 
 		#endregion
-
-		/// <summary>
-		/// 关闭前是否确认
-		/// </summary>
-		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-		{
-			if (e.CloseReason == CloseReason.UserClosing)
-			{
-				if (!QClose)
-				{
-					e.Cancel = true;
-					TriggerMainFormDisplay();
-					return;
-				}
-				var dr = MessageBox.Show(@"「是」退出，「否」最小化", @"是否退出？", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-				if (dr == DialogResult.Yes)
-				{
-					Dispose();
-					Application.Exit();
-				}
-				else if (dr == DialogResult.No)
-				{
-					e.Cancel = true;
-					TriggerMainFormDisplay();
-				}
-				else
-				{
-					e.Cancel = true;
-				}
-			}
-		}
 
 		#region 主窗口显示隐藏
 
@@ -596,7 +384,7 @@ namespace TCPingInfoView
 
 		private void StartCore(object state)
 		{
-			TestAll();
+			PingAll();
 		}
 
 		private void StartPing()
@@ -646,19 +434,58 @@ namespace TCPingInfoView
 
 		#region 退出程序
 
+		/// <summary>
+		/// 关闭前是否确认
+		/// </summary>
+		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (e.CloseReason == CloseReason.UserClosing)
+			{
+				if (!QClose)
+				{
+					e.Cancel = true;
+					TriggerMainFormDisplay();
+					return;
+				}
+
+				var dr = MessageBox.Show(@"「是」退出，「否」最小化", @"是否退出？", MessageBoxButtons.YesNoCancel,
+						MessageBoxIcon.Question);
+				if (dr == DialogResult.Yes)
+				{
+					Dispose();
+					Exit(); //Application.Exit();
+				}
+				else if (dr == DialogResult.No)
+				{
+					e.Cancel = true;
+					TriggerMainFormDisplay();
+				}
+				else
+				{
+					e.Cancel = true;
+				}
+			}
+		}
+
+		private void Exit()
+		{
+			notifyIcon1.Dispose();
+			Environment.Exit(0);
+		}
+
 		private void Exit_MenuItem_Click(object sender, EventArgs e)
 		{
-			Environment.Exit(0);
+			Exit();
 		}
 
 		private void toolStripButton2_Click(object sender, EventArgs e)
 		{
-			Environment.Exit(0);
+			Exit();
 		}
 
 		private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			Environment.Exit(0);
+			Exit();
 		}
 
 		#endregion
@@ -668,140 +495,172 @@ namespace TCPingInfoView
 		private void MainlistView_DragDrop(object sender, DragEventArgs e)
 		{
 			var path = ((Array)e.Data.GetData(DataFormats.FileDrop)).GetValue(0).ToString();
-			_list = Read.ReadAddressFromFile(path);
+			rawtable = Read.ReadAddressFromFile(path);
 			LoadFromList();
 		}
 
 		private void MainlistView_DragEnter(object sender, DragEventArgs e)
 		{
-			if (e.Data.GetDataPresent(DataFormats.FileDrop))
-			{
-				e.Effect = DragDropEffects.Link;
-			}
-			else
-			{
-				e.Effect = DragDropEffects.None;
-			}
+			e.Effect = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Link : DragDropEffects.None;
 		}
 
 		#endregion
 
 		#region 加载时间列表
 
-		private void MainlistView_SelectedIndexChanged(object sender, EventArgs e)
+		private void MainlistView_SelectionChanged(object sender, EventArgs e)
 		{
-			if (MainlistView.SelectedIndices.Count <= 0)
+			if (MainlistView.SelectedRows.Count <= 0)
 			{
 				return;
 			}
 
-			// ReSharper disable once PossibleInvalidOperationException
-			LoadLogs(GetIndex1(MainlistView.SelectedIndices[0]).Value - 1);
-		}
-
-		private void LoadLog(int i, TCPingInfo log)
-		{
-			SetDate2(i, log.Date);
-			var latency = Convert.ToInt32(Math.Round(log.Latenty));
-			SetLatency2(i, latency);
-
-			lock (_lockloadinglogsTask)
+			if (MainlistView.SelectedRows[0].Cells[0].Value is int index)
 			{
-				--_loadinglogsTask;
+				LoadLogs(index);
 			}
 		}
 
 		private void LoadLogs(int index)
 		{
-			while (true)
+			if (index <= 0)
 			{
-				if (_loadinglogsTask == 0)
+				Datetable.Clear();
+			}
+			else
+			{
+				Datetable.Clear();
+				datetable = (ConcurrentList<DateTable>)logs[index - 1].Info;
+				ToLogs(datetable);
+				if (datetable.Count > 0)
 				{
-					break;
+					DatelistView.Rows[0].Selected = true;
 				}
 			}
+		}
 
-			DatelistView.Items.Clear();
-			if (index < 0)
+		private void ToLogs(IEnumerable<DateTable> table)
+		{
+			foreach (var item in table)
 			{
-				return;
-			}
-
-			var length = logs[index].Info.Count;
-			if (length > 0)
-			{
-				_loadinglogsTask += length;
-
-				for (var i = 0; i < length; ++i)
-				{
-					var emptyDatelistView = new ListViewItem { SubItems = { new ListViewItem.ListViewSubItem() } };
-					DatelistView.Items.Add(emptyDatelistView);
-				}
-
-				Task.Run(() => { Parallel.For(0, length, i => { LoadLog(i, logs[index].Info[i]); }); });
+				Datetable.Add(item);
 			}
 		}
 
 		#endregion
 
-		#region 主列表排序
+		#region 鼠标点击事件
 
-		private void MainlistView_ColumnClick(object sender, ColumnClickEventArgs e)
+		/// <summary>
+		/// 点击空白处清空时间列表
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void ListView_MouseDown(object sender, MouseEventArgs e)
 		{
-			lock (_lockloadingMainList)
+			var dgv = (DataGridView)sender;
+
+			var rowIndex = dgv.HitTest(e.X, e.Y).RowIndex;
+
+			if (rowIndex == -1)
 			{
-				Type type;
-				if (e.Column == 0)
+				dgv.ClearSelection();
+				if (dgv == MainlistView)
 				{
-					type = typeof(int);
+					LoadLogs(-1);
 				}
-				else if (e.Column == 3)
+			}
+		}
+
+		#endregion
+
+		#region 列表单元格内容改变
+
+		private void MainlistView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+		{
+			if (e.ColumnIndex == 4)
+			{
+				var value = MainlistView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value as int?;
+				var cell = MainlistView.Rows[e.RowIndex].Cells[1] as TextAndImageCell;
+				if (value < HighLatency)
 				{
-					type = typeof(double);
+					MainlistView.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.ForeColor = LowLatencyColor;
+
+					cell.Image = imageList1.Images[0];
 				}
-				else if (e.Column == 4)
+				else if (value < Timeout)
 				{
-					type = typeof(int);
+					MainlistView.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.ForeColor = HighLatencyColor;
+
+					cell.Image = imageList1.Images[0];
 				}
 				else
 				{
-					type = typeof(string);
+					MainlistView.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.ForeColor = TimeoutColor;
+
+					cell.Image = imageList1.Images[1];
 				}
+			}
+		}
 
-				MainlistView.ListViewItemSorter = new ListViewItemComparer(e.Column, MainlistView.Sorting, type);
-
-				if (MainlistView.Sorting == SortOrder.Ascending)
+		private void DatelistView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+		{
+			if (e.ColumnIndex == 1)
+			{
+				var value = DatelistView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value as int?;
+				var cell = DatelistView.Rows[e.RowIndex].Cells[0] as TextAndImageCell;
+				if (value < HighLatency)
 				{
-					MainlistView.Sorting = SortOrder.Descending;
+					DatelistView.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.ForeColor = LowLatencyColor;
+
+					cell.Image = imageList1.Images[0];
+				}
+				else if (value < Timeout)
+				{
+					DatelistView.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.ForeColor = HighLatencyColor;
+
+					cell.Image = imageList1.Images[0];
 				}
 				else
 				{
-					MainlistView.Sorting = SortOrder.Ascending;
+					DatelistView.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.ForeColor = TimeoutColor;
+
+					cell.Image = imageList1.Images[1];
 				}
-
-				MainlistView.Sort();
 			}
 		}
 
 		#endregion
 
-		#region 点击空白处清空时间列表
+		#region 列表进入/失去焦点
 
-		private void MainlistView_MouseDown(object sender, MouseEventArgs e)
+		private void MainlistView_Leave(object sender, EventArgs e)
 		{
-			//Hit no item
-			if (MainlistView.HitTest(xPos_MainlistView, yPos_MainlistView).Item == null)
-			{
-				LoadLogs(-1);
-			}
+			MainlistView.DefaultCellStyle.SelectionBackColor = SystemColors.InactiveCaption;
+			MainlistView.DefaultCellStyle.SelectionForeColor = SystemColors.InactiveCaptionText;
 		}
 
-		private void MainlistView_MouseMove(object sender, MouseEventArgs e)
+		private void MainlistView_Enter(object sender, EventArgs e)
 		{
-			xPos_MainlistView = e.X;
-			yPos_MainlistView = e.Y;
+			MainlistView.DefaultCellStyle.SelectionBackColor = SystemColors.Highlight;
+			MainlistView.DefaultCellStyle.SelectionForeColor = SystemColors.HighlightText;
+			DatelistView.DefaultCellStyle.SelectionBackColor = SystemColors.InactiveCaption;
+			DatelistView.DefaultCellStyle.SelectionForeColor = SystemColors.InactiveCaptionText;
+		}
+
+		private void DatelistView_Enter(object sender, EventArgs e)
+		{
+			DatelistView.DefaultCellStyle.SelectionBackColor = SystemColors.Highlight;
+			DatelistView.DefaultCellStyle.SelectionForeColor = SystemColors.HighlightText;
+		}
+
+		private void DatelistView_Leave(object sender, EventArgs e)
+		{
+			DatelistView.DefaultCellStyle.SelectionBackColor = SystemColors.InactiveCaption;
+			DatelistView.DefaultCellStyle.SelectionForeColor = SystemColors.InactiveCaptionText;
 		}
 
 		#endregion
+
 	}
 }

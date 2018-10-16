@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace TCPingInfoView
 {
@@ -85,6 +86,12 @@ namespace TCPingInfoView
 		{
 			lock (sync)
 				return m_list.GetEnumerator();
+		}
+
+		public ReadOnlyCollection<T> AsReadOnly()
+		{
+			lock (sync)
+				return m_list.AsReadOnly();
 		}
 	}
 }

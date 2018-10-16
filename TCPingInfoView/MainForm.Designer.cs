@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Drawing;
+﻿using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace TCPingInfoView
@@ -54,10 +52,8 @@ namespace TCPingInfoView
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.Exit_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-			this.DatelistView = new TCPingInfoView.DoubleBufferListView();
 			this.Date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.Latency2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.MainlistView = new TCPingInfoView.DoubleBufferListView();
 			this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -65,10 +61,22 @@ namespace TCPingInfoView
 			this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.splitter1 = new System.Windows.Forms.Splitter();
+			this.MainlistView = new TCPingInfoView.DoubleBufferDataGridView();
+			this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Column2 = new TCPingInfoView.TextAndImageColumn();
+			this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.DatelistView = new TCPingInfoView.DoubleBufferDataGridView();
+			this.dataGridViewTextBoxColumn1 = new TCPingInfoView.TextAndImageColumn();
+			this.textAndImageColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.menuStrip1.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
 			this.NotifyIcon_MenuStrip.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.MainlistView)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.DatelistView)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// menuStrip1
@@ -229,25 +237,6 @@ namespace TCPingInfoView
 			this.imageList1.Images.SetKeyName(0, "Succeed.png");
 			this.imageList1.Images.SetKeyName(1, "Failed.png");
 			// 
-			// DatelistView
-			// 
-			this.DatelistView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.Date,
-            this.Latency2});
-			this.DatelistView.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.DatelistView.FullRowSelect = true;
-			this.DatelistView.GridLines = true;
-			this.DatelistView.Location = new System.Drawing.Point(0, 527);
-			this.DatelistView.MultiSelect = false;
-			this.DatelistView.Name = "DatelistView";
-			this.DatelistView.OwnerDraw = true;
-			this.DatelistView.ShowItemToolTips = true;
-			this.DatelistView.Size = new System.Drawing.Size(912, 129);
-			this.DatelistView.SmallImageList = this.imageList1;
-			this.DatelistView.TabIndex = 5;
-			this.DatelistView.UseCompatibleStateImageBehavior = false;
-			this.DatelistView.View = System.Windows.Forms.View.Details;
-			// 
 			// Date
 			// 
 			this.Date.Text = "TCPing 通信时间";
@@ -256,36 +245,6 @@ namespace TCPingInfoView
 			// Latency2
 			// 
 			this.Latency2.Text = "延迟(ms)";
-			// 
-			// MainlistView
-			// 
-			this.MainlistView.AllowDrop = true;
-			this.MainlistView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3,
-            this.columnHeader4,
-            this.columnHeader5,
-            this.columnHeader6});
-			this.MainlistView.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.MainlistView.FullRowSelect = true;
-			this.MainlistView.GridLines = true;
-			this.MainlistView.Location = new System.Drawing.Point(0, 50);
-			this.MainlistView.MultiSelect = false;
-			this.MainlistView.Name = "MainlistView";
-			this.MainlistView.OwnerDraw = true;
-			this.MainlistView.ShowItemToolTips = true;
-			this.MainlistView.Size = new System.Drawing.Size(912, 474);
-			this.MainlistView.SmallImageList = this.imageList1;
-			this.MainlistView.TabIndex = 6;
-			this.MainlistView.UseCompatibleStateImageBehavior = false;
-			this.MainlistView.View = System.Windows.Forms.View.Details;
-			this.MainlistView.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.MainlistView_ColumnClick);
-			this.MainlistView.SelectedIndexChanged += new System.EventHandler(this.MainlistView_SelectedIndexChanged);
-			this.MainlistView.DragDrop += new System.Windows.Forms.DragEventHandler(this.MainlistView_DragDrop);
-			this.MainlistView.DragEnter += new System.Windows.Forms.DragEventHandler(this.MainlistView_DragEnter);
-			this.MainlistView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainlistView_MouseDown);
-			this.MainlistView.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainlistView_MouseMove);
 			// 
 			// columnHeader1
 			// 
@@ -319,11 +278,129 @@ namespace TCPingInfoView
 			// splitter1
 			// 
 			this.splitter1.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.splitter1.Location = new System.Drawing.Point(0, 524);
+			this.splitter1.Location = new System.Drawing.Point(0, 528);
 			this.splitter1.Name = "splitter1";
 			this.splitter1.Size = new System.Drawing.Size(912, 3);
 			this.splitter1.TabIndex = 7;
 			this.splitter1.TabStop = false;
+			// 
+			// MainlistView
+			// 
+			this.MainlistView.AllowDrop = true;
+			this.MainlistView.AllowUserToAddRows = false;
+			this.MainlistView.AllowUserToDeleteRows = false;
+			this.MainlistView.AllowUserToOrderColumns = true;
+			this.MainlistView.AllowUserToResizeRows = false;
+			this.MainlistView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+			this.MainlistView.BackgroundColor = System.Drawing.SystemColors.Window;
+			this.MainlistView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.MainlistView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+			this.MainlistView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+			this.MainlistView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2,
+            this.Column3,
+            this.Column4,
+            this.Column5,
+            this.Column6});
+			this.MainlistView.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.MainlistView.GridColor = System.Drawing.SystemColors.Control;
+			this.MainlistView.Location = new System.Drawing.Point(0, 50);
+			this.MainlistView.MultiSelect = false;
+			this.MainlistView.Name = "MainlistView";
+			this.MainlistView.ReadOnly = true;
+			this.MainlistView.RowHeadersVisible = false;
+			this.MainlistView.Size = new System.Drawing.Size(912, 478);
+			this.MainlistView.TabIndex = 6;
+			this.MainlistView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.MainlistView_CellFormatting);
+			this.MainlistView.SelectionChanged += new System.EventHandler(this.MainlistView_SelectionChanged);
+			this.MainlistView.DragDrop += new System.Windows.Forms.DragEventHandler(this.MainlistView_DragDrop);
+			this.MainlistView.DragEnter += new System.Windows.Forms.DragEventHandler(this.MainlistView_DragEnter);
+			this.MainlistView.Enter += new System.EventHandler(this.MainlistView_Enter);
+			this.MainlistView.Leave += new System.EventHandler(this.MainlistView_Leave);
+			this.MainlistView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ListView_MouseDown);
+			// 
+			// Column1
+			// 
+			this.Column1.HeaderText = "Column1";
+			this.Column1.Name = "Column1";
+			this.Column1.ReadOnly = true;
+			this.Column1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+			// 
+			// Column2
+			// 
+			this.Column2.HeaderText = "Column2";
+			this.Column2.Image = null;
+			this.Column2.Name = "Column2";
+			this.Column2.ReadOnly = true;
+			this.Column2.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+			// 
+			// Column3
+			// 
+			this.Column3.HeaderText = "Column3";
+			this.Column3.Name = "Column3";
+			this.Column3.ReadOnly = true;
+			// 
+			// Column4
+			// 
+			this.Column4.HeaderText = "Column4";
+			this.Column4.Name = "Column4";
+			this.Column4.ReadOnly = true;
+			// 
+			// Column5
+			// 
+			this.Column5.HeaderText = "Column5";
+			this.Column5.Name = "Column5";
+			this.Column5.ReadOnly = true;
+			// 
+			// Column6
+			// 
+			this.Column6.HeaderText = "Column6";
+			this.Column6.Name = "Column6";
+			this.Column6.ReadOnly = true;
+			// 
+			// DatelistView
+			// 
+			this.DatelistView.AllowDrop = true;
+			this.DatelistView.AllowUserToAddRows = false;
+			this.DatelistView.AllowUserToDeleteRows = false;
+			this.DatelistView.AllowUserToOrderColumns = true;
+			this.DatelistView.AllowUserToResizeRows = false;
+			this.DatelistView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+			this.DatelistView.BackgroundColor = System.Drawing.SystemColors.Window;
+			this.DatelistView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.DatelistView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+			this.DatelistView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+			this.DatelistView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
+            this.textAndImageColumn1});
+			this.DatelistView.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.DatelistView.GridColor = System.Drawing.SystemColors.Control;
+			this.DatelistView.Location = new System.Drawing.Point(0, 531);
+			this.DatelistView.MultiSelect = false;
+			this.DatelistView.Name = "DatelistView";
+			this.DatelistView.ReadOnly = true;
+			this.DatelistView.RowHeadersVisible = false;
+			this.DatelistView.Size = new System.Drawing.Size(912, 125);
+			this.DatelistView.TabIndex = 8;
+			this.DatelistView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.DatelistView_CellFormatting);
+			this.DatelistView.Enter += new System.EventHandler(this.DatelistView_Enter);
+			this.DatelistView.Leave += new System.EventHandler(this.DatelistView_Leave);
+			// 
+			// dataGridViewTextBoxColumn1
+			// 
+			this.dataGridViewTextBoxColumn1.HeaderText = "Column1";
+			this.dataGridViewTextBoxColumn1.Image = null;
+			this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+			this.dataGridViewTextBoxColumn1.ReadOnly = true;
+			this.dataGridViewTextBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+			// 
+			// textAndImageColumn1
+			// 
+			this.textAndImageColumn1.HeaderText = "Column2";
+			this.textAndImageColumn1.Name = "textAndImageColumn1";
+			this.textAndImageColumn1.ReadOnly = true;
+			this.textAndImageColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
 			// 
 			// MainForm
 			// 
@@ -332,9 +409,9 @@ namespace TCPingInfoView
 			this.ClientSize = new System.Drawing.Size(912, 678);
 			this.Controls.Add(this.MainlistView);
 			this.Controls.Add(this.splitter1);
-			this.Controls.Add(this.DatelistView);
 			this.Controls.Add(this.toolStrip1);
 			this.Controls.Add(this.menuStrip1);
+			this.Controls.Add(this.DatelistView);
 			this.Controls.Add(this.statusStrip1);
 			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "MainForm";
@@ -349,6 +426,8 @@ namespace TCPingInfoView
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
 			this.NotifyIcon_MenuStrip.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.MainlistView)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.DatelistView)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -374,10 +453,9 @@ namespace TCPingInfoView
 		private ToolStripMenuItem StartStop_MenuItem;
 		private ToolStripMenuItem Exit_MenuItem;
 		private ToolStripStatusLabel toolStripStatusLabel1;
-		private DoubleBufferListView DatelistView;
 		private ColumnHeader Date;
 		private ColumnHeader Latency2;
-		private DoubleBufferListView MainlistView;
+		private DoubleBufferDataGridView MainlistView;
 		private ColumnHeader columnHeader1;
 		private ColumnHeader columnHeader2;
 		private ColumnHeader columnHeader3;
@@ -386,6 +464,15 @@ namespace TCPingInfoView
 		private ColumnHeader columnHeader6;
 		private ImageList imageList1;
 		private Splitter splitter1;
+		private DataGridViewTextBoxColumn Column1;
+		private TextAndImageColumn Column2;
+		private DataGridViewTextBoxColumn Column3;
+		private DataGridViewTextBoxColumn Column4;
+		private DataGridViewTextBoxColumn Column5;
+		private DataGridViewTextBoxColumn Column6;
+		private DoubleBufferDataGridView DatelistView;
+		private TextAndImageColumn dataGridViewTextBoxColumn1;
+		private DataGridViewTextBoxColumn textAndImageColumn1;
 	}
 }
 
