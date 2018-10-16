@@ -66,6 +66,7 @@ namespace TCPingInfoView
 
 		protected override void OnCellMouseDown(DataGridViewCellMouseEventArgs e)
 		{
+			base.OnCellMouseDown(e);
 			if (e.RowIndex >= 0)
 			{
 				Rows[e.RowIndex].Selected = true;
