@@ -219,6 +219,11 @@ namespace TCPingInfoView
 			return -1;
 		}
 
+		public static void RemoveCompletedTasks(ref ConcurrentList<Task> tasks)
+		{
+			tasks.RemoveAll(x => x.IsCompleted);
+		}
+
 		public static void Invoke(this Control control, MethodInvoker action)
 		{
 			control.Invoke(action);

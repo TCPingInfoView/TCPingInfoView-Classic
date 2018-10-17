@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -80,6 +81,11 @@ namespace TCPingInfoView
 		public void RemoveAt(int index)
 		{
 			lock (sync) m_list.RemoveAt(index);
+		}
+
+		public void RemoveAll(Predicate<T> match)
+		{
+			lock (sync) m_list.RemoveAll(match);
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()

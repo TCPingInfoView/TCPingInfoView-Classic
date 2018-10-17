@@ -25,12 +25,16 @@ namespace TCPingInfoView
 
 		public static bool QClose = false;
 
+		#region 超时设置
+
 		public static int ReverseDNSTimeout = 1000;
 		public static int Timeout = 3000;
 		public static int HighLatency = 300;
 		public static Color TimeoutColor = Color.Red;
 		public static Color HighLatencyColor = Color.Coral;
 		public static Color LowLatencyColor = Color.Green;
+
+		#endregion
 
 		private int Needheight;
 		private double listViewsProportion;
@@ -50,11 +54,14 @@ namespace TCPingInfoView
 
 		private delegate void VoidMethodDelegate();
 
+		#region Timer
+
 		private Timer TestAllTimer;
 		private const int second = 1000;
 		private const int minute = 60 * second;
 		public int interval = 1 * minute;
 
+		#endregion
 
 		#region 窗口第一次载入
 
@@ -153,6 +160,7 @@ namespace TCPingInfoView
 		{
 			StopPing();
 			cts_PingTask.Cancel();
+			Util.RemoveCompletedTasks(ref PingTasks);
 			Task.WaitAll(PingTasks.ToArray());
 			cts_PingTask.Dispose();
 			cts_PingTask = new CancellationTokenSource();
@@ -318,6 +326,7 @@ namespace TCPingInfoView
 					}
 				});
 			});
+			Util.RemoveCompletedTasks(ref PingTasks);
 			PingTasks.Add(t);
 			t.Start();
 		}
