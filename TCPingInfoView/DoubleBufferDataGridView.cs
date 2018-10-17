@@ -72,5 +72,14 @@ namespace TCPingInfoView
 				Rows[e.RowIndex].Selected = true;
 			}
 		}
+
+		protected override void OnColumnHeaderMouseClick(DataGridViewCellMouseEventArgs e)
+		{
+			base.OnColumnHeaderMouseClick(e);
+			if (SelectedCells.Count > 0)
+			{
+				Rows[SelectedCells[0].RowIndex].Selected = true;
+			}
+		}
 	}
 }
