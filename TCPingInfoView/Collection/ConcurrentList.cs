@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace TCPingInfoView
+namespace TCPingInfoView.Collection
 {
 	public class ConcurrentList<T> : IList<T>
 	{

@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace TCPingInfoView
+namespace TCPingInfoView.Control
 {
 	[System.ComponentModel.DesignerCategory(@"Code")]
 	public class DoubleBufferDataGridView : DataGridView

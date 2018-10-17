@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
+using TCPingInfoView.Control;
 
 namespace TCPingInfoView
 {
@@ -61,15 +62,15 @@ namespace TCPingInfoView
 			this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.splitter1 = new System.Windows.Forms.Splitter();
-			this.MainlistView = new TCPingInfoView.DoubleBufferDataGridView();
+			this.MainlistView = new TCPingInfoView.Control.DoubleBufferDataGridView();
 			this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Column2 = new TCPingInfoView.TextAndImageColumn();
+			this.Column2 = new TCPingInfoView.Control.TextAndImageColumn();
 			this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.DatelistView = new TCPingInfoView.DoubleBufferDataGridView();
-			this.dataGridViewTextBoxColumn1 = new TCPingInfoView.TextAndImageColumn();
+			this.DatelistView = new TCPingInfoView.Control.DoubleBufferDataGridView();
+			this.dataGridViewTextBoxColumn1 = new TCPingInfoView.Control.TextAndImageColumn();
 			this.textAndImageColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.menuStrip1.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
@@ -102,19 +103,19 @@ namespace TCPingInfoView
 			// 从文件载入ToolStripMenuItem
 			// 
 			this.从文件载入ToolStripMenuItem.Name = "从文件载入ToolStripMenuItem";
-			this.从文件载入ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+			this.从文件载入ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.从文件载入ToolStripMenuItem.Text = "从文件载入";
 			this.从文件载入ToolStripMenuItem.Click += new System.EventHandler(this.从文件载入ToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(133, 6);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
 			// 
 			// 退出ToolStripMenuItem
 			// 
 			this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
-			this.退出ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+			this.退出ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.退出ToolStripMenuItem.Text = "退出";
 			this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
 			// 
@@ -404,8 +405,8 @@ namespace TCPingInfoView
 			// 
 			// MainForm
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
 			this.ClientSize = new System.Drawing.Size(912, 678);
 			this.Controls.Add(this.MainlistView);
 			this.Controls.Add(this.splitter1);

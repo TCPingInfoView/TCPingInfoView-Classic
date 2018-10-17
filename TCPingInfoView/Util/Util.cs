@@ -4,8 +4,9 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TCPingInfoView.Collection;
 
-namespace TCPingInfoView
+namespace TCPingInfoView.Util
 {
 	public static class Util
 	{
@@ -170,7 +171,7 @@ namespace TCPingInfoView
 					Index = i + 1,
 					HostsName = data[i].HostsName,
 					FailedP = @"0%",
-					Latency = 0,
+					LastPing = 0,
 					Description = data[i].Description
 				};
 				if (data[i].Ip == null)
@@ -224,7 +225,7 @@ namespace TCPingInfoView
 			tasks.RemoveAll(x => x.IsCompleted);
 		}
 
-		public static void Invoke(this Control control, MethodInvoker action)
+		public static void Invoke(this System.Windows.Forms.Control control, MethodInvoker action)
 		{
 			control.Invoke(action);
 		}

@@ -2,8 +2,9 @@
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using TCPingInfoView.Collection;
 
-namespace TCPingInfoView
+namespace TCPingInfoView.Util
 {
 	public static class Read
 	{

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace TCPingInfoView
+namespace TCPingInfoView.Collection
 {
 	/// <inheritdoc />
 	/// <summary>

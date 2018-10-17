@@ -7,7 +7,10 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TCPingInfoView.Collection;
+using TCPingInfoView.Control;
 using TCPingInfoView.Properties;
+using TCPingInfoView.Util;
 using Timer = System.Threading.Timer;
 
 namespace TCPingInfoView
@@ -50,8 +53,6 @@ namespace TCPingInfoView
 		private readonly BindingCollection<DateTable> Datetable = new BindingCollection<DateTable>();
 		private ConcurrentList<DateTable> datetable = new ConcurrentList<DateTable>();
 
-		private ConcurrentList<TCPingLog> logs = new ConcurrentList<TCPingLog>();
-
 		private delegate void VoidMethodDelegate();
 
 		#region Timer
@@ -78,7 +79,7 @@ namespace TCPingInfoView
 			MainlistView.Columns[1].DataPropertyName = @"HostsName";
 			MainlistView.Columns[2].DataPropertyName = @"Endpoint";
 			MainlistView.Columns[3].DataPropertyName = @"FailedP";
-			MainlistView.Columns[4].DataPropertyName = @"Latency";
+			MainlistView.Columns[4].DataPropertyName = @"LastPing";
 			MainlistView.Columns[5].DataPropertyName = @"Description";
 		}
 
@@ -160,7 +161,7 @@ namespace TCPingInfoView
 		{
 			StopPing();
 			cts_PingTask.Cancel();
-			Util.RemoveCompletedTasks(ref PingTasks);
+			Util.Util.RemoveCompletedTasks(ref PingTasks);
 			Task.WaitAll(PingTasks.ToArray());
 			cts_PingTask.Dispose();
 			cts_PingTask = new CancellationTokenSource();
@@ -169,13 +170,7 @@ namespace TCPingInfoView
 			Maintable.Clear();
 			Datetable.Clear();
 
-			logs = new ConcurrentList<TCPingLog>();
-			for (var i = 0; i < rawtable.Count; ++i)
-			{
-				logs.Add(new TCPingLog());
-			}
-
-			maintable = Util.ToMainTable(rawtable);
+			maintable = Util.Util.ToMainTable(rawtable);
 			ToMainTable(maintable);
 			if (rawtable.Count > 0)
 			{
@@ -204,7 +199,7 @@ namespace TCPingInfoView
 						return;
 					}
 
-					if (Util.IsIPv4Address(maintable[i].HostsName)) //反查DNS
+					if (Util.Util.IsIPv4Address(maintable[i].HostsName)) //反查DNS
 					{
 						PingOne(i);
 
@@ -256,7 +251,7 @@ namespace TCPingInfoView
 		{
 			if (maintable[index].Endpoint != string.Empty)
 			{
-				var ipe = Util.ToIPEndPoint(maintable[index].Endpoint, 443);
+				var ipe = Util.Util.ToIPEndPoint(maintable[index].Endpoint, 443);
 				double? latency = null;
 				var res = Timeout;
 				var time = DateTime.Now;
@@ -279,13 +274,8 @@ namespace TCPingInfoView
 					Date = time,
 					Latenty = res
 				};
-				logs[index].Add(log);
 
-				var fp = logs[index].FailedP;
-				var fpStr = fp > 0.0 ? fp.ToString(@"P") : @"0%";
-
-				maintable[index].FailedP = fpStr;
-				maintable[index].Latency = res;
+				maintable[index].AddNewLog(log);
 
 				if (MainlistView.SelectedRows.Count > 0)
 				{
@@ -326,7 +316,7 @@ namespace TCPingInfoView
 					}
 				});
 			});
-			Util.RemoveCompletedTasks(ref PingTasks);
+			Util.Util.RemoveCompletedTasks(ref PingTasks);
 			PingTasks.Add(t);
 			t.Start();
 		}
@@ -539,7 +529,7 @@ namespace TCPingInfoView
 			else
 			{
 				Datetable.Clear();
-				datetable = (ConcurrentList<DateTable>)logs[index - 1].Info;
+				datetable = (ConcurrentList<DateTable>)maintable[index - 1].Info;
 				ToLogs(datetable);
 				if (datetable.Count > 0)
 				{

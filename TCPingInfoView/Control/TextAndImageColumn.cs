@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace TCPingInfoView
+namespace TCPingInfoView.Control
 {
 	public class TextAndImageColumn : DataGridViewTextBoxColumn
 	{

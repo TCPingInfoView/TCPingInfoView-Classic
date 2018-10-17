@@ -9,7 +9,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TCPingInfoView
+namespace TCPingInfoView.Util
 {
 	internal static class NetTest
 	{

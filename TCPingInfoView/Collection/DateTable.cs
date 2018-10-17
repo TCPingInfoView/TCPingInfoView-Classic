@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace TCPingInfoView
+namespace TCPingInfoView.Collection
 {
 	public class DateTable : INotifyPropertyChanged
 	{
@@ -22,7 +22,8 @@ namespace TCPingInfoView
 			}
 		}
 
-		public int Latenty { get => latenty;
+		public int Latenty { 
+			get => latenty;
 			set
 			{
 				if (latenty != value)
