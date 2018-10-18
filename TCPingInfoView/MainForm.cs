@@ -21,8 +21,12 @@ namespace TCPingInfoView
 		{
 			InitializeComponent();
 			Icon = Resources.TCPing;
-			notifyIcon1.Icon = Icon;
+			notifyIcon1.Icon = Resources.TCPing_White;
 		}
+
+		private double Dpi => this.GetDpi();
+		private static Size Defpicsize => new Size(16, 16);
+		private Size Dpipicsize => new Size(Convert.ToInt32(Defpicsize.Width * Dpi), Convert.ToInt32(Defpicsize.Height * Dpi));
 
 		private delegate void VoidMethod_Delegate();
 
@@ -92,10 +96,27 @@ namespace TCPingInfoView
 			DatelistView.Columns[1].DataPropertyName = @"Latenty";
 		}
 
+		private void LoadButtons()
+		{
+			if (Dpi > 1.0)
+			{
+				Test_Button.ImageScaling = ToolStripItemImageScaling.None;
+				Test_Button.Image = Util.Util.ResizeImage(Resources.Test, Dpipicsize);
+				Start_Button.ImageScaling = ToolStripItemImageScaling.None;
+				Start_Button.Image = Util.Util.ResizeImage(Resources.Start, Dpipicsize);
+			}
+			else
+			{
+				Test_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
+				Start_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
+			}
+		}
 		private void MainForm_Load(object sender, EventArgs e)
 		{
 			Needheight = Height - (MainlistView.Height + DatelistView.Height);
 			listViewsProportion = Convert.ToDouble(MainlistView.Height) / Convert.ToDouble(MainlistView.Height + DatelistView.Height);
+
+			LoadButtons();
 
 			MainlistView.AutoGenerateColumns = false;
 			MainlistView.DataSource = Maintable;
@@ -391,7 +412,18 @@ namespace TCPingInfoView
 			TestAllTimer?.Dispose();
 			TestAllTimer = new Timer(StartCore, null, 0, interval);
 			Start_Button.Text = @"停止";
-			Start_Button.Image = Resources.Stop;
+
+			if (Dpi > 1.0)
+			{
+				Start_Button.ImageScaling = ToolStripItemImageScaling.None;
+				Start_Button.Image = Util.Util.ResizeImage(Resources.Stop, Dpipicsize);
+			}
+			else
+			{
+				Start_Button.Image = Resources.Stop;
+				Start_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
+			}
+
 			StartStop_MenuItem.Text = @"停止";
 		}
 
@@ -399,7 +431,18 @@ namespace TCPingInfoView
 		{
 			TestAllTimer?.Dispose();
 			Start_Button.Text = @"开始";
-			Start_Button.Image = Resources.Start;
+
+			if (Dpi > 1.0)
+			{
+				Start_Button.ImageScaling = ToolStripItemImageScaling.None;
+				Start_Button.Image = Util.Util.ResizeImage(Resources.Start, Dpipicsize);
+			}
+			else
+			{
+				Start_Button.Image = Resources.Start;
+				Start_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
+			}
+
 			StartStop_MenuItem.Text = @"开始";
 		}
 

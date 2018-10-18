@@ -115,5 +115,8 @@
   <ItemGroup>
     <None Include="Resources\Test.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TCPing_White.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
