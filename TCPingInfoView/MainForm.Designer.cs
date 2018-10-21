@@ -39,13 +39,10 @@ namespace TCPingInfoView
 			this.从文件载入ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.Options_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.IsNotifyClose_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-			this.Load_Button = new System.Windows.Forms.ToolStripButton();
-			this.Test_Button = new System.Windows.Forms.ToolStripButton();
-			this.Start_Button = new System.Windows.Forms.ToolStripButton();
-			this.Exit_Button = new System.Windows.Forms.ToolStripButton();
 			this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
 			this.NotifyIcon_MenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.ShowHide_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,6 +59,11 @@ namespace TCPingInfoView
 			this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.splitter1 = new System.Windows.Forms.Splitter();
+			this.Load_Button = new System.Windows.Forms.ToolStripButton();
+			this.Test_Button = new System.Windows.Forms.ToolStripButton();
+			this.Start_Button = new System.Windows.Forms.ToolStripButton();
+			this.Exit_Button = new System.Windows.Forms.ToolStripButton();
+			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.MainlistView = new TCPingInfoView.Control.DoubleBufferDataGridView();
 			this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column2 = new TCPingInfoView.Control.TextAndImageColumn();
@@ -74,8 +76,8 @@ namespace TCPingInfoView
 			this.textAndImageColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.menuStrip1.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
-			this.toolStrip1.SuspendLayout();
 			this.NotifyIcon_MenuStrip.SuspendLayout();
+			this.toolStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.MainlistView)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.DatelistView)).BeginInit();
 			this.SuspendLayout();
@@ -83,7 +85,8 @@ namespace TCPingInfoView
 			// menuStrip1
 			// 
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.File_MenuItem});
+            this.File_MenuItem,
+            this.Options_MenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(912, 25);
@@ -119,6 +122,21 @@ namespace TCPingInfoView
 			this.退出ToolStripMenuItem.Text = "退出";
 			this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
 			// 
+			// Options_MenuItem
+			// 
+			this.Options_MenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.IsNotifyClose_MenuItem});
+			this.Options_MenuItem.Name = "Options_MenuItem";
+			this.Options_MenuItem.Size = new System.Drawing.Size(44, 21);
+			this.Options_MenuItem.Text = "选项";
+			// 
+			// IsNotifyClose_MenuItem
+			// 
+			this.IsNotifyClose_MenuItem.Name = "IsNotifyClose_MenuItem";
+			this.IsNotifyClose_MenuItem.Size = new System.Drawing.Size(180, 22);
+			this.IsNotifyClose_MenuItem.Text = "关闭时提示";
+			this.IsNotifyClose_MenuItem.Click += new System.EventHandler(this.IsNotifyClose_MenuItem_Click);
+			// 
 			// statusStrip1
 			// 
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -134,59 +152,6 @@ namespace TCPingInfoView
 			this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
 			this.toolStripStatusLabel1.Size = new System.Drawing.Size(277, 17);
 			this.toolStripStatusLabel1.Text = "https://github.com/HMBSbige/TCPingInfoView";
-			// 
-			// toolStrip1
-			// 
-			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.Load_Button,
-            this.Test_Button,
-            this.Start_Button,
-            this.Exit_Button});
-			this.toolStrip1.Location = new System.Drawing.Point(0, 25);
-			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(912, 25);
-			this.toolStrip1.TabIndex = 4;
-			this.toolStrip1.Text = "toolStrip1";
-			// 
-			// Load_Button
-			// 
-			this.Load_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.Load_Button.Image = ((System.Drawing.Image)(resources.GetObject("Load_Button.Image")));
-			this.Load_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.Load_Button.Name = "Load_Button";
-			this.Load_Button.Size = new System.Drawing.Size(36, 22);
-			this.Load_Button.Text = "载入";
-			this.Load_Button.Click += new System.EventHandler(this.toolStripButton3_Click);
-			// 
-			// Test_Button
-			// 
-			this.Test_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.Test_Button.Image = global::TCPingInfoView.Properties.Resources.Test;
-			this.Test_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.Test_Button.Name = "Test_Button";
-			this.Test_Button.Size = new System.Drawing.Size(23, 22);
-			this.Test_Button.Text = "测试";
-			this.Test_Button.Click += new System.EventHandler(this.toolStripButton1_Click);
-			// 
-			// Start_Button
-			// 
-			this.Start_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.Start_Button.Image = global::TCPingInfoView.Properties.Resources.Start;
-			this.Start_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.Start_Button.Name = "Start_Button";
-			this.Start_Button.Size = new System.Drawing.Size(23, 22);
-			this.Start_Button.Text = "开始";
-			this.Start_Button.Click += new System.EventHandler(this.Start_Button_Click);
-			// 
-			// Exit_Button
-			// 
-			this.Exit_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.Exit_Button.Image = ((System.Drawing.Image)(resources.GetObject("Exit_Button.Image")));
-			this.Exit_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.Exit_Button.Name = "Exit_Button";
-			this.Exit_Button.Size = new System.Drawing.Size(36, 22);
-			this.Exit_Button.Text = "退出";
-			this.Exit_Button.Click += new System.EventHandler(this.toolStripButton2_Click);
 			// 
 			// notifyIcon1
 			// 
@@ -284,6 +249,60 @@ namespace TCPingInfoView
 			this.splitter1.Size = new System.Drawing.Size(912, 3);
 			this.splitter1.TabIndex = 7;
 			this.splitter1.TabStop = false;
+			this.splitter1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitter1_SplitterMoved);
+			// 
+			// Load_Button
+			// 
+			this.Load_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.Load_Button.Image = ((System.Drawing.Image)(resources.GetObject("Load_Button.Image")));
+			this.Load_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.Load_Button.Name = "Load_Button";
+			this.Load_Button.Size = new System.Drawing.Size(36, 22);
+			this.Load_Button.Text = "载入";
+			this.Load_Button.Click += new System.EventHandler(this.toolStripButton3_Click);
+			// 
+			// Test_Button
+			// 
+			this.Test_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.Test_Button.Image = global::TCPingInfoView.Properties.Resources.Test;
+			this.Test_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.Test_Button.Name = "Test_Button";
+			this.Test_Button.Size = new System.Drawing.Size(23, 22);
+			this.Test_Button.Text = "测试";
+			this.Test_Button.Click += new System.EventHandler(this.toolStripButton1_Click);
+			// 
+			// Start_Button
+			// 
+			this.Start_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.Start_Button.Image = global::TCPingInfoView.Properties.Resources.Start;
+			this.Start_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.Start_Button.Name = "Start_Button";
+			this.Start_Button.Size = new System.Drawing.Size(23, 22);
+			this.Start_Button.Text = "开始";
+			this.Start_Button.Click += new System.EventHandler(this.Start_Button_Click);
+			// 
+			// Exit_Button
+			// 
+			this.Exit_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.Exit_Button.Image = ((System.Drawing.Image)(resources.GetObject("Exit_Button.Image")));
+			this.Exit_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.Exit_Button.Name = "Exit_Button";
+			this.Exit_Button.Size = new System.Drawing.Size(36, 22);
+			this.Exit_Button.Text = "退出";
+			this.Exit_Button.Click += new System.EventHandler(this.toolStripButton2_Click);
+			// 
+			// toolStrip1
+			// 
+			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.Load_Button,
+            this.Test_Button,
+            this.Start_Button,
+            this.Exit_Button});
+			this.toolStrip1.Location = new System.Drawing.Point(0, 25);
+			this.toolStrip1.Name = "toolStrip1";
+			this.toolStrip1.Size = new System.Drawing.Size(912, 25);
+			this.toolStrip1.TabIndex = 4;
+			this.toolStrip1.Text = "toolStrip1";
 			// 
 			// MainlistView
 			// 
@@ -424,9 +443,9 @@ namespace TCPingInfoView
 			this.menuStrip1.PerformLayout();
 			this.statusStrip1.ResumeLayout(false);
 			this.statusStrip1.PerformLayout();
+			this.NotifyIcon_MenuStrip.ResumeLayout(false);
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
-			this.NotifyIcon_MenuStrip.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.MainlistView)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.DatelistView)).EndInit();
 			this.ResumeLayout(false);
@@ -442,11 +461,6 @@ namespace TCPingInfoView
 		private ToolStripSeparator toolStripSeparator1;
 		private ToolStripMenuItem 退出ToolStripMenuItem;
 		private StatusStrip statusStrip1;
-		private ToolStrip toolStrip1;
-		private ToolStripButton Test_Button;
-		private ToolStripButton Exit_Button;
-		private ToolStripButton Load_Button;
-		private ToolStripButton Start_Button;
 		private NotifyIcon notifyIcon1;
 		private ContextMenuStrip NotifyIcon_MenuStrip;
 		private ToolStripMenuItem ShowHide_MenuItem;
@@ -474,6 +488,13 @@ namespace TCPingInfoView
 		private DoubleBufferDataGridView DatelistView;
 		private TextAndImageColumn dataGridViewTextBoxColumn1;
 		private DataGridViewTextBoxColumn textAndImageColumn1;
+		private ToolStripButton Load_Button;
+		private ToolStripButton Test_Button;
+		private ToolStripButton Start_Button;
+		private ToolStripButton Exit_Button;
+		private ToolStrip toolStrip1;
+		private ToolStripMenuItem Options_MenuItem;
+		private ToolStripMenuItem IsNotifyClose_MenuItem;
 	}
 }
 

@@ -22,15 +22,24 @@ namespace TCPingInfoView
 			InitializeComponent();
 			Icon = Resources.TCPing;
 			notifyIcon1.Icon = Resources.TCPing_White;
+			Config.Load();
 		}
+
+		private readonly AppConfig Config = new AppConfig(@".\TCPingInfoView.json");
+
+		#region DPI
 
 		private double Dpi => this.GetDpi();
 		private static Size Defpicsize => new Size(16, 16);
 		private Size Dpipicsize => new Size(Convert.ToInt32(Defpicsize.Width * Dpi), Convert.ToInt32(Defpicsize.Height * Dpi));
 
-		private delegate void VoidMethod_Delegate();
+		#endregion
 
-		public static bool QClose = false;
+		#region 杂项设置
+
+		private bool _isNotifyClose;
+
+		#endregion
 
 		#region 超时设置
 
@@ -43,19 +52,24 @@ namespace TCPingInfoView
 
 		#endregion
 
-		private int Needheight;
-		private double listViewsProportion;
+		#region 列表相关数据结构
+
+		private ConcurrentList<Data> rawtable = new ConcurrentList<Data>();
 
 		private readonly BindingCollection<MainTable> Maintable = new BindingCollection<MainTable>();
 		private ConcurrentList<MainTable> maintable = new ConcurrentList<MainTable>();
-		private ConcurrentList<Data> rawtable = new ConcurrentList<Data>();
 
+		private readonly BindingCollection<DateTable> Datetable = new BindingCollection<DateTable>();
+		private ConcurrentList<DateTable> datetable = new ConcurrentList<DateTable>();
+
+		#endregion
+
+		#region PingTask
 
 		private ConcurrentList<Task> PingTasks = new ConcurrentList<Task>();
 		private static CancellationTokenSource cts_PingTask = new CancellationTokenSource();
 
-		private readonly BindingCollection<DateTable> Datetable = new BindingCollection<DateTable>();
-		private ConcurrentList<DateTable> datetable = new ConcurrentList<DateTable>();
+		#endregion
 
 		private delegate void VoidMethodDelegate();
 
@@ -111,10 +125,19 @@ namespace TCPingInfoView
 				Start_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
 			}
 		}
+
+		private void LoadSetting()
+		{
+			Height = Config.MainFormHeight;
+			Width = Config.MainFormWidth;
+			DatelistView.Height = Config.DateListHeight;
+			_isNotifyClose = Config.IsNotifyClose;
+			IsNotifyClose_MenuItem.Checked = _isNotifyClose;
+		}
+
 		private void MainForm_Load(object sender, EventArgs e)
 		{
-			Needheight = Height - (MainlistView.Height + DatelistView.Height);
-			listViewsProportion = Convert.ToDouble(MainlistView.Height) / Convert.ToDouble(MainlistView.Height + DatelistView.Height);
+			LoadSetting();
 
 			LoadButtons();
 
@@ -349,18 +372,21 @@ namespace TCPingInfoView
 
 		#endregion
 
-		#region 保持两表格的比例(待实现)
+		#region 窗口改变
 
 		private void ChangeSize()
 		{
-			var height = Height - Needheight;
-			MainlistView.Height = Convert.ToInt32(listViewsProportion * height);
-			DatelistView.Height = height - MainlistView.Height;
+
+		}
+
+		private void splitter1_SplitterMoved(object sender, SplitterEventArgs e)
+		{
+			ChangeSize();
 		}
 
 		private void MainForm_Resize(object sender, EventArgs e)
 		{
-			//ChangeSize();
+			ChangeSize();
 		}
 
 		#endregion
@@ -483,7 +509,7 @@ namespace TCPingInfoView
 		{
 			if (e.CloseReason == CloseReason.UserClosing)
 			{
-				if (!QClose)
+				if (!_isNotifyClose)
 				{
 					e.Cancel = true;
 					TriggerMainFormDisplay();
@@ -507,12 +533,32 @@ namespace TCPingInfoView
 					e.Cancel = true;
 				}
 			}
+			else
+			{
+				Exit();
+			}
+		}
+
+		private void SaveConfig()
+		{
+			Config.MainFormHeight = Height;
+			Config.MainFormWidth = Width;
+			Config.DateListHeight = DatelistView.Height;
+			Config.IsNotifyClose = _isNotifyClose;
+			Config.Save();
 		}
 
 		private void Exit()
 		{
+			SaveConfig();
 			notifyIcon1.Dispose();
 			Environment.Exit(0);
+		}
+
+		private void IsNotifyClose_MenuItem_Click(object sender, EventArgs e)
+		{
+			IsNotifyClose_MenuItem.Checked = !IsNotifyClose_MenuItem.Checked;
+			_isNotifyClose = IsNotifyClose_MenuItem.Checked;
 		}
 
 		private void Exit_MenuItem_Click(object sender, EventArgs e)
