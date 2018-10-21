@@ -11,8 +11,15 @@ namespace TCPingInfoView.Collection
 		private int index;
 		private string hostsName;
 		private string endpoint;
-		private string failedP;
 		private string description;
+		private int totalPing = 0;
+		private int count = 0;
+		private int succeedCount = 0;
+		private int failedCount = 0;
+		private int? lastPing;
+		private int? maxPing;
+		private int? minPing;
+		private readonly ConcurrentList<DateTable> _info;
 
 		public int Index
 		{
@@ -57,17 +64,12 @@ namespace TCPingInfoView.Collection
 		{
 			get
 			{
+				if (Count == 0)
+				{
+					return @"0%";
+				}
 				var fp = (double)FailedCount / Count;
 				return fp > 0.0 ? fp.ToString(@"P") : @"0%";
-			}
-
-			set
-			{
-				if (failedP != value)
-				{
-					failedP = value;
-					NotifyPropertyChanged();
-				}
 			}
 		}
 
@@ -84,45 +86,44 @@ namespace TCPingInfoView.Collection
 			}
 		}
 
-		public event PropertyChangedEventHandler PropertyChanged;
-
-		private void NotifyPropertyChanged([CallerMemberName] string propertyName = @"")
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
-
-		public MainTable()
-		{
-			index = 0;
-			hostsName = string.Empty;
-			endpoint = string.Empty;
-			failedP = string.Empty;
-			description = string.Empty;
-			_info = new ConcurrentList<DateTable>();
-		}
-
-		private readonly ConcurrentList<DateTable> _info;
 		public IEnumerable<DateTable> Info => _info;
 
-		private double totalping = 0;
-		private int count = 0;
-		private int succeedCount = 0;
-		private int failedCount = 0;
-		private double lastPing = 0;
-		private double maxPing = 0;
-		private double minPing = double.MaxValue;
-
-		public double Average => Totalping / SucceedCount;
-		public double SucceedP => (double)SucceedCount / Count;
-
-		public double Totalping
+		public int? Average
 		{
-			get => totalping;
+			get
+			{
+				if (SucceedCount != 0)
+				{
+					return Convert.ToInt32(TotalPing / SucceedCount);
+				}
+				else
+				{
+					return null;
+				}
+			}
+		}
+
+		public string SucceedP
+		{
+			get
+			{
+				if (Count == 0)
+				{
+					return @"0%";
+				}
+				var sp = (double)SucceedCount / Count;
+				return sp > 0.0 ? sp.ToString(@"P") : @"0%";
+			}
+		}
+
+		private int TotalPing
+		{
+			get => totalPing;
 			set
 			{
-				if (Math.Abs(totalping - value) > 0.0)
+				if (totalPing != value)
 				{
-					totalping = value;
+					totalPing = value;
 					NotifyPropertyChanged();
 				}
 			}
@@ -167,12 +168,12 @@ namespace TCPingInfoView.Collection
 			}
 		}
 
-		public int LastPing
+		public int? LastPing
 		{
-			get => Convert.ToInt32(lastPing);
+			get => lastPing;
 			set
 			{
-				if (Math.Abs(lastPing - value) > 0.0)
+				if (value != lastPing)
 				{
 					lastPing = value;
 					NotifyPropertyChanged();
@@ -180,12 +181,12 @@ namespace TCPingInfoView.Collection
 			}
 		}
 
-		public double MaxPing
+		public int? MaxPing
 		{
 			get => maxPing;
 			set
 			{
-				if (Math.Abs(maxPing - value) > 0.0)
+				if (maxPing != value)
 				{
 					maxPing = value;
 					NotifyPropertyChanged();
@@ -193,12 +194,12 @@ namespace TCPingInfoView.Collection
 			}
 		}
 
-		public double MinPing
+		public int? MinPing
 		{
 			get => minPing;
 			set
 			{
-				if (Math.Abs(minPing - value) > 0.0)
+				if (minPing != value)
 				{
 					minPing = value;
 					NotifyPropertyChanged();
@@ -206,22 +207,38 @@ namespace TCPingInfoView.Collection
 			}
 		}
 
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		private void NotifyPropertyChanged([CallerMemberName] string propertyName = @"")
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
+
+		public MainTable()
+		{
+			index = 0;
+			hostsName = string.Empty;
+			endpoint = string.Empty;
+			description = string.Empty;
+			_info = new ConcurrentList<DateTable>();
+		}
+
 		public void AddNewLog(DateTable info)
 		{
 			_info.Add(info);
 			++Count;
-			if (info.Latenty < Timeout)
+			if (info.Latency < Timeout)
 			{
 				++SucceedCount;
-				Totalping += info.Latenty;
-				LastPing = info.Latenty;
+				TotalPing += info.Latency;
+				LastPing = info.Latency;
 
-				if (MaxPing < LastPing)
+				if (MaxPing < LastPing || MaxPing == null)
 				{
 					MaxPing = LastPing;
 				}
 
-				if (MinPing > LastPing)
+				if (MinPing > LastPing || MinPing == null)
 				{
 					MinPing = LastPing;
 				}

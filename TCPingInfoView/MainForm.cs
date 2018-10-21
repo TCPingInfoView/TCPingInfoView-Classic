@@ -30,8 +30,8 @@ namespace TCPingInfoView
 		#region DPI
 
 		private double Dpi => this.GetDpi();
-		private static Size Defpicsize => new Size(16, 16);
-		private Size Dpipicsize => new Size(Convert.ToInt32(Defpicsize.Width * Dpi), Convert.ToInt32(Defpicsize.Height * Dpi));
+		private static Size DefPicSize => new Size(16, 16);
+		private Size DpiPicSize => new Size(Convert.ToInt32(DefPicSize.Width * Dpi), Convert.ToInt32(DefPicSize.Height * Dpi));
 
 		#endregion
 
@@ -51,7 +51,7 @@ namespace TCPingInfoView
 
 		#region 超时设置
 
-		public static int ReverseDNSTimeout = 1000;
+		public static int ReverseDNSTimeout = 2000;
 		public static int Timeout = 3000;
 		public static int HighLatency = 300;
 		public static Color TimeoutColor = Color.Red;
@@ -62,13 +62,13 @@ namespace TCPingInfoView
 
 		#region 列表相关数据结构
 
-		private ConcurrentList<Data> rawtable = new ConcurrentList<Data>();
+		private ConcurrentList<Data> rawTable = new ConcurrentList<Data>();
 
-		private readonly BindingCollection<MainTable> Maintable = new BindingCollection<MainTable>();
-		private ConcurrentList<MainTable> maintable = new ConcurrentList<MainTable>();
+		private readonly BindingCollection<MainTable> MainTable = new BindingCollection<MainTable>();
+		private ConcurrentList<MainTable> mainTable = new ConcurrentList<MainTable>();
 
-		private readonly BindingCollection<DateTable> Datetable = new BindingCollection<DateTable>();
-		private ConcurrentList<DateTable> datetable = new ConcurrentList<DateTable>();
+		private readonly BindingCollection<DateTable> DateTable = new BindingCollection<DateTable>();
+		private ConcurrentList<DateTable> dateTable = new ConcurrentList<DateTable>();
 
 		#endregion
 
@@ -96,30 +96,30 @@ namespace TCPingInfoView
 
 		#region 窗口第一次载入
 
-		private void LoadMainlistView()
+		private void LoadMainList()
 		{
-			MainlistView.Columns[0].HeaderText = @"列表顺序";
-			MainlistView.Columns[1].HeaderText = @"主机名";
-			MainlistView.Columns[2].HeaderText = @"IP:端口";
-			MainlistView.Columns[3].HeaderText = @"失败率";
-			MainlistView.Columns[4].HeaderText = @"延迟(ms)";
-			MainlistView.Columns[5].HeaderText = @"说明";
+			MainList.Columns[0].HeaderText = @"列表顺序";
+			MainList.Columns[1].HeaderText = @"主机名";
+			MainList.Columns[2].HeaderText = @"IP:端口";
+			MainList.Columns[3].HeaderText = @"失败率";
+			MainList.Columns[4].HeaderText = @"延迟(ms)";
+			MainList.Columns[5].HeaderText = @"说明";
 
-			MainlistView.Columns[0].DataPropertyName = @"Index";
-			MainlistView.Columns[1].DataPropertyName = @"HostsName";
-			MainlistView.Columns[2].DataPropertyName = @"Endpoint";
-			MainlistView.Columns[3].DataPropertyName = @"FailedP";
-			MainlistView.Columns[4].DataPropertyName = @"LastPing";
-			MainlistView.Columns[5].DataPropertyName = @"Description";
+			MainList.Columns[0].DataPropertyName = @"Index";
+			MainList.Columns[1].DataPropertyName = @"HostsName";
+			MainList.Columns[2].DataPropertyName = @"Endpoint";
+			MainList.Columns[3].DataPropertyName = @"FailedP";
+			MainList.Columns[4].DataPropertyName = @"LastPing";
+			MainList.Columns[5].DataPropertyName = @"Description";
 		}
 
-		private void LoadDatelistView()
+		private void LoadDateList()
 		{
-			DatelistView.Columns[0].HeaderText = @"TCPing 通信时间";
-			DatelistView.Columns[1].HeaderText = @"延迟(ms)";
+			DateList.Columns[0].HeaderText = @"TCPing 通信时间";
+			DateList.Columns[1].HeaderText = @"延迟(ms)";
 
-			DatelistView.Columns[0].DataPropertyName = @"Date";
-			DatelistView.Columns[1].DataPropertyName = @"Latenty";
+			DateList.Columns[0].DataPropertyName = @"Date";
+			DateList.Columns[1].DataPropertyName = @"Latency";
 		}
 
 		private void LoadButtons()
@@ -127,9 +127,9 @@ namespace TCPingInfoView
 			if (Dpi > 1.0)
 			{
 				Test_Button.ImageScaling = ToolStripItemImageScaling.None;
-				Test_Button.Image = Util.Util.ResizeImage(Resources.Test, Dpipicsize);
+				Test_Button.Image = Util.Util.ResizeImage(Resources.Test, DpiPicSize);
 				Start_Button.ImageScaling = ToolStripItemImageScaling.None;
-				Start_Button.Image = Util.Util.ResizeImage(Resources.Start, Dpipicsize);
+				Start_Button.Image = Util.Util.ResizeImage(Resources.Start, DpiPicSize);
 			}
 			else
 			{
@@ -142,40 +142,33 @@ namespace TCPingInfoView
 		{
 			Height = Config.MainFormHeight;
 			Width = Config.MainFormWidth;
-			DatelistView.Height = Config.DateListHeight;
+			DateList.Height = Config.DateListHeight;
 
 			IsNotifyClose_MenuItem.Checked = Config.IsNotifyClose;
-			if (Config.IsShowDateList)
-			{
-				IsShowDateList_MenuItem.CheckState = CheckState.Checked;
-			}
-			else
-			{
-				IsShowDateList_MenuItem.CheckState = CheckState.Unchecked;
-			}
+			IsShowDateList_MenuItem.CheckState = Config.IsShowDateList ? CheckState.Checked : CheckState.Unchecked;
 		}
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
 			LoadSetting();
 
-			RemainingHeight = Height - (MainlistView.Height + DatelistView.Height);
+			RemainingHeight = Height - (MainList.Height + DateList.Height);
 			ChangedRatio();
 
 			LoadButtons();
 
-			MainlistView.AutoGenerateColumns = false;
-			MainlistView.DataSource = Maintable;
-			LoadMainlistView();
+			MainList.AutoGenerateColumns = false;
+			MainList.DataSource = MainTable;
+			LoadMainList();
 
-			DatelistView.AutoGenerateColumns = false;
-			DatelistView.DataSource = Datetable;
-			LoadDatelistView();
+			DateList.AutoGenerateColumns = false;
+			DateList.DataSource = DateTable;
+			LoadDateList();
 
 			const string defaultPath = @".\test.txt";
 			if (File.Exists(defaultPath))
 			{
-				rawtable = Read.ReadAddressFromFile(defaultPath);
+				rawTable = Read.ReadAddressFromFile(defaultPath);
 				LoadFromList();
 			}
 		}
@@ -192,7 +185,7 @@ namespace TCPingInfoView
 				return;
 			}
 
-			rawtable = Read.ReadAddressFromFile(path);
+			rawTable = Read.ReadAddressFromFile(path);
 			LoadFromList();
 		}
 
@@ -214,9 +207,9 @@ namespace TCPingInfoView
 		{
 			foreach (var item in table)
 			{
-				if (Maintable.All(x => x.Index != item.Index))
+				if (MainTable.All(x => x.Index != item.Index))
 				{
-					Maintable.Add(item);
+					MainTable.Add(item);
 				}
 			}
 		}
@@ -234,14 +227,14 @@ namespace TCPingInfoView
 			cts_PingTask = new CancellationTokenSource();
 			PingTasks = new ConcurrentList<Task>();
 
-			Maintable.Clear();
-			Datetable.Clear();
+			MainTable.Clear();
+			DateTable.Clear();
 
-			maintable = Util.Util.ToMainTable(rawtable);
-			ToMainTable(maintable);
-			if (rawtable.Count > 0)
+			mainTable = Util.Util.ToMainTable(rawTable);
+			ToMainTable(mainTable);
+			if (rawTable.Count > 0)
 			{
-				MainlistView.Rows[0].Selected = true;
+				MainList.Rows[0].Selected = true;
 			}
 			FirstPing();
 		}
@@ -254,7 +247,7 @@ namespace TCPingInfoView
 		{
 			var t = new Task(() =>
 			{
-				Parallel.For(0, maintable.Count, (i, state) =>
+				Parallel.For(0, mainTable.Count, (i, state) =>
 				{
 					try
 					{
@@ -266,7 +259,7 @@ namespace TCPingInfoView
 						return;
 					}
 
-					if (Util.Util.IsIPv4Address(maintable[i].HostsName)) //反查DNS
+					if (Util.Util.IsIPv4Address(mainTable[i].HostsName)) //反查DNS
 					{
 						PingOne(i);
 
@@ -280,11 +273,11 @@ namespace TCPingInfoView
 							return;
 						}
 
-						maintable[i].HostsName = NetTest.GetHostName(IPAddress.Parse(maintable[i].HostsName), ReverseDNSTimeout);
+						mainTable[i].HostsName = NetTest.GetHostName(IPAddress.Parse(mainTable[i].HostsName), ReverseDNSTimeout);
 					}
 					else
 					{
-						var ip = NetTest.GetIP(maintable[i].HostsName);
+						var ip = NetTest.GetIP(mainTable[i].HostsName);
 
 						try
 						{
@@ -296,7 +289,7 @@ namespace TCPingInfoView
 							return;
 						}
 
-						maintable[i].Endpoint = $@"{ip}:{rawtable[i].Port}";
+						mainTable[i].Endpoint = $@"{ip}:{rawTable[i].Port}";
 						PingOne(i);
 					}
 
@@ -316,9 +309,9 @@ namespace TCPingInfoView
 
 		private void PingOne(int index)
 		{
-			if (maintable[index].Endpoint != string.Empty)
+			if (mainTable[index].Endpoint != string.Empty)
 			{
-				var ipe = Util.Util.ToIPEndPoint(maintable[index].Endpoint, 443);
+				var ipe = Util.Util.ToIPEndPoint(mainTable[index].Endpoint, 443);
 				double? latency = null;
 				var res = Timeout;
 				var time = DateTime.Now;
@@ -339,17 +332,17 @@ namespace TCPingInfoView
 				var log = new DateTable
 				{
 					Date = time,
-					Latenty = res
+					Latency = res
 				};
 
-				maintable[index].AddNewLog(log);
+				mainTable[index].AddNewLog(log);
 
-				if (MainlistView.SelectedRows.Count > 0)
+				if (MainList.SelectedRows.Count > 0)
 				{
-					var i = MainlistView.SelectedRows[0].Cells[0].Value as int?;
+					var i = MainList.SelectedRows[0].Cells[0].Value as int?;
 					if (i == index)
 					{
-						DatelistView.Invoke(() => { LoadLogs(index); });
+						DateList.Invoke(() => { LoadLogs(index); });
 					}
 				}
 			}
@@ -359,7 +352,7 @@ namespace TCPingInfoView
 		{
 			var t = new Task(() =>
 			{
-				Parallel.For(0, maintable.Count, (i, state) =>
+				Parallel.For(0, mainTable.Count, (i, state) =>
 				{
 					try
 					{
@@ -400,12 +393,12 @@ namespace TCPingInfoView
 		private void ChangedSize()
 		{
 			var height = Height - RemainingHeight;
-			DatelistView.Height = Convert.ToInt32(ListRatio * height);
+			DateList.Height = Convert.ToInt32(ListRatio * height);
 		}
 
 		private void ChangedRatio()
 		{
-			ListRatio = Convert.ToDouble(DatelistView.Height) / Convert.ToDouble(MainlistView.Height + DatelistView.Height);
+			ListRatio = Convert.ToDouble(DateList.Height) / Convert.ToDouble(MainList.Height + DateList.Height);
 		}
 
 		private void splitter1_SplitterMoved(object sender, SplitterEventArgs e)
@@ -471,7 +464,7 @@ namespace TCPingInfoView
 			if (Dpi > 1.0)
 			{
 				Start_Button.ImageScaling = ToolStripItemImageScaling.None;
-				Start_Button.Image = Util.Util.ResizeImage(Resources.Stop, Dpipicsize);
+				Start_Button.Image = Util.Util.ResizeImage(Resources.Stop, DpiPicSize);
 			}
 			else
 			{
@@ -490,7 +483,7 @@ namespace TCPingInfoView
 			if (Dpi > 1.0)
 			{
 				Start_Button.ImageScaling = ToolStripItemImageScaling.None;
-				Start_Button.Image = Util.Util.ResizeImage(Resources.Start, Dpipicsize);
+				Start_Button.Image = Util.Util.ResizeImage(Resources.Start, DpiPicSize);
 			}
 			else
 			{
@@ -572,7 +565,7 @@ namespace TCPingInfoView
 		{
 			Config.MainFormHeight = Height;
 			Config.MainFormWidth = Width;
-			Config.DateListHeight = DatelistView.Height;
+			Config.DateListHeight = DateList.Height;
 			Config.IsNotifyClose = _isNotifyClose;
 			Config.IsShowDateList = _isShowDateList;
 			Config.Save();
@@ -604,14 +597,14 @@ namespace TCPingInfoView
 
 		#region 文件拖拽进主列表
 
-		private void MainlistView_DragDrop(object sender, DragEventArgs e)
+		private void MainList_DragDrop(object sender, DragEventArgs e)
 		{
 			var path = ((Array)e.Data.GetData(DataFormats.FileDrop)).GetValue(0).ToString();
-			rawtable = Read.ReadAddressFromFile(path);
+			rawTable = Read.ReadAddressFromFile(path);
 			LoadFromList();
 		}
 
-		private void MainlistView_DragEnter(object sender, DragEventArgs e)
+		private void MainList_DragEnter(object sender, DragEventArgs e)
 		{
 			e.Effect = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Link : DragDropEffects.None;
 		}
@@ -620,14 +613,14 @@ namespace TCPingInfoView
 
 		#region 加载时间列表
 
-		private void MainlistView_SelectionChanged(object sender, EventArgs e)
+		private void MainList_SelectionChanged(object sender, EventArgs e)
 		{
-			if (MainlistView.SelectedRows.Count <= 0)
+			if (MainList.SelectedRows.Count <= 0)
 			{
 				return;
 			}
 
-			if (MainlistView.SelectedRows[0].Cells[0].Value is int index)
+			if (MainList.SelectedRows[0].Cells[0].Value is int index)
 			{
 				LoadLogs(index);
 			}
@@ -637,16 +630,16 @@ namespace TCPingInfoView
 		{
 			if (index <= 0)
 			{
-				Datetable.Clear();
+				DateTable.Clear();
 			}
 			else
 			{
-				Datetable.Clear();
-				datetable = (ConcurrentList<DateTable>)maintable[index - 1].Info;
-				ToLogs(datetable);
-				if (datetable.Count > 0)
+				DateTable.Clear();
+				dateTable = (ConcurrentList<DateTable>)mainTable[index - 1].Info;
+				ToLogs(dateTable);
+				if (dateTable.Count > 0)
 				{
-					DatelistView.Rows[0].Selected = true;
+					DateList.Rows[0].Selected = true;
 				}
 			}
 		}
@@ -655,7 +648,7 @@ namespace TCPingInfoView
 		{
 			foreach (var item in table)
 			{
-				Datetable.Add(item);
+				DateTable.Add(item);
 			}
 		}
 
@@ -668,7 +661,7 @@ namespace TCPingInfoView
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void ListView_MouseDown(object sender, MouseEventArgs e)
+		private void List_MouseDown(object sender, MouseEventArgs e)
 		{
 			var dgv = (DataGridView)sender;
 
@@ -677,9 +670,22 @@ namespace TCPingInfoView
 			if (rowIndex == -1)
 			{
 				dgv.ClearSelection();
-				if (dgv == MainlistView)
+				if (dgv == MainList)
 				{
 					LoadLogs(-1);
+				}
+			}
+		}
+
+		private void MainList_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+		{
+			if (e.RowIndex >= 0)
+			{
+				if (MainList.Rows[e.RowIndex].Cells[0].Value is int index)
+				{
+					var log = mainTable[index - 1];
+					var logForm = new LogForm(log);
+					logForm.ShowDialog();
 				}
 			}
 		}
@@ -688,54 +694,58 @@ namespace TCPingInfoView
 
 		#region 列表单元格内容改变
 
-		private void MainlistView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+		private void MainList_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
 		{
 			if (e.ColumnIndex == 4)
 			{
-				var value = MainlistView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value as int?;
-				var cell = MainlistView.Rows[e.RowIndex].Cells[1] as TextAndImageCell;
-				if (value < HighLatency)
+				var value = MainList.Rows[e.RowIndex].Cells[e.ColumnIndex].Value as int?;
+				var cell = MainList.Rows[e.RowIndex].Cells[1] as TextAndImageCell;
+				if (value != null)
 				{
-					MainlistView.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.ForeColor = LowLatencyColor;
-
-					cell.Image = imageList1.Images[0];
-				}
-				else if (value < Timeout)
-				{
-					MainlistView.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.ForeColor = HighLatencyColor;
-
-					cell.Image = imageList1.Images[0];
+					if (value < HighLatency)
+					{
+						MainList.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.ForeColor = LowLatencyColor;
+						cell.Image = imageList1.Images[0];
+					}
+					else if (value < Timeout)
+					{
+						MainList.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.ForeColor = HighLatencyColor;
+						cell.Image = imageList1.Images[0];
+					}
+					else
+					{
+						MainList.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.ForeColor = TimeoutColor;
+						cell.Image = imageList1.Images[1];
+					}
 				}
 				else
 				{
-					MainlistView.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.ForeColor = TimeoutColor;
-
-					cell.Image = imageList1.Images[1];
+					cell.Image = imageList1.Images[2];
 				}
 			}
 		}
 
-		private void DatelistView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+		private void DateList_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
 		{
 			if (e.ColumnIndex == 1)
 			{
-				var value = DatelistView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value as int?;
-				var cell = DatelistView.Rows[e.RowIndex].Cells[0] as TextAndImageCell;
+				var value = DateList.Rows[e.RowIndex].Cells[e.ColumnIndex].Value as int?;
+				var cell = DateList.Rows[e.RowIndex].Cells[0] as TextAndImageCell;
 				if (value < HighLatency)
 				{
-					DatelistView.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.ForeColor = LowLatencyColor;
+					DateList.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.ForeColor = LowLatencyColor;
 
 					cell.Image = imageList1.Images[0];
 				}
 				else if (value < Timeout)
 				{
-					DatelistView.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.ForeColor = HighLatencyColor;
+					DateList.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.ForeColor = HighLatencyColor;
 
 					cell.Image = imageList1.Images[0];
 				}
 				else
 				{
-					DatelistView.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.ForeColor = TimeoutColor;
+					DateList.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.ForeColor = TimeoutColor;
 
 					cell.Image = imageList1.Images[1];
 				}
@@ -746,30 +756,30 @@ namespace TCPingInfoView
 
 		#region 列表进入/失去焦点
 
-		private void MainlistView_Leave(object sender, EventArgs e)
+		private void MainList_Leave(object sender, EventArgs e)
 		{
-			MainlistView.DefaultCellStyle.SelectionBackColor = SystemColors.InactiveCaption;
-			MainlistView.DefaultCellStyle.SelectionForeColor = SystemColors.InactiveCaptionText;
+			MainList.DefaultCellStyle.SelectionBackColor = SystemColors.InactiveCaption;
+			MainList.DefaultCellStyle.SelectionForeColor = SystemColors.InactiveCaptionText;
 		}
 
-		private void MainlistView_Enter(object sender, EventArgs e)
+		private void MainList_Enter(object sender, EventArgs e)
 		{
-			MainlistView.DefaultCellStyle.SelectionBackColor = SystemColors.Highlight;
-			MainlistView.DefaultCellStyle.SelectionForeColor = SystemColors.HighlightText;
-			DatelistView.DefaultCellStyle.SelectionBackColor = SystemColors.InactiveCaption;
-			DatelistView.DefaultCellStyle.SelectionForeColor = SystemColors.InactiveCaptionText;
+			MainList.DefaultCellStyle.SelectionBackColor = SystemColors.Highlight;
+			MainList.DefaultCellStyle.SelectionForeColor = SystemColors.HighlightText;
+			DateList.DefaultCellStyle.SelectionBackColor = SystemColors.InactiveCaption;
+			DateList.DefaultCellStyle.SelectionForeColor = SystemColors.InactiveCaptionText;
 		}
 
-		private void DatelistView_Enter(object sender, EventArgs e)
+		private void DateList_Enter(object sender, EventArgs e)
 		{
-			DatelistView.DefaultCellStyle.SelectionBackColor = SystemColors.Highlight;
-			DatelistView.DefaultCellStyle.SelectionForeColor = SystemColors.HighlightText;
+			DateList.DefaultCellStyle.SelectionBackColor = SystemColors.Highlight;
+			DateList.DefaultCellStyle.SelectionForeColor = SystemColors.HighlightText;
 		}
 
-		private void DatelistView_Leave(object sender, EventArgs e)
+		private void DateList_Leave(object sender, EventArgs e)
 		{
-			DatelistView.DefaultCellStyle.SelectionBackColor = SystemColors.InactiveCaption;
-			DatelistView.DefaultCellStyle.SelectionForeColor = SystemColors.InactiveCaptionText;
+			DateList.DefaultCellStyle.SelectionBackColor = SystemColors.InactiveCaption;
+			DateList.DefaultCellStyle.SelectionForeColor = SystemColors.InactiveCaptionText;
 		}
 
 		#endregion
@@ -795,7 +805,7 @@ namespace TCPingInfoView
 		{
 			_isShowDateList = IsShowDateList_MenuItem.Checked;
 			splitter1.Visible = _isShowDateList;
-			DatelistView.Visible = _isShowDateList;
+			DateList.Visible = _isShowDateList;
 		}
 
 		#endregion

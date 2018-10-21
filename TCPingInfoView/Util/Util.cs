@@ -172,8 +172,8 @@ namespace TCPingInfoView.Util
 				{
 					Index = i + 1,
 					HostsName = data[i].HostsName,
-					FailedP = @"0%",
-					LastPing = 0,
+					//FailedP = @"0%",
+					//LastPing = null,
 					Description = data[i].Description
 				};
 				if (data[i].Ip == null)

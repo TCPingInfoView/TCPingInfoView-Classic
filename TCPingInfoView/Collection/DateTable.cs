@@ -7,7 +7,7 @@ namespace TCPingInfoView.Collection
 	public class DateTable : INotifyPropertyChanged
 	{
 		private DateTime date;
-		private int latenty;
+		private int latency;
 
 		public DateTime Date
 		{
@@ -22,13 +22,13 @@ namespace TCPingInfoView.Collection
 			}
 		}
 
-		public int Latenty { 
-			get => latenty;
+		public int Latency { 
+			get => latency;
 			set
 			{
-				if (latenty != value)
+				if (latency != value)
 				{
-					latenty = value;
+					latency = value;
 					NotifyPropertyChanged();
 				}
 			}
@@ -44,7 +44,7 @@ namespace TCPingInfoView.Collection
 		public DateTable()
 		{
 			date = DateTime.MinValue;
-			latenty = 0;
+			latency = 0;
 		}
 	}
 }

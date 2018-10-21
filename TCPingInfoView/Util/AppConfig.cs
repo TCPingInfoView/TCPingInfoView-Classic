@@ -46,7 +46,7 @@ namespace TCPingInfoView.Util
 			MainFormHeight = 717;
 			MainFormWidth = 928;
 			DateListHeight = 125;
-			IsNotifyClose = false;
+			IsNotifyClose = true;
 			IsShowDateList = true;
 		}
 
