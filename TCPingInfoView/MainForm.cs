@@ -45,6 +45,7 @@ namespace TCPingInfoView
 		#region 杂项设置
 
 		private bool _isNotifyClose;
+		private bool _isShowDateList;
 
 		#endregion
 
@@ -142,8 +143,16 @@ namespace TCPingInfoView
 			Height = Config.MainFormHeight;
 			Width = Config.MainFormWidth;
 			DatelistView.Height = Config.DateListHeight;
-			_isNotifyClose = Config.IsNotifyClose;
-			IsNotifyClose_MenuItem.Checked = _isNotifyClose;
+
+			IsNotifyClose_MenuItem.Checked = Config.IsNotifyClose;
+			if (Config.IsShowDateList)
+			{
+				IsShowDateList_MenuItem.CheckState = CheckState.Checked;
+			}
+			else
+			{
+				IsShowDateList_MenuItem.CheckState = CheckState.Unchecked;
+			}
 		}
 
 		private void MainForm_Load(object sender, EventArgs e)
@@ -565,6 +574,7 @@ namespace TCPingInfoView
 			Config.MainFormWidth = Width;
 			Config.DateListHeight = DatelistView.Height;
 			Config.IsNotifyClose = _isNotifyClose;
+			Config.IsShowDateList = _isShowDateList;
 			Config.Save();
 		}
 
@@ -573,12 +583,6 @@ namespace TCPingInfoView
 			SaveConfig();
 			notifyIcon1.Dispose();
 			Environment.Exit(0);
-		}
-
-		private void IsNotifyClose_MenuItem_Click(object sender, EventArgs e)
-		{
-			IsNotifyClose_MenuItem.Checked = !IsNotifyClose_MenuItem.Checked;
-			_isNotifyClose = IsNotifyClose_MenuItem.Checked;
 		}
 
 		private void Exit_MenuItem_Click(object sender, EventArgs e)
@@ -770,5 +774,30 @@ namespace TCPingInfoView
 
 		#endregion
 
+		#region 选项
+
+		private void IsNotifyClose_MenuItem_Click(object sender, EventArgs e)
+		{
+			IsNotifyClose_MenuItem.Checked = !IsNotifyClose_MenuItem.Checked;
+		}
+
+		private void IsNotifyClose_MenuItem_CheckedChanged(object sender, EventArgs e)
+		{
+			_isNotifyClose = IsNotifyClose_MenuItem.Checked;
+		}
+
+		private void IsShowDateList_MenuItem_Click(object sender, EventArgs e)
+		{
+			IsShowDateList_MenuItem.Checked = !IsShowDateList_MenuItem.Checked;
+		}
+
+		private void IsShowDateList_MenuItem_CheckStateChanged(object sender, EventArgs e)
+		{
+			_isShowDateList = IsShowDateList_MenuItem.Checked;
+			splitter1.Visible = _isShowDateList;
+			DatelistView.Visible = _isShowDateList;
+		}
+
+		#endregion
 	}
 }

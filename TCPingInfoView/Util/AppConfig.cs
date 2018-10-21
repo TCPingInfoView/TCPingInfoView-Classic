@@ -22,6 +22,9 @@ namespace TCPingInfoView.Util
 		[DataMember(Name = @"IsNotifyClose")]
 		public bool IsNotifyClose;
 
+		[DataMember(Name = @"IsShowDateList")]
+		public bool IsShowDateList;
+
 		#endregion
 
 		[IgnoreDataMember]
@@ -44,6 +47,7 @@ namespace TCPingInfoView.Util
 			MainFormWidth = 928;
 			DateListHeight = 125;
 			IsNotifyClose = false;
+			IsShowDateList = true;
 		}
 
 		public void Save()
@@ -99,6 +103,7 @@ namespace TCPingInfoView.Util
 			MainFormWidth = config.MainFormWidth;
 			DateListHeight = config.DateListHeight;
 			IsNotifyClose = config.IsNotifyClose;
+			IsShowDateList = config.IsShowDateList;
 		}
 	}
 }

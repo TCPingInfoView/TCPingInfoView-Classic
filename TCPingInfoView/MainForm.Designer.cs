@@ -64,6 +64,7 @@ namespace TCPingInfoView
 			this.Start_Button = new System.Windows.Forms.ToolStripButton();
 			this.Exit_Button = new System.Windows.Forms.ToolStripButton();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+			this.IsShowDateList_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.MainlistView = new TCPingInfoView.Control.DoubleBufferDataGridView();
 			this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column2 = new TCPingInfoView.Control.TextAndImageColumn();
@@ -125,7 +126,8 @@ namespace TCPingInfoView
 			// Options_MenuItem
 			// 
 			this.Options_MenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.IsNotifyClose_MenuItem});
+            this.IsNotifyClose_MenuItem,
+            this.IsShowDateList_MenuItem});
 			this.Options_MenuItem.Name = "Options_MenuItem";
 			this.Options_MenuItem.Size = new System.Drawing.Size(44, 21);
 			this.Options_MenuItem.Text = "选项";
@@ -135,6 +137,7 @@ namespace TCPingInfoView
 			this.IsNotifyClose_MenuItem.Name = "IsNotifyClose_MenuItem";
 			this.IsNotifyClose_MenuItem.Size = new System.Drawing.Size(180, 22);
 			this.IsNotifyClose_MenuItem.Text = "关闭时提示";
+			this.IsNotifyClose_MenuItem.CheckedChanged += new System.EventHandler(this.IsNotifyClose_MenuItem_CheckedChanged);
 			this.IsNotifyClose_MenuItem.Click += new System.EventHandler(this.IsNotifyClose_MenuItem_Click);
 			// 
 			// statusStrip1
@@ -303,6 +306,16 @@ namespace TCPingInfoView
 			this.toolStrip1.Size = new System.Drawing.Size(912, 25);
 			this.toolStrip1.TabIndex = 4;
 			this.toolStrip1.Text = "toolStrip1";
+			// 
+			// IsShowDateList_MenuItem
+			// 
+			this.IsShowDateList_MenuItem.Checked = true;
+			this.IsShowDateList_MenuItem.CheckState = System.Windows.Forms.CheckState.Indeterminate;
+			this.IsShowDateList_MenuItem.Name = "IsShowDateList_MenuItem";
+			this.IsShowDateList_MenuItem.Size = new System.Drawing.Size(180, 22);
+			this.IsShowDateList_MenuItem.Text = "显示日期表格";
+			this.IsShowDateList_MenuItem.CheckStateChanged += new System.EventHandler(this.IsShowDateList_MenuItem_CheckStateChanged);
+			this.IsShowDateList_MenuItem.Click += new System.EventHandler(this.IsShowDateList_MenuItem_Click);
 			// 
 			// MainlistView
 			// 
@@ -495,6 +508,7 @@ namespace TCPingInfoView
 		private ToolStrip toolStrip1;
 		private ToolStripMenuItem Options_MenuItem;
 		private ToolStripMenuItem IsNotifyClose_MenuItem;
+		private ToolStripMenuItem IsShowDateList_MenuItem;
 	}
 }
 
