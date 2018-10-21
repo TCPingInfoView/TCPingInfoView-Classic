@@ -35,6 +35,13 @@ namespace TCPingInfoView
 
 		#endregion
 
+		#region 表格比例
+
+		private int RemainingHeight;
+		private double ListRatio;
+
+		#endregion
+
 		#region 杂项设置
 
 		private bool _isNotifyClose;
@@ -71,7 +78,11 @@ namespace TCPingInfoView
 
 		#endregion
 
+		#region 委托
+
 		private delegate void VoidMethodDelegate();
+
+		#endregion
 
 		#region Timer
 
@@ -138,6 +149,9 @@ namespace TCPingInfoView
 		private void MainForm_Load(object sender, EventArgs e)
 		{
 			LoadSetting();
+
+			RemainingHeight = Height - (MainlistView.Height + DatelistView.Height);
+			ChangedRatio();
 
 			LoadButtons();
 
@@ -372,21 +386,27 @@ namespace TCPingInfoView
 
 		#endregion
 
-		#region 窗口改变
+		#region 窗口改变保持表格比例
 
-		private void ChangeSize()
+		private void ChangedSize()
 		{
+			var height = Height - RemainingHeight;
+			DatelistView.Height = Convert.ToInt32(ListRatio * height);
+		}
 
+		private void ChangedRatio()
+		{
+			ListRatio = Convert.ToDouble(DatelistView.Height) / Convert.ToDouble(MainlistView.Height + DatelistView.Height);
 		}
 
 		private void splitter1_SplitterMoved(object sender, SplitterEventArgs e)
 		{
-			ChangeSize();
+			ChangedRatio();
 		}
 
 		private void MainForm_Resize(object sender, EventArgs e)
 		{
-			ChangeSize();
+			ChangedSize();
 		}
 
 		#endregion
