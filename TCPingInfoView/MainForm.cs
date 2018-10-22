@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -25,7 +26,8 @@ namespace TCPingInfoView
 			Config.Load();
 		}
 
-		private readonly AppConfig Config = new AppConfig(@".\TCPingInfoView.json");
+		private static string ExeName => Assembly.GetExecutingAssembly().GetName().Name;
+		private readonly AppConfig Config = new AppConfig($@".\{ExeName}.json");
 
 		#region DPI
 
@@ -809,5 +811,20 @@ namespace TCPingInfoView
 		}
 
 		#endregion
+
+		#region 查看
+		
+		private void AutoColumnSize_MenuItem_Click(object sender, EventArgs e)
+		{
+			Util.Util.AutoColumnSize(MainList, DataGridViewAutoSizeColumnMode.AllCellsExceptHeader);
+		}
+
+		private void AutoColumnsSizeAndHeader_MenuItem_Click(object sender, EventArgs e)
+		{
+			Util.Util.AutoColumnSize(MainList, DataGridViewAutoSizeColumnMode.AllCells);
+		}
+
+		#endregion
+
 	}
 }

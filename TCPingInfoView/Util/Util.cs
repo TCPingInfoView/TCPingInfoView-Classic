@@ -260,6 +260,23 @@ namespace TCPingInfoView.Util
 			return b;
 		}
 
+		public static void AutoColumnSize(DataGridView drv, DataGridViewAutoSizeColumnMode mode)
+		{
+			for (var i = 0; i < drv.DisplayedColumnCount(true) - 1; ++i)
+			{
+				foreach (DataGridViewColumn column in drv.Columns)
+				{
+					if (column.DisplayIndex == i)
+					{
+						column.AutoSizeMode = mode;
+						var widthCol = column.Width;
+						column.AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet;
+						column.Width = widthCol;
+					}
+				}
+			}
+		}
+
 		public static void Invoke(this System.Windows.Forms.Control control, MethodInvoker action)
 		{
 			control.Invoke(action);
