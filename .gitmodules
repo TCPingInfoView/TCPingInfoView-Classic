@@ -1,0 +1,3 @@
+[submodule "TCPingInfoView/dns"]
+	path = TCPingInfoView/dns
+	url = https://github.com/HMBSbige/dns

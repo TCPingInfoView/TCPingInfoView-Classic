@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TCPingInfoView.Collection;
 using TCPingInfoView.Control;
+using TCPingInfoView.NetUtils;
 using TCPingInfoView.Properties;
 using TCPingInfoView.Util;
 using Timer = System.Threading.Timer;
@@ -261,7 +262,7 @@ namespace TCPingInfoView
 						return;
 					}
 
-					if (Util.Util.IsIPv4Address(mainTable[i].HostsName)) //反查DNS
+					if (IPFormatter.IsIPv4Address(mainTable[i].HostsName)) //反查DNS
 					{
 						PingOne(i);
 
@@ -291,7 +292,10 @@ namespace TCPingInfoView
 							return;
 						}
 
-						mainTable[i].Endpoint = $@"{ip}:{rawTable[i].Port}";
+						if (ip != null)
+						{
+							mainTable[i].Endpoint = $@"{ip}:{rawTable[i].Port}";
+						}
 						PingOne(i);
 					}
 
@@ -313,7 +317,7 @@ namespace TCPingInfoView
 		{
 			if (mainTable[index].Endpoint != string.Empty)
 			{
-				var ipe = Util.Util.ToIPEndPoint(mainTable[index].Endpoint, 443);
+				var ipe = IPFormatter.ToIPEndPoint(mainTable[index].Endpoint, 443);
 				double? latency = null;
 				var res = Timeout;
 				var time = DateTime.Now;
@@ -813,7 +817,7 @@ namespace TCPingInfoView
 		#endregion
 
 		#region 查看
-		
+
 		private void AutoColumnSize_MenuItem_Click(object sender, EventArgs e)
 		{
 			Util.Util.AutoColumnSize(MainList, DataGridViewAutoSizeColumnMode.AllCellsExceptHeader);

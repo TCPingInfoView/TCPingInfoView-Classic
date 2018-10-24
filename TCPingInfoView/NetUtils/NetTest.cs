@@ -9,7 +9,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TCPingInfoView.Util
+namespace TCPingInfoView.NetUtils
 {
 	internal static class NetTest
 	{
@@ -59,33 +59,32 @@ namespace TCPingInfoView.Util
 				Debug.WriteLine($@"DNS query {host} answer {res}");
 				return res;
 			}
-			catch (Exception ex)
+			catch
 			{
-				while (ex.InnerException != null)
-				{
-					ex = ex.InnerException;
-				}
-
-				Debug.WriteLine($@"ERROR:{ex.Message}");
 				return null;
 			}
 		}
 
-		private delegate IPHostEntry GetHostEntryHandler(string ip);
 		public static string GetHostName(IPAddress ip, int timeout)
 		{
 			try
 			{
-				var callback = new GetHostEntryHandler(Dns.GetHostEntry);
-				var result = callback.BeginInvoke(ip.ToString(), null, null);
-				if (result.AsyncWaitHandle.WaitOne(timeout, false))
+				if (IPAddress.IsLoopback(ip))
 				{
-					return callback.EndInvoke(result).HostName;
+					return Dns.GetHostName();
 				}
-				else
+				var dns = new List<IPEndPoint>();
+				if (IPv4Subnet.IsNonRoutableIpAddress(ip.ToString()))
 				{
-					return ip.ToString();
+					dns.AddRange(IPFormatter.ToIPEndPoints(DnsQuery.GetRouteDnsAddress(), 53));
 				}
+				dns.AddRange(IPFormatter.ToIPEndPoints(DnsQuery.GetLocalDnsAddress(), 53));
+				var qq = new DnsQuery
+				{
+					Timeout = timeout,
+					DnsServers = dns.ToArray()
+				};
+				return qq.Ptr(ip);
 			}
 			catch (Exception)
 			{
