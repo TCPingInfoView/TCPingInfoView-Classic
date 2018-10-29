@@ -42,7 +42,7 @@ namespace TCPingInfoView
 
 		private int RemainingHeight;
 		private double ListRatio;
-		public static int ColumnsCount => 6;
+		public const int ColumnsCount = 12;
 
 		#endregion
 
@@ -108,6 +108,12 @@ namespace TCPingInfoView
 			MainList.Columns[3].HeaderText = @"失败率";
 			MainList.Columns[4].HeaderText = @"延迟(ms)";
 			MainList.Columns[5].HeaderText = @"说明";
+			MainList.Columns[6].HeaderText = @"平均用时(ms)";
+			MainList.Columns[7].HeaderText = @"成功率";
+			MainList.Columns[8].HeaderText = @"成功次数";
+			MainList.Columns[9].HeaderText = @"失败次数";
+			MainList.Columns[10].HeaderText = @"最长用时(ms)";
+			MainList.Columns[11].HeaderText = @"最短用时(ms)";
 
 			MainList.Columns[0].DataPropertyName = @"Index";
 			MainList.Columns[1].DataPropertyName = @"HostsName";
@@ -115,6 +121,12 @@ namespace TCPingInfoView
 			MainList.Columns[3].DataPropertyName = @"FailedP";
 			MainList.Columns[4].DataPropertyName = @"LastPing";
 			MainList.Columns[5].DataPropertyName = @"Description";
+			MainList.Columns[6].DataPropertyName = @"Average";
+			MainList.Columns[7].DataPropertyName = @"SucceedP";
+			MainList.Columns[8].DataPropertyName = @"SucceedCount";
+			MainList.Columns[9].DataPropertyName = @"FailedCount";
+			MainList.Columns[10].DataPropertyName = @"MaxPing";
+			MainList.Columns[11].DataPropertyName = @"MinPing";
 		}
 
 		private void LoadDateList()
@@ -151,11 +163,10 @@ namespace TCPingInfoView
 			IsNotifyClose_MenuItem.Checked = Config.IsNotifyClose;
 			IsShowDateList_MenuItem.CheckState = Config.IsShowDateList ? CheckState.Checked : CheckState.Unchecked;
 
-			//var maxDisplayIndex = 0;
 			for (var i = 0; i < ColumnsCount; ++i)
 			{
 				MainList.Columns[i].DisplayIndex = Config.ColumnsOrder[i];
-				//maxDisplayIndex = MainList.Columns[i].DisplayIndex > maxDisplayIndex ? MainList.Columns[i].DisplayIndex : maxDisplayIndex;
+				MainList.Columns[i].Visible = Config.ColumnsWidth[i] != 0;
 			}
 
 			for (var i = 0; i < ColumnsCount - 1; ++i)
@@ -164,7 +175,10 @@ namespace TCPingInfoView
 				{
 					if (MainList.Columns[j].DisplayIndex == i)
 					{
-						MainList.Columns[j].Width = Config.ColumnsWidth[j];
+						if (Config.ColumnsWidth[j] != 0)
+						{
+							MainList.Columns[j].Width = Config.ColumnsWidth[j];
+						}
 					}
 				}
 			}
@@ -567,7 +581,6 @@ namespace TCPingInfoView
 						MessageBoxIcon.Question);
 				if (dr == DialogResult.Yes)
 				{
-					Dispose();
 					Exit(); //Application.Exit();
 				}
 				else if (dr == DialogResult.No)
@@ -593,13 +606,20 @@ namespace TCPingInfoView
 			Config.DateListHeight = DateList.Height;
 			Config.IsNotifyClose = _isNotifyClose;
 			Config.IsShowDateList = _isShowDateList;
-			for (var i = 0; i < 6; ++i)
+			for (var i = 0; i < ColumnsCount; ++i)
 			{
 				Config.ColumnsOrder[i] = MainList.Columns[i].DisplayIndex;
 			}
-			for (var i = 0; i < 6; ++i)
+			for (var i = 0; i < ColumnsCount; ++i)
 			{
-				Config.ColumnsWidth[i] = MainList.Columns[i].Width;
+				if (MainList.Columns[i].Visible)
+				{
+					Config.ColumnsWidth[i] = MainList.Columns[i].Width;
+				}
+				else
+				{
+					Config.ColumnsWidth[i] = 0;
+				}
 			}
 			Config.Save();
 		}
@@ -607,6 +627,7 @@ namespace TCPingInfoView
 		private void Exit()
 		{
 			SaveConfig();
+			Dispose();
 			notifyIcon1.Dispose();
 			Environment.Exit(0);
 		}
@@ -754,6 +775,24 @@ namespace TCPingInfoView
 				else
 				{
 					cell.Image = imageList1.Images[2];
+				}
+			}
+			else if (e.ColumnIndex == 6 || e.ColumnIndex == 10 || e.ColumnIndex == 11)
+			{
+				if (MainList.Rows[e.RowIndex].Cells[e.ColumnIndex].Value is int value)
+				{
+					if (value < HighLatency)
+					{
+						MainList.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.ForeColor = LowLatencyColor;
+					}
+					else if (value < Timeout)
+					{
+						MainList.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.ForeColor = HighLatencyColor;
+					}
+					else
+					{
+						MainList.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.ForeColor = TimeoutColor;
+					}
 				}
 			}
 		}

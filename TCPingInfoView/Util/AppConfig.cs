@@ -44,7 +44,7 @@ namespace TCPingInfoView.Util
 		private static readonly UTF8Encoding Utf8WithoutBom = new UTF8Encoding(false);
 
 		[IgnoreDataMember]
-		private static int ColumnsCount => MainForm.ColumnsCount;
+		private const int ColumnsCount = MainForm.ColumnsCount;
 
 		public AppConfig(string filepath) : this()
 		{
@@ -58,8 +58,8 @@ namespace TCPingInfoView.Util
 			DateListHeight = 125;
 			IsNotifyClose = true;
 			IsShowDateList = true;
-			ColumnsOrder = new List<int>(ColumnsCount) { 0, 1, 2, 3, 4, 5 };
-			ColumnsWidth = new List<int>(ColumnsCount) { 50, 50, 50, 50, 50, 50 };
+			ColumnsOrder = new List<int>(ColumnsCount) { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+			ColumnsWidth = new List<int>(ColumnsCount) { 50, 50, 50, 50, 50, 50, 0, 0, 0, 0, 0, 0 };
 		}
 
 		public void Save()
@@ -116,8 +116,14 @@ namespace TCPingInfoView.Util
 			DateListHeight = config.DateListHeight;
 			IsNotifyClose = config.IsNotifyClose;
 			IsShowDateList = config.IsShowDateList;
-			ColumnsOrder = config.ColumnsOrder;
-			ColumnsWidth = config.ColumnsWidth;
+			for (var i = 0; i < config.ColumnsOrder.Count; ++i)
+			{
+				ColumnsOrder[i] = config.ColumnsOrder[i];
+			}
+			for (var i = 0; i < config.ColumnsWidth.Count; ++i)
+			{
+				ColumnsWidth[i] = config.ColumnsWidth[i];
+			}
 		}
 	}
 }

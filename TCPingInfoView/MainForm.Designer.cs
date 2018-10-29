@@ -74,15 +74,21 @@ namespace TCPingInfoView
 			this.Exit_Button = new System.Windows.Forms.ToolStripButton();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.MainList = new TCPingInfoView.Control.DoubleBufferDataGridView();
-			this.DateList = new TCPingInfoView.Control.DoubleBufferDataGridView();
-			this.dataGridViewTextBoxColumn1 = new TCPingInfoView.Control.TextAndImageColumn();
-			this.textAndImageColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column2 = new TCPingInfoView.Control.TextAndImageColumn();
 			this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.DateList = new TCPingInfoView.Control.DoubleBufferDataGridView();
+			this.dataGridViewTextBoxColumn1 = new TCPingInfoView.Control.TextAndImageColumn();
+			this.textAndImageColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Column12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.menuStrip1.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
 			this.NotifyIcon_MenuStrip.SuspendLayout();
@@ -376,7 +382,13 @@ namespace TCPingInfoView
             this.Column3,
             this.Column4,
             this.Column5,
-            this.Column6});
+            this.Column6,
+            this.Column7,
+            this.Column8,
+            this.Column9,
+            this.Column10,
+            this.Column11,
+            this.Column12});
 			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
 			dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
 			dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -410,6 +422,51 @@ namespace TCPingInfoView
 			this.MainList.Enter += new System.EventHandler(this.MainList_Enter);
 			this.MainList.Leave += new System.EventHandler(this.MainList_Leave);
 			this.MainList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.List_MouseDown);
+			// 
+			// Column1
+			// 
+			this.Column1.HeaderText = "Column1";
+			this.Column1.Name = "Column1";
+			this.Column1.ReadOnly = true;
+			this.Column1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+			// 
+			// Column2
+			// 
+			this.Column2.HeaderText = "Column2";
+			this.Column2.Image = null;
+			this.Column2.Name = "Column2";
+			this.Column2.ReadOnly = true;
+			this.Column2.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+			// 
+			// Column3
+			// 
+			this.Column3.HeaderText = "Column3";
+			this.Column3.Name = "Column3";
+			this.Column3.ReadOnly = true;
+			// 
+			// Column4
+			// 
+			this.Column4.HeaderText = "Column4";
+			this.Column4.Name = "Column4";
+			this.Column4.ReadOnly = true;
+			// 
+			// Column5
+			// 
+			this.Column5.HeaderText = "Column5";
+			this.Column5.Name = "Column5";
+			this.Column5.ReadOnly = true;
+			// 
+			// Column6
+			// 
+			this.Column6.HeaderText = "Column6";
+			this.Column6.Name = "Column6";
+			this.Column6.ReadOnly = true;
+			// 
+			// Column7
+			// 
+			this.Column7.HeaderText = "Column7";
+			this.Column7.Name = "Column7";
+			this.Column7.ReadOnly = true;
 			// 
 			// DateList
 			// 
@@ -470,44 +527,35 @@ namespace TCPingInfoView
 			this.textAndImageColumn1.ReadOnly = true;
 			this.textAndImageColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
 			// 
-			// Column1
+			// Column8
 			// 
-			this.Column1.HeaderText = "Column1";
-			this.Column1.Name = "Column1";
-			this.Column1.ReadOnly = true;
-			this.Column1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+			this.Column8.HeaderText = "Column8";
+			this.Column8.Name = "Column8";
+			this.Column8.ReadOnly = true;
 			// 
-			// Column2
+			// Column9
 			// 
-			this.Column2.HeaderText = "Column2";
-			this.Column2.Image = null;
-			this.Column2.Name = "Column2";
-			this.Column2.ReadOnly = true;
-			this.Column2.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+			this.Column9.HeaderText = "Column9";
+			this.Column9.Name = "Column9";
+			this.Column9.ReadOnly = true;
 			// 
-			// Column3
+			// Column10
 			// 
-			this.Column3.HeaderText = "Column3";
-			this.Column3.Name = "Column3";
-			this.Column3.ReadOnly = true;
+			this.Column10.HeaderText = "Column10";
+			this.Column10.Name = "Column10";
+			this.Column10.ReadOnly = true;
 			// 
-			// Column4
+			// Column11
 			// 
-			this.Column4.HeaderText = "Column4";
-			this.Column4.Name = "Column4";
-			this.Column4.ReadOnly = true;
+			this.Column11.HeaderText = "Column11";
+			this.Column11.Name = "Column11";
+			this.Column11.ReadOnly = true;
 			// 
-			// Column5
+			// Column12
 			// 
-			this.Column5.HeaderText = "Column5";
-			this.Column5.Name = "Column5";
-			this.Column5.ReadOnly = true;
-			// 
-			// Column6
-			// 
-			this.Column6.HeaderText = "Column6";
-			this.Column6.Name = "Column6";
-			this.Column6.ReadOnly = true;
+			this.Column12.HeaderText = "Column12";
+			this.Column12.Name = "Column12";
+			this.Column12.ReadOnly = true;
 			// 
 			// MainForm
 			// 
@@ -586,6 +634,12 @@ namespace TCPingInfoView
 		private DataGridViewTextBoxColumn Column4;
 		private DataGridViewTextBoxColumn Column5;
 		private DataGridViewTextBoxColumn Column6;
+		private DataGridViewTextBoxColumn Column7;
+		private DataGridViewTextBoxColumn Column8;
+		private DataGridViewTextBoxColumn Column9;
+		private DataGridViewTextBoxColumn Column10;
+		private DataGridViewTextBoxColumn Column11;
+		private DataGridViewTextBoxColumn Column12;
 	}
 }
 
