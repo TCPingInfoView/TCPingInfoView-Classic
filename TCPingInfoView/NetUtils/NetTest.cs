@@ -65,26 +65,21 @@ namespace TCPingInfoView.NetUtils
 			}
 		}
 
+		private delegate IPHostEntry GetHostEntryHandler(string ip);
 		public static string GetHostName(IPAddress ip, int timeout)
 		{
 			try
 			{
-				if (IPAddress.IsLoopback(ip))
+				var callback = new GetHostEntryHandler(Dns.GetHostEntry);
+				var result = callback.BeginInvoke(ip.ToString(), null, null);
+				if (result.AsyncWaitHandle.WaitOne(timeout, false))
 				{
-					return Dns.GetHostName();
+					return callback.EndInvoke(result).HostName;
 				}
-				var dns = new List<IPEndPoint>();
-				if (IPv4Subnet.IsNonRoutableIpAddress(ip.ToString()))
+				else
 				{
-					dns.AddRange(IPFormatter.ToIPEndPoints(DnsQuery.GetRouteDnsAddress(), 53));
+					return ip.ToString();
 				}
-				dns.AddRange(IPFormatter.ToIPEndPoints(DnsQuery.GetLocalDnsAddress(), 53));
-				var qq = new DnsQuery
-				{
-					Timeout = timeout,
-					DnsServers = dns.ToArray()
-				};
-				return qq.Ptr(ip);
 			}
 			catch (Exception)
 			{
