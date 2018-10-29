@@ -38,10 +38,11 @@ namespace TCPingInfoView
 
 		#endregion
 
-		#region 表格比例
+		#region 表格显示参数
 
 		private int RemainingHeight;
 		private double ListRatio;
+		public static int ColumnsCount => 6;
 
 		#endregion
 
@@ -149,6 +150,24 @@ namespace TCPingInfoView
 
 			IsNotifyClose_MenuItem.Checked = Config.IsNotifyClose;
 			IsShowDateList_MenuItem.CheckState = Config.IsShowDateList ? CheckState.Checked : CheckState.Unchecked;
+
+			//var maxDisplayIndex = 0;
+			for (var i = 0; i < ColumnsCount; ++i)
+			{
+				MainList.Columns[i].DisplayIndex = Config.ColumnsOrder[i];
+				//maxDisplayIndex = MainList.Columns[i].DisplayIndex > maxDisplayIndex ? MainList.Columns[i].DisplayIndex : maxDisplayIndex;
+			}
+
+			for (var i = 0; i < ColumnsCount - 1; ++i)
+			{
+				for (var j = 0; j < ColumnsCount; ++j)
+				{
+					if (MainList.Columns[j].DisplayIndex == i)
+					{
+						MainList.Columns[j].Width = Config.ColumnsWidth[j];
+					}
+				}
+			}
 		}
 
 		private void MainForm_Load(object sender, EventArgs e)
@@ -574,6 +593,14 @@ namespace TCPingInfoView
 			Config.DateListHeight = DateList.Height;
 			Config.IsNotifyClose = _isNotifyClose;
 			Config.IsShowDateList = _isShowDateList;
+			for (var i = 0; i < 6; ++i)
+			{
+				Config.ColumnsOrder[i] = MainList.Columns[i].DisplayIndex;
+			}
+			for (var i = 0; i < 6; ++i)
+			{
+				Config.ColumnsWidth[i] = MainList.Columns[i].Width;
+			}
 			Config.Save();
 		}
 

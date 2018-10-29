@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
@@ -25,6 +26,12 @@ namespace TCPingInfoView.Util
 		[DataMember(Name = @"IsShowDateList")]
 		public bool IsShowDateList;
 
+		[DataMember(Name = @"ColumnsOrder")]
+		public List<int> ColumnsOrder;
+
+		[DataMember(Name = @"ColumnsWidth")]
+		public List<int> ColumnsWidth;
+
 		#endregion
 
 		[IgnoreDataMember]
@@ -35,6 +42,9 @@ namespace TCPingInfoView.Util
 
 		[IgnoreDataMember]
 		private static readonly UTF8Encoding Utf8WithoutBom = new UTF8Encoding(false);
+
+		[IgnoreDataMember]
+		private static int ColumnsCount => MainForm.ColumnsCount;
 
 		public AppConfig(string filepath) : this()
 		{
@@ -48,6 +58,8 @@ namespace TCPingInfoView.Util
 			DateListHeight = 125;
 			IsNotifyClose = true;
 			IsShowDateList = true;
+			ColumnsOrder = new List<int>(ColumnsCount) { 0, 1, 2, 3, 4, 5 };
+			ColumnsWidth = new List<int>(ColumnsCount) { 50, 50, 50, 50, 50, 50 };
 		}
 
 		public void Save()
@@ -104,6 +116,8 @@ namespace TCPingInfoView.Util
 			DateListHeight = config.DateListHeight;
 			IsNotifyClose = config.IsNotifyClose;
 			IsShowDateList = config.IsShowDateList;
+			ColumnsOrder = config.ColumnsOrder;
+			ColumnsWidth = config.ColumnsWidth;
 		}
 	}
 }
