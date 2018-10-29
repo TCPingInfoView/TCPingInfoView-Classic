@@ -73,6 +73,9 @@ namespace TCPingInfoView
 			this.Start_Button = new System.Windows.Forms.ToolStripButton();
 			this.Exit_Button = new System.Windows.Forms.ToolStripButton();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.StartStop_MenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+			this.Reset_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.MainList = new TCPingInfoView.Control.DoubleBufferDataGridView();
 			this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column2 = new TCPingInfoView.Control.TextAndImageColumn();
@@ -81,14 +84,14 @@ namespace TCPingInfoView
 			this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.DateList = new TCPingInfoView.Control.DoubleBufferDataGridView();
-			this.dataGridViewTextBoxColumn1 = new TCPingInfoView.Control.TextAndImageColumn();
-			this.textAndImageColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.DateList = new TCPingInfoView.Control.DoubleBufferDataGridView();
+			this.dataGridViewTextBoxColumn1 = new TCPingInfoView.Control.TextAndImageColumn();
+			this.textAndImageColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.menuStrip1.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
 			this.NotifyIcon_MenuStrip.SuspendLayout();
@@ -114,6 +117,9 @@ namespace TCPingInfoView
 			this.File_MenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.从文件载入ToolStripMenuItem,
             this.toolStripSeparator1,
+            this.StartStop_MenuItem2,
+            this.Reset_MenuItem,
+            this.toolStripSeparator3,
             this.退出ToolStripMenuItem});
 			this.File_MenuItem.Name = "File_MenuItem";
 			this.File_MenuItem.Size = new System.Drawing.Size(44, 21);
@@ -122,19 +128,19 @@ namespace TCPingInfoView
 			// 从文件载入ToolStripMenuItem
 			// 
 			this.从文件载入ToolStripMenuItem.Name = "从文件载入ToolStripMenuItem";
-			this.从文件载入ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+			this.从文件载入ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.从文件载入ToolStripMenuItem.Text = "从文件载入";
 			this.从文件载入ToolStripMenuItem.Click += new System.EventHandler(this.从文件载入ToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(133, 6);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
 			// 
 			// 退出ToolStripMenuItem
 			// 
 			this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
-			this.退出ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+			this.退出ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.退出ToolStripMenuItem.Text = "退出";
 			this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
 			// 
@@ -356,6 +362,25 @@ namespace TCPingInfoView
 			this.toolStrip1.TabIndex = 4;
 			this.toolStrip1.Text = "toolStrip1";
 			// 
+			// toolStripSeparator3
+			// 
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			this.toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
+			// 
+			// StartStop_MenuItem2
+			// 
+			this.StartStop_MenuItem2.Name = "StartStop_MenuItem2";
+			this.StartStop_MenuItem2.Size = new System.Drawing.Size(180, 22);
+			this.StartStop_MenuItem2.Text = "开始";
+			this.StartStop_MenuItem2.Click += new System.EventHandler(this.StartStop_MenuItem2_Click);
+			// 
+			// Reset_MenuItem
+			// 
+			this.Reset_MenuItem.Name = "Reset_MenuItem";
+			this.Reset_MenuItem.Size = new System.Drawing.Size(180, 22);
+			this.Reset_MenuItem.Text = "计数重置";
+			this.Reset_MenuItem.Click += new System.EventHandler(this.Reset_MenuItem_Click);
+			// 
 			// MainList
 			// 
 			this.MainList.AllowDrop = true;
@@ -468,6 +493,36 @@ namespace TCPingInfoView
 			this.Column7.Name = "Column7";
 			this.Column7.ReadOnly = true;
 			// 
+			// Column8
+			// 
+			this.Column8.HeaderText = "Column8";
+			this.Column8.Name = "Column8";
+			this.Column8.ReadOnly = true;
+			// 
+			// Column9
+			// 
+			this.Column9.HeaderText = "Column9";
+			this.Column9.Name = "Column9";
+			this.Column9.ReadOnly = true;
+			// 
+			// Column10
+			// 
+			this.Column10.HeaderText = "Column10";
+			this.Column10.Name = "Column10";
+			this.Column10.ReadOnly = true;
+			// 
+			// Column11
+			// 
+			this.Column11.HeaderText = "Column11";
+			this.Column11.Name = "Column11";
+			this.Column11.ReadOnly = true;
+			// 
+			// Column12
+			// 
+			this.Column12.HeaderText = "Column12";
+			this.Column12.Name = "Column12";
+			this.Column12.ReadOnly = true;
+			// 
 			// DateList
 			// 
 			this.DateList.AllowDrop = true;
@@ -526,36 +581,6 @@ namespace TCPingInfoView
 			this.textAndImageColumn1.Name = "textAndImageColumn1";
 			this.textAndImageColumn1.ReadOnly = true;
 			this.textAndImageColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-			// 
-			// Column8
-			// 
-			this.Column8.HeaderText = "Column8";
-			this.Column8.Name = "Column8";
-			this.Column8.ReadOnly = true;
-			// 
-			// Column9
-			// 
-			this.Column9.HeaderText = "Column9";
-			this.Column9.Name = "Column9";
-			this.Column9.ReadOnly = true;
-			// 
-			// Column10
-			// 
-			this.Column10.HeaderText = "Column10";
-			this.Column10.Name = "Column10";
-			this.Column10.ReadOnly = true;
-			// 
-			// Column11
-			// 
-			this.Column11.HeaderText = "Column11";
-			this.Column11.Name = "Column11";
-			this.Column11.ReadOnly = true;
-			// 
-			// Column12
-			// 
-			this.Column12.HeaderText = "Column12";
-			this.Column12.Name = "Column12";
-			this.Column12.ReadOnly = true;
 			// 
 			// MainForm
 			// 
@@ -640,6 +665,9 @@ namespace TCPingInfoView
 		private DataGridViewTextBoxColumn Column10;
 		private DataGridViewTextBoxColumn Column11;
 		private DataGridViewTextBoxColumn Column12;
+		private ToolStripMenuItem StartStop_MenuItem2;
+		private ToolStripMenuItem Reset_MenuItem;
+		private ToolStripSeparator toolStripSeparator3;
 	}
 }
 

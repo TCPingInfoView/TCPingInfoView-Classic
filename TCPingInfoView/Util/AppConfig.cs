@@ -7,7 +7,7 @@ using System.Text;
 namespace TCPingInfoView.Util
 {
 	[DataContract]
-	class AppConfig
+	internal class AppConfig
 	{
 		#region DataMember
 

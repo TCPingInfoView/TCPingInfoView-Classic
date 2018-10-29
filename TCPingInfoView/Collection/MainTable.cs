@@ -129,7 +129,7 @@ namespace TCPingInfoView.Collection
 			}
 		}
 
-		public int Count
+		private int Count
 		{
 			get => count;
 			set
@@ -248,6 +248,18 @@ namespace TCPingInfoView.Collection
 				LastPing = Timeout;
 				++FailedCount;
 			}
+		}
+
+		public void Reset()
+		{
+			_info.Clear();
+			TotalPing = 0;
+			Count = 0;
+			SucceedCount = 0;
+			FailedCount = 0;
+			LastPing = null;
+			MaxPing = null;
+			MinPing = null;
 		}
 	}
 }

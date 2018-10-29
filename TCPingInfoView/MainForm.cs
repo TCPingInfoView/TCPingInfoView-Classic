@@ -348,41 +348,52 @@ namespace TCPingInfoView
 
 		private void PingOne(int index)
 		{
-			if (mainTable[index].Endpoint != string.Empty)
+			if (mainTable[index].Endpoint == string.Empty)
 			{
-				var ipe = IPFormatter.ToIPEndPoint(mainTable[index].Endpoint, 443);
-				double? latency = null;
-				var res = Timeout;
-				var time = DateTime.Now;
-				try
+				var ip = NetTest.GetIP(mainTable[index].HostsName);
+				
+				if (ip != null)
 				{
-					latency = NetTest.TCPing(ipe.Address, ipe.Port, Timeout);
+					mainTable[index].Endpoint = $@"{ip}:{rawTable[index].Port}";
 				}
-				catch
+				else
 				{
-					// ignored
+					return;
 				}
+			}
 
-				if (latency != null)
-				{
-					res = Convert.ToInt32(Math.Round(latency.Value));
-				}
+			var ipe = IPFormatter.ToIPEndPoint(mainTable[index].Endpoint, 443);
+			double? latency = null;
+			var res = Timeout;
+			var time = DateTime.Now;
+			try
+			{
+				latency = NetTest.TCPing(ipe.Address, ipe.Port, Timeout);
+			}
+			catch
+			{
+				// ignored
+			}
 
-				var log = new DateTable
-				{
+			if (latency != null)
+			{
+				res = Convert.ToInt32(Math.Round(latency.Value));
+			}
+
+			var log = new DateTable
+			{
 					Date = time,
 					Latency = res
-				};
+			};
 
-				mainTable[index].AddNewLog(log);
+			mainTable[index].AddNewLog(log);
 
-				if (MainList.SelectedRows.Count > 0)
+			if (MainList.SelectedRows.Count > 0)
+			{
+				var i = MainList.SelectedRows[0].Cells[0].Value as int?;
+				if (i == index)
 				{
-					var i = MainList.SelectedRows[0].Cells[0].Value as int?;
-					if (i == index)
-					{
-						DateList.Invoke(() => { LoadLogs(index); });
-					}
+					DateList.Invoke(() => { LoadLogs(index); });
 				}
 			}
 		}
@@ -489,6 +500,11 @@ namespace TCPingInfoView
 			TriggerRun();
 		}
 
+		private void StartStop_MenuItem2_Click(object sender, EventArgs e)
+		{
+			TriggerRun();
+		}
+
 		private void StartCore(object state)
 		{
 			PingAll();
@@ -512,6 +528,7 @@ namespace TCPingInfoView
 			}
 
 			StartStop_MenuItem.Text = @"停止";
+			StartStop_MenuItem2.Text = @"停止";
 		}
 
 		private void StopPing()
@@ -531,6 +548,7 @@ namespace TCPingInfoView
 			}
 
 			StartStop_MenuItem.Text = @"开始";
+			StartStop_MenuItem2.Text = @"开始";
 		}
 
 		private void TriggerRun()
@@ -892,6 +910,34 @@ namespace TCPingInfoView
 		private void AutoColumnsSizeAndHeader_MenuItem_Click(object sender, EventArgs e)
 		{
 			Util.Util.AutoColumnSize(MainList, DataGridViewAutoSizeColumnMode.AllCells);
+		}
+
+		#endregion
+
+		#region 文件
+
+		private void Reset_MenuItem_Click(object sender, EventArgs e)
+		{
+			StopPing();
+			cts_PingTask.Cancel();
+			Util.Util.RemoveCompletedTasks(ref PingTasks);
+			Task.WaitAll(PingTasks.ToArray());
+			cts_PingTask.Dispose();
+			cts_PingTask = new CancellationTokenSource();
+			PingTasks = new ConcurrentList<Task>();
+			foreach (var log in mainTable)
+			{
+				log.Reset();
+			}
+
+			MainTable.Clear();
+			DateTable.Clear();
+
+			ToMainTable(mainTable);
+			if (rawTable.Count > 0)
+			{
+				MainList.Rows[0].Selected = true;
+			}
 		}
 
 		#endregion
