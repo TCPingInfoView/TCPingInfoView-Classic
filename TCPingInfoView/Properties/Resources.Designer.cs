@@ -63,6 +63,26 @@ namespace TCPingInfoView.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap Exit {
+            get {
+                object obj = ResourceManager.GetObject("Exit", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap Load {
+            get {
+                object obj = ResourceManager.GetObject("Load", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap Start {
             get {
                 object obj = ResourceManager.GetObject("Start", resourceCulture);

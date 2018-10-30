@@ -132,5 +132,11 @@
   <ItemGroup>
     <None Include="Resources\TCPing_White.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Exit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Load.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

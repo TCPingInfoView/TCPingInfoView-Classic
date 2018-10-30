@@ -146,11 +146,17 @@ namespace TCPingInfoView
 				Test_Button.Image = Util.Util.ResizeImage(Resources.Test, DpiPicSize);
 				Start_Button.ImageScaling = ToolStripItemImageScaling.None;
 				Start_Button.Image = Util.Util.ResizeImage(Resources.Start, DpiPicSize);
+				Exit_Button.ImageScaling = ToolStripItemImageScaling.None;
+				Exit_Button.Image = Util.Util.ResizeImage(Resources.Exit, DpiPicSize);
+				Load_Button.ImageScaling = ToolStripItemImageScaling.None;
+				Load_Button.Image = Util.Util.ResizeImage(Resources.Load, DpiPicSize);
 			}
 			else
 			{
 				Test_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
 				Start_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
+				Exit_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
+				Load_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
 			}
 		}
 

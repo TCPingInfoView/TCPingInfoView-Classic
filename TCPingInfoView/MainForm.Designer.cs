@@ -43,6 +43,9 @@ namespace TCPingInfoView
 			this.File_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.从文件载入ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.StartStop_MenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+			this.Reset_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.View_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.AutoColumnsSize_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,9 +76,6 @@ namespace TCPingInfoView
 			this.Start_Button = new System.Windows.Forms.ToolStripButton();
 			this.Exit_Button = new System.Windows.Forms.ToolStripButton();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-			this.StartStop_MenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-			this.Reset_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.MainList = new TCPingInfoView.Control.DoubleBufferDataGridView();
 			this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column2 = new TCPingInfoView.Control.TextAndImageColumn();
@@ -128,19 +128,38 @@ namespace TCPingInfoView
 			// 从文件载入ToolStripMenuItem
 			// 
 			this.从文件载入ToolStripMenuItem.Name = "从文件载入ToolStripMenuItem";
-			this.从文件载入ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.从文件载入ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
 			this.从文件载入ToolStripMenuItem.Text = "从文件载入";
 			this.从文件载入ToolStripMenuItem.Click += new System.EventHandler(this.从文件载入ToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(133, 6);
+			// 
+			// StartStop_MenuItem2
+			// 
+			this.StartStop_MenuItem2.Name = "StartStop_MenuItem2";
+			this.StartStop_MenuItem2.Size = new System.Drawing.Size(136, 22);
+			this.StartStop_MenuItem2.Text = "开始";
+			this.StartStop_MenuItem2.Click += new System.EventHandler(this.StartStop_MenuItem2_Click);
+			// 
+			// Reset_MenuItem
+			// 
+			this.Reset_MenuItem.Name = "Reset_MenuItem";
+			this.Reset_MenuItem.Size = new System.Drawing.Size(136, 22);
+			this.Reset_MenuItem.Text = "计数重置";
+			this.Reset_MenuItem.Click += new System.EventHandler(this.Reset_MenuItem_Click);
+			// 
+			// toolStripSeparator3
+			// 
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			this.toolStripSeparator3.Size = new System.Drawing.Size(133, 6);
 			// 
 			// 退出ToolStripMenuItem
 			// 
 			this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
-			this.退出ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.退出ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
 			this.退出ToolStripMenuItem.Text = "退出";
 			this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
 			// 
@@ -311,11 +330,11 @@ namespace TCPingInfoView
 			// 
 			// Load_Button
 			// 
-			this.Load_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.Load_Button.Image = ((System.Drawing.Image)(resources.GetObject("Load_Button.Image")));
+			this.Load_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.Load_Button.Image = global::TCPingInfoView.Properties.Resources.Load;
 			this.Load_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.Load_Button.Name = "Load_Button";
-			this.Load_Button.Size = new System.Drawing.Size(36, 22);
+			this.Load_Button.Size = new System.Drawing.Size(23, 22);
 			this.Load_Button.Text = "载入";
 			this.Load_Button.Click += new System.EventHandler(this.toolStripButton3_Click);
 			// 
@@ -341,11 +360,11 @@ namespace TCPingInfoView
 			// 
 			// Exit_Button
 			// 
-			this.Exit_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.Exit_Button.Image = ((System.Drawing.Image)(resources.GetObject("Exit_Button.Image")));
+			this.Exit_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.Exit_Button.Image = global::TCPingInfoView.Properties.Resources.Exit;
 			this.Exit_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.Exit_Button.Name = "Exit_Button";
-			this.Exit_Button.Size = new System.Drawing.Size(36, 22);
+			this.Exit_Button.Size = new System.Drawing.Size(23, 22);
 			this.Exit_Button.Text = "退出";
 			this.Exit_Button.Click += new System.EventHandler(this.toolStripButton2_Click);
 			// 
@@ -361,25 +380,6 @@ namespace TCPingInfoView
 			this.toolStrip1.Size = new System.Drawing.Size(912, 25);
 			this.toolStrip1.TabIndex = 4;
 			this.toolStrip1.Text = "toolStrip1";
-			// 
-			// toolStripSeparator3
-			// 
-			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
-			// 
-			// StartStop_MenuItem2
-			// 
-			this.StartStop_MenuItem2.Name = "StartStop_MenuItem2";
-			this.StartStop_MenuItem2.Size = new System.Drawing.Size(180, 22);
-			this.StartStop_MenuItem2.Text = "开始";
-			this.StartStop_MenuItem2.Click += new System.EventHandler(this.StartStop_MenuItem2_Click);
-			// 
-			// Reset_MenuItem
-			// 
-			this.Reset_MenuItem.Name = "Reset_MenuItem";
-			this.Reset_MenuItem.Size = new System.Drawing.Size(180, 22);
-			this.Reset_MenuItem.Text = "计数重置";
-			this.Reset_MenuItem.Click += new System.EventHandler(this.Reset_MenuItem_Click);
 			// 
 			// MainList
 			// 
