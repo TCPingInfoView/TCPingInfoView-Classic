@@ -12,6 +12,7 @@ using TCPingInfoView.Collection;
 using TCPingInfoView.Control;
 using TCPingInfoView.NetUtils;
 using TCPingInfoView.Properties;
+using TCPingInfoView.Steamworks;
 using TCPingInfoView.Util;
 using Timer = System.Threading.Timer;
 
@@ -190,9 +191,19 @@ namespace TCPingInfoView
 			}
 		}
 
+		private void LoadSteam()
+		{
+			if (SteamManager.IsLoaded)
+			{
+				Text = $@"{ExeName} - {SteamManager.SteamWorksClient.Username}";
+			}
+		}
+
 		private void MainForm_Load(object sender, EventArgs e)
 		{
 			LoadSetting();
+
+			LoadSteam();
 
 			RemainingHeight = Height - (MainList.Height + DateList.Height);
 			ChangedRatio();
@@ -535,6 +546,14 @@ namespace TCPingInfoView
 
 			StartStop_MenuItem.Text = @"停止";
 			StartStop_MenuItem2.Text = @"停止";
+
+			if (SteamManager.IsLoaded)
+			{
+				if (SteamManager.UnlockAchievement(@"FIRST_TIME_TCPing"))
+				{
+					//Console.WriteLine(@"nb");
+				}
+			}
 		}
 
 		private void StopPing()
@@ -653,6 +672,7 @@ namespace TCPingInfoView
 			SaveConfig();
 			Dispose();
 			notifyIcon1.Dispose();
+			SteamManager.SteamWorksClient.Dispose();
 			Environment.Exit(0);
 		}
 
