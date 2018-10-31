@@ -92,6 +92,7 @@ namespace TCPingInfoView
 			this.DateList = new TCPingInfoView.Control.DoubleBufferDataGridView();
 			this.dataGridViewTextBoxColumn1 = new TCPingInfoView.Control.TextAndImageColumn();
 			this.textAndImageColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.menuStrip1.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
 			this.NotifyIcon_MenuStrip.SuspendLayout();
@@ -374,6 +375,7 @@ namespace TCPingInfoView
             this.Load_Button,
             this.Test_Button,
             this.Start_Button,
+            this.toolStripSeparator4,
             this.Exit_Button});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 25);
 			this.toolStrip1.Name = "toolStrip1";
@@ -582,6 +584,11 @@ namespace TCPingInfoView
 			this.textAndImageColumn1.ReadOnly = true;
 			this.textAndImageColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
 			// 
+			// toolStripSeparator4
+			// 
+			this.toolStripSeparator4.Name = "toolStripSeparator4";
+			this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -668,6 +675,7 @@ namespace TCPingInfoView
 		private ToolStripMenuItem StartStop_MenuItem2;
 		private ToolStripMenuItem Reset_MenuItem;
 		private ToolStripSeparator toolStripSeparator3;
+		private ToolStripSeparator toolStripSeparator4;
 	}
 }
 
