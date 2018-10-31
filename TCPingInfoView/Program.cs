@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using TCPingInfoView.Steamworks;
 
 namespace TCPingInfoView
 {
@@ -15,6 +16,8 @@ namespace TCPingInfoView
 		[STAThread]
 		static void Main()
 		{
+			SteamManager.Init();
+
 			if (Environment.OSVersion.Version.Major >= 6)
 			{
 				SetProcessDPIAware();

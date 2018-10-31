@@ -23,6 +23,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,6 +34,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Resources\TCPing.ico</ApplicationIcon>
@@ -61,6 +63,87 @@
     <Compile Include="Collection\MainTable.cs" />
     <Compile Include="Control\DoubleBufferDataGridView.cs" />
     <Compile Include="Control\TextAndImageColumn.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\BaseSteamworks.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Callbacks\Index.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Client.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Client\Achievements.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Client\App.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Client\Auth.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Client\Friends.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Client\Image.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Client\Leaderboard.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Client\Lobby.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Client\Lobby.LobbyData.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Client\LobbyList.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Client\LobbyList.Lobby.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Client\MicroTransactions.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Client\Overlay.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Client\RemoteStorage.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Client\RemoteStorage.File.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Client\RemoteStorage.FileStream.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Client\Screenshots.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Client\ServerList.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Client\ServerList.Request.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Client\ServerList.Server.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Client\Stats.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Client\SteamFriend.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Client\User.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Client\Voice.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Config.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Interfaces\Inventory.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Interfaces\Inventory.Definition.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Interfaces\Inventory.Item.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Interfaces\Inventory.Result.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Interfaces\Networking.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Interfaces\Workshop.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Interfaces\Workshop.Editor.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Interfaces\Workshop.Item.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Interfaces\Workshop.Query.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Interop\Native.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Server.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Server\Auth.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Server\Query.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Server\ServerInit.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Server\Stats.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.Callback.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.Constants.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.Enums.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.Helpers.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.Platform.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.Platform.Interface.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.Platform.Linux32.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.Platform.Linux64.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.Platform.Mac.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.Platform.Win32.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.Platform.Win64.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.SteamApi.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.SteamAppList.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.SteamApps.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.SteamClient.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.SteamController.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.SteamFriends.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.SteamGameServer.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.SteamGameServerStats.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.SteamHTMLSurface.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.SteamHTTP.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.SteamInventory.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.SteamMatchmaking.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.SteamMatchmakingServers.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.SteamMusic.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.SteamMusicRemote.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.SteamNetworking.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.SteamParentalSettings.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.SteamRemoteStorage.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.SteamScreenshots.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.SteamUGC.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.SteamUser.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.SteamUserStats.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.SteamUtils.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.SteamVideo.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.Structs.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.Types.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Utility.cs" />
+    <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Utility\SourceServerQuery.cs" />
     <Compile Include="LogForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -69,6 +152,7 @@
     </Compile>
     <Compile Include="NetUtils\IPFormatter.cs" />
     <Compile Include="NetUtils\IPv4Subnet.cs" />
+    <Compile Include="Steamworks\SteamManager.cs" />
     <Compile Include="Util\AppConfig.cs" />
     <Compile Include="Util\SimpleJson.cs" />
     <Compile Include="Util\Util.cs" />
@@ -137,6 +221,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Load.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="steam_api.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="steam_api64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
