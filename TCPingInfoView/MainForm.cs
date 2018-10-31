@@ -207,7 +207,7 @@ namespace TCPingInfoView
 			DateList.DataSource = DateTable;
 			LoadDateList();
 
-			const string defaultPath = @".\test.txt";
+			var defaultPath = $@".\{ExeName}.txt";
 			if (File.Exists(defaultPath))
 			{
 				rawTable = Read.ReadAddressFromFile(defaultPath);
