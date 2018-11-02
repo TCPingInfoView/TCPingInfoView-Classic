@@ -959,5 +959,15 @@ namespace TCPingInfoView
 
 		#endregion
 
+		#region 帮助
+
+		private void About_MenuItem_Click(object sender, EventArgs e)
+		{
+			var aboutForm=new AboutForm();
+			aboutForm.ShowDialog();
+		}
+
+		#endregion
+
 	}
 }
