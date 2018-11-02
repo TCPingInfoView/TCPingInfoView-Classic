@@ -76,6 +76,7 @@ namespace TCPingInfoView
 			this.Start_Button = new System.Windows.Forms.ToolStripButton();
 			this.Exit_Button = new System.Windows.Forms.ToolStripButton();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.MainList = new TCPingInfoView.Control.DoubleBufferDataGridView();
 			this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column2 = new TCPingInfoView.Control.TextAndImageColumn();
@@ -92,7 +93,7 @@ namespace TCPingInfoView
 			this.DateList = new TCPingInfoView.Control.DoubleBufferDataGridView();
 			this.dataGridViewTextBoxColumn1 = new TCPingInfoView.Control.TextAndImageColumn();
 			this.textAndImageColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.menuStrip1.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
 			this.NotifyIcon_MenuStrip.SuspendLayout();
@@ -373,6 +374,7 @@ namespace TCPingInfoView
 			// 
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.Load_Button,
+            this.toolStripSeparator5,
             this.Test_Button,
             this.Start_Button,
             this.toolStripSeparator4,
@@ -382,6 +384,11 @@ namespace TCPingInfoView
 			this.toolStrip1.Size = new System.Drawing.Size(912, 25);
 			this.toolStrip1.TabIndex = 4;
 			this.toolStrip1.Text = "toolStrip1";
+			// 
+			// toolStripSeparator4
+			// 
+			this.toolStripSeparator4.Name = "toolStripSeparator4";
+			this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
 			// 
 			// MainList
 			// 
@@ -584,10 +591,10 @@ namespace TCPingInfoView
 			this.textAndImageColumn1.ReadOnly = true;
 			this.textAndImageColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
 			// 
-			// toolStripSeparator4
+			// toolStripSeparator5
 			// 
-			this.toolStripSeparator4.Name = "toolStripSeparator4";
-			this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+			this.toolStripSeparator5.Name = "toolStripSeparator5";
+			this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
 			// 
 			// MainForm
 			// 
@@ -676,6 +683,7 @@ namespace TCPingInfoView
 		private ToolStripMenuItem Reset_MenuItem;
 		private ToolStripSeparator toolStripSeparator3;
 		private ToolStripSeparator toolStripSeparator4;
+		private ToolStripSeparator toolStripSeparator5;
 	}
 }
 

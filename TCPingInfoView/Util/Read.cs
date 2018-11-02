@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -8,19 +9,30 @@ namespace TCPingInfoView.Util
 {
 	public static class Read
 	{
-		public static ConcurrentList<Data> ReadAddressFromFile(string path)
+		private static readonly UTF8Encoding Utf8WithoutBom = new UTF8Encoding(false);
+
+		public static ConcurrentList<Data> ReadAddressFromString(string s)
 		{
 			var sl = new List<string>();
-			using (var sr = new StreamReader(path, Encoding.UTF8))
+
+			var lines = s.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+			foreach (var line in lines)
 			{
-				string line;
-				while ((line = sr.ReadLine()) != null)
+				if (!string.IsNullOrWhiteSpace(line))
 				{
 					sl.Add(line);
 				}
 			}
 
 			return Util.ToData(sl);
+		}
+
+		public static string ReadTextFromFile(string path)
+		{
+			using (var sr = new StreamReader(path, Utf8WithoutBom))
+			{
+				return sr.ReadToEnd();
+			}
 		}
 
 		public static string GetFilePath()

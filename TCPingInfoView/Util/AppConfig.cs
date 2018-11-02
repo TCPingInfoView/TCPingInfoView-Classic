@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace TCPingInfoView.Util
 {
@@ -41,9 +40,6 @@ namespace TCPingInfoView.Util
 		public readonly string Filepath;
 
 		[IgnoreDataMember]
-		private static readonly UTF8Encoding Utf8WithoutBom = new UTF8Encoding(false);
-
-		[IgnoreDataMember]
 		private const int ColumnsCount = MainForm.ColumnsCount;
 
 		public AppConfig(string filepath) : this()
@@ -64,20 +60,7 @@ namespace TCPingInfoView.Util
 
 		public void Save()
 		{
-			try
-			{
-				using (var fileS = new FileStream(Filepath, FileMode.Create, FileAccess.Write))
-				{
-					using (var sw = new StreamWriter(fileS, Utf8WithoutBom))
-					{
-						sw.Write(JsonStr);
-					}
-				}
-			}
-			catch (Exception)
-			{
-				// ignored
-			}
+			Write.WriteToFile(Filepath, JsonStr);
 		}
 
 		public void Load()
@@ -90,11 +73,8 @@ namespace TCPingInfoView.Util
 				}
 				else
 				{
-					using (var sr = new StreamReader(Filepath, Utf8WithoutBom))
-					{
-						var jsonStr = sr.ReadToEnd();
-						Load(jsonStr);
-					}
+					var jsonStr = Read.ReadTextFromFile(Filepath);
+					Load(jsonStr);
 				}
 			}
 			catch (Exception)

@@ -29,6 +29,7 @@ namespace TCPingInfoView
 
 		private static string ExeName => Assembly.GetExecutingAssembly().GetName().Name;
 		private readonly AppConfig Config = new AppConfig($@".\{ExeName}.json");
+		private static string ListPath => $@".\{ExeName}.txt";
 
 		#region DPI
 
@@ -65,6 +66,8 @@ namespace TCPingInfoView
 		#endregion
 
 		#region 列表相关数据结构
+
+		private string RawString;
 
 		private ConcurrentList<Data> rawTable = new ConcurrentList<Data>();
 
@@ -207,10 +210,10 @@ namespace TCPingInfoView
 			DateList.DataSource = DateTable;
 			LoadDateList();
 
-			var defaultPath = $@".\{ExeName}.txt";
-			if (File.Exists(defaultPath))
+			if (File.Exists(ListPath))
 			{
-				rawTable = Read.ReadAddressFromFile(defaultPath);
+				RawString = Read.ReadTextFromFile(ListPath);
+				rawTable = Read.ReadAddressFromString(RawString);
 				LoadFromList();
 			}
 		}
@@ -227,7 +230,8 @@ namespace TCPingInfoView
 				return;
 			}
 
-			rawTable = Read.ReadAddressFromFile(path);
+			RawString = Read.ReadTextFromFile(path);
+			rawTable = Read.ReadAddressFromString(RawString);
 			LoadFromList();
 		}
 
@@ -357,7 +361,7 @@ namespace TCPingInfoView
 			if (mainTable[index].Endpoint == string.Empty)
 			{
 				var ip = NetTest.GetIP(mainTable[index].HostsName);
-				
+
 				if (ip != null)
 				{
 					mainTable[index].Endpoint = $@"{ip}:{rawTable[index].Port}";
@@ -388,8 +392,8 @@ namespace TCPingInfoView
 
 			var log = new DateTable
 			{
-					Date = time,
-					Latency = res
+				Date = time,
+				Latency = res
 			};
 
 			mainTable[index].AddNewLog(log);
@@ -648,8 +652,14 @@ namespace TCPingInfoView
 			Config.Save();
 		}
 
+		private void SaveList()
+		{
+			Write.WriteToFile(ListPath, RawString);
+		}
+
 		private void Exit()
 		{
+			SaveList();
 			SaveConfig();
 			Dispose();
 			notifyIcon1.Dispose();
@@ -678,7 +688,8 @@ namespace TCPingInfoView
 		private void MainList_DragDrop(object sender, DragEventArgs e)
 		{
 			var path = ((Array)e.Data.GetData(DataFormats.FileDrop)).GetValue(0).ToString();
-			rawTable = Read.ReadAddressFromFile(path);
+			RawString = Read.ReadTextFromFile(path);
+			rawTable = Read.ReadAddressFromString(RawString);
 			LoadFromList();
 		}
 
