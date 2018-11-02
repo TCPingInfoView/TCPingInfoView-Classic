@@ -151,18 +151,26 @@ namespace TCPingInfoView.Util
 
 		public static void AutoColumnSize(DataGridView drv, DataGridViewAutoSizeColumnMode mode)
 		{
-			for (var i = 0; i < drv.DisplayedColumnCount(true) - 1; ++i)
+			var displayedIndex = new List<int>();
+			for (var i = 0; i < drv.Columns.Count; ++i)
 			{
-				foreach (DataGridViewColumn column in drv.Columns)
+				for (var j = 0; j < drv.Columns.Count; ++j)
 				{
-					if (column.DisplayIndex == i)
+					if (drv.Columns[j].DisplayIndex == i && drv.Columns[j].Visible)
 					{
-						column.AutoSizeMode = mode;
-						var widthCol = column.Width;
-						column.AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet;
-						column.Width = widthCol;
+						displayedIndex.Add(j);
 					}
 				}
+			}
+
+			for (var i = 0; i < displayedIndex.Count - 1; ++i)
+			{
+				var index = displayedIndex[i];
+				var column = drv.Columns[index];
+				column.AutoSizeMode = mode;
+				var widthCol = column.Width;
+				column.AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet;
+				column.Width = widthCol;
 			}
 		}
 

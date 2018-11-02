@@ -34,11 +34,11 @@ namespace TCPingInfoView
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.File_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.从文件载入ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,6 +53,8 @@ namespace TCPingInfoView
 			this.Options_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.IsNotifyClose_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.IsShowDateList_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.Help_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.About_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
@@ -94,8 +96,8 @@ namespace TCPingInfoView
 			this.DateList = new TCPingInfoView.Control.DoubleBufferDataGridView();
 			this.dataGridViewTextBoxColumn1 = new TCPingInfoView.Control.TextAndImageColumn();
 			this.textAndImageColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Help_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.About_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+			this.DisplayedColumns_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
 			this.NotifyIcon_MenuStrip.SuspendLayout();
@@ -133,38 +135,38 @@ namespace TCPingInfoView
 			// 从文件载入ToolStripMenuItem
 			// 
 			this.从文件载入ToolStripMenuItem.Name = "从文件载入ToolStripMenuItem";
-			this.从文件载入ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.从文件载入ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
 			this.从文件载入ToolStripMenuItem.Text = "从文件载入";
 			this.从文件载入ToolStripMenuItem.Click += new System.EventHandler(this.从文件载入ToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(133, 6);
 			// 
 			// StartStop_MenuItem2
 			// 
 			this.StartStop_MenuItem2.Name = "StartStop_MenuItem2";
-			this.StartStop_MenuItem2.Size = new System.Drawing.Size(180, 22);
+			this.StartStop_MenuItem2.Size = new System.Drawing.Size(136, 22);
 			this.StartStop_MenuItem2.Text = "开始";
 			this.StartStop_MenuItem2.Click += new System.EventHandler(this.StartStop_MenuItem2_Click);
 			// 
 			// Reset_MenuItem
 			// 
 			this.Reset_MenuItem.Name = "Reset_MenuItem";
-			this.Reset_MenuItem.Size = new System.Drawing.Size(180, 22);
+			this.Reset_MenuItem.Size = new System.Drawing.Size(136, 22);
 			this.Reset_MenuItem.Text = "计数重置";
 			this.Reset_MenuItem.Click += new System.EventHandler(this.Reset_MenuItem_Click);
 			// 
 			// toolStripSeparator3
 			// 
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
+			this.toolStripSeparator3.Size = new System.Drawing.Size(133, 6);
 			// 
 			// 退出ToolStripMenuItem
 			// 
 			this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
-			this.退出ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.退出ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
 			this.退出ToolStripMenuItem.Text = "退出";
 			this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
 			// 
@@ -172,7 +174,9 @@ namespace TCPingInfoView
 			// 
 			this.View_MenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.AutoColumnsSize_MenuItem,
-            this.AutoColumnsSizeAndHeader_MenuItem});
+            this.AutoColumnsSizeAndHeader_MenuItem,
+            this.toolStripSeparator6,
+            this.DisplayedColumns_MenuItem});
 			this.View_MenuItem.Name = "View_MenuItem";
 			this.View_MenuItem.Size = new System.Drawing.Size(44, 21);
 			this.View_MenuItem.Text = "查看";
@@ -203,7 +207,7 @@ namespace TCPingInfoView
 			// IsNotifyClose_MenuItem
 			// 
 			this.IsNotifyClose_MenuItem.Name = "IsNotifyClose_MenuItem";
-			this.IsNotifyClose_MenuItem.Size = new System.Drawing.Size(148, 22);
+			this.IsNotifyClose_MenuItem.Size = new System.Drawing.Size(180, 22);
 			this.IsNotifyClose_MenuItem.Text = "关闭时提示";
 			this.IsNotifyClose_MenuItem.CheckedChanged += new System.EventHandler(this.IsNotifyClose_MenuItem_CheckedChanged);
 			this.IsNotifyClose_MenuItem.Click += new System.EventHandler(this.IsNotifyClose_MenuItem_Click);
@@ -213,10 +217,25 @@ namespace TCPingInfoView
 			this.IsShowDateList_MenuItem.Checked = true;
 			this.IsShowDateList_MenuItem.CheckState = System.Windows.Forms.CheckState.Indeterminate;
 			this.IsShowDateList_MenuItem.Name = "IsShowDateList_MenuItem";
-			this.IsShowDateList_MenuItem.Size = new System.Drawing.Size(148, 22);
+			this.IsShowDateList_MenuItem.Size = new System.Drawing.Size(180, 22);
 			this.IsShowDateList_MenuItem.Text = "显示日期表格";
 			this.IsShowDateList_MenuItem.CheckStateChanged += new System.EventHandler(this.IsShowDateList_MenuItem_CheckStateChanged);
 			this.IsShowDateList_MenuItem.Click += new System.EventHandler(this.IsShowDateList_MenuItem_Click);
+			// 
+			// Help_MenuItem
+			// 
+			this.Help_MenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.About_MenuItem});
+			this.Help_MenuItem.Name = "Help_MenuItem";
+			this.Help_MenuItem.Size = new System.Drawing.Size(44, 21);
+			this.Help_MenuItem.Text = "帮助";
+			// 
+			// About_MenuItem
+			// 
+			this.About_MenuItem.Name = "About_MenuItem";
+			this.About_MenuItem.Size = new System.Drawing.Size(100, 22);
+			this.About_MenuItem.Text = "关于";
+			this.About_MenuItem.Click += new System.EventHandler(this.About_MenuItem_Click);
 			// 
 			// statusStrip1
 			// 
@@ -409,14 +428,14 @@ namespace TCPingInfoView
 			this.MainList.BackgroundColor = System.Drawing.SystemColors.Window;
 			this.MainList.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.MainList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.MainList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+			dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle6.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.MainList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
 			this.MainList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.MainList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
@@ -431,28 +450,28 @@ namespace TCPingInfoView
             this.Column10,
             this.Column11,
             this.Column12});
-			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.MainList.DefaultCellStyle = dataGridViewCellStyle2;
+			dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle7.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.MainList.DefaultCellStyle = dataGridViewCellStyle7;
 			this.MainList.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.MainList.GridColor = System.Drawing.SystemColors.Control;
 			this.MainList.Location = new System.Drawing.Point(0, 50);
 			this.MainList.MultiSelect = false;
 			this.MainList.Name = "MainList";
 			this.MainList.ReadOnly = true;
-			dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle3.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.MainList.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+			dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle8.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.MainList.RowHeadersDefaultCellStyle = dataGridViewCellStyle8;
 			this.MainList.RowHeadersVisible = false;
 			this.MainList.Size = new System.Drawing.Size(912, 478);
 			this.MainList.TabIndex = 6;
@@ -551,26 +570,26 @@ namespace TCPingInfoView
 			this.DateList.BackgroundColor = System.Drawing.SystemColors.Window;
 			this.DateList.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.DateList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-			dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle4.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.DateList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+			dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle9.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.DateList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
 			this.DateList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.DateList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn1,
             this.textAndImageColumn1});
-			dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle5.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.DateList.DefaultCellStyle = dataGridViewCellStyle5;
+			dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle10.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.DateList.DefaultCellStyle = dataGridViewCellStyle10;
 			this.DateList.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.DateList.GridColor = System.Drawing.SystemColors.Control;
 			this.DateList.Location = new System.Drawing.Point(0, 531);
@@ -599,20 +618,17 @@ namespace TCPingInfoView
 			this.textAndImageColumn1.ReadOnly = true;
 			this.textAndImageColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
 			// 
-			// Help_MenuItem
+			// toolStripSeparator6
 			// 
-			this.Help_MenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.About_MenuItem});
-			this.Help_MenuItem.Name = "Help_MenuItem";
-			this.Help_MenuItem.Size = new System.Drawing.Size(44, 21);
-			this.Help_MenuItem.Text = "帮助";
+			this.toolStripSeparator6.Name = "toolStripSeparator6";
+			this.toolStripSeparator6.Size = new System.Drawing.Size(229, 6);
 			// 
-			// About_MenuItem
+			// DisplayedColumns_MenuItem
 			// 
-			this.About_MenuItem.Name = "About_MenuItem";
-			this.About_MenuItem.Size = new System.Drawing.Size(180, 22);
-			this.About_MenuItem.Text = "关于";
-			this.About_MenuItem.Click += new System.EventHandler(this.About_MenuItem_Click);
+			this.DisplayedColumns_MenuItem.Name = "DisplayedColumns_MenuItem";
+			this.DisplayedColumns_MenuItem.Size = new System.Drawing.Size(232, 22);
+			this.DisplayedColumns_MenuItem.Text = "选择显示的列";
+			this.DisplayedColumns_MenuItem.Click += new System.EventHandler(this.DisplayedColumns_MenuItem_Click);
 			// 
 			// MainForm
 			// 
@@ -704,6 +720,8 @@ namespace TCPingInfoView
 		private ToolStripSeparator toolStripSeparator5;
 		private ToolStripMenuItem Help_MenuItem;
 		private ToolStripMenuItem About_MenuItem;
+		private ToolStripSeparator toolStripSeparator6;
+		private ToolStripMenuItem DisplayedColumns_MenuItem;
 	}
 }
 

@@ -773,8 +773,7 @@ namespace TCPingInfoView
 				if (MainList.Rows[e.RowIndex].Cells[0].Value is int index)
 				{
 					var log = mainTable[index - 1];
-					var logForm = new LogForm(log);
-					logForm.ShowDialog();
+					new LogForm(log).ShowDialog();
 				}
 			}
 		}
@@ -929,6 +928,11 @@ namespace TCPingInfoView
 			Util.Util.AutoColumnSize(MainList, DataGridViewAutoSizeColumnMode.AllCells);
 		}
 
+		private void DisplayedColumns_MenuItem_Click(object sender, EventArgs e)
+		{
+			new DisplayedColumns(MainList.Columns).ShowDialog();
+		}
+
 		#endregion
 
 		#region 文件
@@ -963,11 +967,9 @@ namespace TCPingInfoView
 
 		private void About_MenuItem_Click(object sender, EventArgs e)
 		{
-			var aboutForm=new AboutForm();
-			aboutForm.ShowDialog();
+			new AboutForm().ShowDialog();
 		}
 
 		#endregion
-
 	}
 }
