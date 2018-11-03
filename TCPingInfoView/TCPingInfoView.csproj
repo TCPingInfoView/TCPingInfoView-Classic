@@ -57,6 +57,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AboutForm.Designer.cs">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Collection\BindingCollection.cs" />
     <Compile Include="Collection\ConcurrentList.cs" />
     <Compile Include="Collection\DateTable.cs" />
@@ -144,10 +150,17 @@
     <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\SteamNative\SteamNative.Types.cs" />
     <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Utility.cs" />
     <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Utility\SourceServerQuery.cs" />
-    <Compile Include="LogForm.cs">
+    <Compile Include="Control\ToolStripTextBoxWithHintText.cs" />
+    <Compile Include="Forms\DisplayedColumns.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LogForm.Designer.cs">
+	<Compile Include="Forms\DisplayedColumns.Designer.cs">
+      <DependentUpon>DisplayedColumns.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\LogForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LogForm.Designer.cs">
       <DependentUpon>LogForm.cs</DependentUpon>
     </Compile>
     <Compile Include="NetUtils\IPFormatter.cs" />
@@ -157,20 +170,27 @@
     <Compile Include="Util\SimpleJson.cs" />
     <Compile Include="Util\Util.cs" />
     <Compile Include="Collection\Data.cs" />
-    <Compile Include="MainForm.cs">
+    <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="NetUtils\NetTest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\Read.cs" />
-    <EmbeddedResource Include="LogForm.resx">
+    <Compile Include="Util\Write.cs" />
+    <EmbeddedResource Include="Forms\AboutForm.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DisplayedColumns.resx">
+      <DependentUpon>DisplayedColumns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LogForm.resx">
       <DependentUpon>LogForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -229,6 +249,13 @@
     <Content Include="steam_api64.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="Resources\TCPing.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Minimize.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

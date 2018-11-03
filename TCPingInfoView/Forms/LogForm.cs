@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using TCPingInfoView.Collection;
 
-namespace TCPingInfoView
+namespace TCPingInfoView.Forms
 {
 	public partial class LogForm : Form
 	{

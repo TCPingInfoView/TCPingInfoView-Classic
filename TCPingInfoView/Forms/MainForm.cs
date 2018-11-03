@@ -16,7 +16,7 @@ using TCPingInfoView.Steamworks;
 using TCPingInfoView.Util;
 using Timer = System.Threading.Timer;
 
-namespace TCPingInfoView
+namespace TCPingInfoView.Forms
 {
 	public partial class MainForm : Form
 	{
@@ -30,6 +30,7 @@ namespace TCPingInfoView
 
 		private static string ExeName => Assembly.GetExecutingAssembly().GetName().Name;
 		private readonly AppConfig Config = new AppConfig($@".\{ExeName}.json");
+		private static string ListPath => $@".\{ExeName}.txt";
 
 		#region DPI
 
@@ -66,6 +67,8 @@ namespace TCPingInfoView
 		#endregion
 
 		#region 列表相关数据结构
+
+		private string RawString;
 
 		private ConcurrentList<Data> rawTable = new ConcurrentList<Data>();
 
@@ -151,6 +154,8 @@ namespace TCPingInfoView
 				Exit_Button.Image = Util.Util.ResizeImage(Resources.Exit, DpiPicSize);
 				Load_Button.ImageScaling = ToolStripItemImageScaling.None;
 				Load_Button.Image = Util.Util.ResizeImage(Resources.Load, DpiPicSize);
+				Minimize_Button.ImageScaling = ToolStripItemImageScaling.None;
+				Minimize_Button.Image = Util.Util.ResizeImage(Resources.Minimize, DpiPicSize);
 			}
 			else
 			{
@@ -158,6 +163,7 @@ namespace TCPingInfoView
 				Start_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
 				Exit_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
 				Load_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
+				Minimize_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
 			}
 		}
 
@@ -218,10 +224,10 @@ namespace TCPingInfoView
 			DateList.DataSource = DateTable;
 			LoadDateList();
 
-			const string defaultPath = @".\test.txt";
-			if (File.Exists(defaultPath))
+			if (File.Exists(ListPath))
 			{
-				rawTable = Read.ReadAddressFromFile(defaultPath);
+				RawString = Read.ReadTextFromFile(ListPath);
+				rawTable = Read.ReadAddressFromString(RawString);
 				LoadFromList();
 			}
 		}
@@ -238,11 +244,12 @@ namespace TCPingInfoView
 				return;
 			}
 
-			rawTable = Read.ReadAddressFromFile(path);
+			RawString = Read.ReadTextFromFile(path);
+			rawTable = Read.ReadAddressFromString(RawString);
 			LoadFromList();
 		}
 
-		private void 从文件载入ToolStripMenuItem_Click(object sender, EventArgs e)
+		private void LoadFile_MenuItem_Click(object sender, EventArgs e)
 		{
 			LoadAddressFromFile();
 		}
@@ -368,7 +375,7 @@ namespace TCPingInfoView
 			if (mainTable[index].Endpoint == string.Empty)
 			{
 				var ip = NetTest.GetIP(mainTable[index].HostsName);
-				
+
 				if (ip != null)
 				{
 					mainTable[index].Endpoint = $@"{ip}:{rawTable[index].Port}";
@@ -399,8 +406,8 @@ namespace TCPingInfoView
 
 			var log = new DateTable
 			{
-					Date = time,
-					Latency = res
+				Date = time,
+				Latency = res
 			};
 
 			mainTable[index].AddNewLog(log);
@@ -492,6 +499,11 @@ namespace TCPingInfoView
 			TriggerMainFormDisplay();
 		}
 
+		private void Minimize_Button_Click(object sender, EventArgs e)
+		{
+			TriggerMainFormDisplay();
+		}
+
 		private void TriggerMainFormDisplay()
 		{
 			Visible = !Visible;
@@ -513,11 +525,6 @@ namespace TCPingInfoView
 		}
 
 		private void StartStop_MenuItem_Click(object sender, EventArgs e)
-		{
-			TriggerRun();
-		}
-
-		private void StartStop_MenuItem2_Click(object sender, EventArgs e)
 		{
 			TriggerRun();
 		}
@@ -545,7 +552,6 @@ namespace TCPingInfoView
 			}
 
 			StartStop_MenuItem.Text = @"停止";
-			StartStop_MenuItem2.Text = @"停止";
 
 			if (SteamManager.IsLoaded)
 			{
@@ -573,7 +579,6 @@ namespace TCPingInfoView
 			}
 
 			StartStop_MenuItem.Text = @"开始";
-			StartStop_MenuItem2.Text = @"开始";
 		}
 
 		private void TriggerRun()
@@ -667,8 +672,14 @@ namespace TCPingInfoView
 			Config.Save();
 		}
 
+		private void SaveList()
+		{
+			Write.WriteToFile(ListPath, RawString);
+		}
+
 		private void Exit()
 		{
+			SaveList();
 			SaveConfig();
 			Dispose();
 			notifyIcon1.Dispose();
@@ -686,11 +697,6 @@ namespace TCPingInfoView
 			Exit();
 		}
 
-		private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			Exit();
-		}
-
 		#endregion
 
 		#region 文件拖拽进主列表
@@ -698,7 +704,8 @@ namespace TCPingInfoView
 		private void MainList_DragDrop(object sender, DragEventArgs e)
 		{
 			var path = ((Array)e.Data.GetData(DataFormats.FileDrop)).GetValue(0).ToString();
-			rawTable = Read.ReadAddressFromFile(path);
+			RawString = Read.ReadTextFromFile(path);
+			rawTable = Read.ReadAddressFromString(RawString);
 			LoadFromList();
 		}
 
@@ -782,8 +789,7 @@ namespace TCPingInfoView
 				if (MainList.Rows[e.RowIndex].Cells[0].Value is int index)
 				{
 					var log = mainTable[index - 1];
-					var logForm = new LogForm(log);
-					logForm.ShowDialog();
+					new LogForm(log).ShowDialog();
 				}
 			}
 		}
@@ -938,6 +944,24 @@ namespace TCPingInfoView
 			Util.Util.AutoColumnSize(MainList, DataGridViewAutoSizeColumnMode.AllCells);
 		}
 
+		private void DisplayedColumns_MenuItem_Click(object sender, EventArgs e)
+		{
+			new DisplayedColumns(MainList.Columns).ShowDialog();
+		}
+
+		private void ShowLogForm_MenuItem_Click(object sender, EventArgs e)
+		{
+			var i = MainList.SelectedRows.Count;
+			if (i > 0)
+			{
+				if (MainList.Rows[MainList.SelectedRows[0].Index].Cells[0].Value is int index)
+				{
+					var log = mainTable[index - 1];
+					new LogForm(log).ShowDialog();
+				}
+			}
+		}
+
 		#endregion
 
 		#region 文件
@@ -963,6 +987,86 @@ namespace TCPingInfoView
 			if (rawTable.Count > 0)
 			{
 				MainList.Rows[0].Selected = true;
+			}
+		}
+
+		#endregion
+
+		#region 帮助
+
+		private void About_MenuItem_Click(object sender, EventArgs e)
+		{
+			new AboutForm().ShowDialog();
+		}
+
+		#endregion
+
+		#region 搜索
+
+		private bool IsContainsString(int rowIndex, string str)
+		{
+			for (var i = 0; i < MainList.ColumnCount; ++i)
+			{
+				if (MainList.Columns[i].Visible)
+				{
+					var value = MainList.Rows[rowIndex].Cells[i].Value;
+					if (value != null)
+					{
+						var s = MainList.Rows[rowIndex].Cells[i].Value.ToString();
+						if (!string.IsNullOrWhiteSpace(s) && s.Contains(str))
+						{
+							return true;
+						}
+					}
+				}
+			}
+			return false;
+		}
+
+		private void SearchMainList()
+		{
+			var index = 0;
+			if (MainList.SelectedRows.Count > 0)
+			{
+				index = MainList.SelectedRows[0].Index;
+			}
+
+			for (var i = 0; i < MainList.RowCount + 1; ++i)
+			{
+				if (IsContainsString(index, Search_TextBox.Text))
+				{
+					if (!MainList.Rows[index].Selected)
+					{
+						MainList.Rows[index].Selected = true;
+						MainList.CurrentCell = MainList.Rows[index].Cells[0];
+						return;
+					}
+					MainList.ClearSelection();
+				}
+
+				if (index == MainList.RowCount - 1)
+				{
+					index = 0;
+				}
+				else
+				{
+					++index;
+				}
+			}
+
+			MainList.ClearSelection();
+		}
+
+		private void SearchTextBox_TextChanged(object sender, EventArgs e)
+		{
+			SearchMainList();
+		}
+
+		private void SearchTextBox_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Return)
+			{
+				SearchMainList();
 			}
 		}
 

@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using TCPingInfoView.Steamworks;
+using TCPingInfoView.Forms;
 
 namespace TCPingInfoView
 {

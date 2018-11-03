@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace TCPingInfoView.Control
@@ -12,6 +13,7 @@ namespace TCPingInfoView.Control
 			CellBorderStyle = DataGridViewCellBorderStyle.Single;
 			BackgroundColor = DefaultCellStyle.BackColor;
 			MultiSelect = false;
+			StandardTab = true;
 			SelectionMode = DataGridViewSelectionMode.RowHeaderSelect;
 			SetStyle(ControlStyles.DoubleBuffer | ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
 			UpdateStyles();
@@ -76,6 +78,15 @@ namespace TCPingInfoView.Control
 		protected override void OnColumnHeaderMouseClick(DataGridViewCellMouseEventArgs e)
 		{
 			base.OnColumnHeaderMouseClick(e);
+			if (SelectedCells.Count > 0)
+			{
+				Rows[SelectedCells[0].RowIndex].Selected = true;
+			}
+		}
+
+		protected override void OnSelectionChanged(EventArgs e)
+		{
+			base.OnSelectionChanged(e);
 			if (SelectedCells.Count > 0)
 			{
 				Rows[SelectedCells[0].RowIndex].Selected = true;
