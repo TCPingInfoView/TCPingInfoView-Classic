@@ -1042,11 +1042,12 @@ namespace TCPingInfoView.Forms
 			SearchMainList();
 		}
 
-		private void SearchTextBox_KeyDown(object sender, KeyEventArgs e)
+		private void Search_TextBox_KeyPress(object sender, KeyPressEventArgs e)
 		{
-			if (e.KeyCode == Keys.Return)
+			if (e.KeyChar == Convert.ToChar(Keys.Enter))
 			{
 				SearchMainList();
+				e.Handled = true;
 			}
 		}
 
