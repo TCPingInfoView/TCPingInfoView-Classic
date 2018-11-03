@@ -235,7 +235,7 @@ namespace TCPingInfoView
 			LoadFromList();
 		}
 
-		private void 从文件载入ToolStripMenuItem_Click(object sender, EventArgs e)
+		private void LoadFile_MenuItem_Click(object sender, EventArgs e)
 		{
 			LoadAddressFromFile();
 		}
@@ -510,11 +510,6 @@ namespace TCPingInfoView
 			TriggerRun();
 		}
 
-		private void StartStop_MenuItem2_Click(object sender, EventArgs e)
-		{
-			TriggerRun();
-		}
-
 		private void StartCore(object state)
 		{
 			PingAll();
@@ -538,7 +533,6 @@ namespace TCPingInfoView
 			}
 
 			StartStop_MenuItem.Text = @"停止";
-			StartStop_MenuItem2.Text = @"停止";
 		}
 
 		private void StopPing()
@@ -558,7 +552,6 @@ namespace TCPingInfoView
 			}
 
 			StartStop_MenuItem.Text = @"开始";
-			StartStop_MenuItem2.Text = @"开始";
 		}
 
 		private void TriggerRun()
@@ -672,11 +665,6 @@ namespace TCPingInfoView
 		}
 
 		private void toolStripButton2_Click(object sender, EventArgs e)
-		{
-			Exit();
-		}
-
-		private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			Exit();
 		}
@@ -933,6 +921,19 @@ namespace TCPingInfoView
 			new DisplayedColumns(MainList.Columns).ShowDialog();
 		}
 
+		private void ShowLogForm_MenuItem_Click(object sender, EventArgs e)
+		{
+			var i = MainList.SelectedRows.Count;
+			if (i > 0)
+			{
+				if (MainList.Rows[MainList.SelectedRows[0].Index].Cells[0].Value is int index)
+				{
+					var log = mainTable[index - 1];
+					new LogForm(log).ShowDialog();
+				}
+			}
+		}
+
 		#endregion
 
 		#region 文件
@@ -971,5 +972,6 @@ namespace TCPingInfoView
 		}
 
 		#endregion
+
 	}
 }
