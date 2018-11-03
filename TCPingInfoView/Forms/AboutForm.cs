@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace TCPingInfoView
+namespace TCPingInfoView.Forms
 {
 	public partial class AboutForm : Form
 	{

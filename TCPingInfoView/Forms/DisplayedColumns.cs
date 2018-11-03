@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace TCPingInfoView
+namespace TCPingInfoView.Forms
 {
 	public partial class DisplayedColumns : Form
 	{

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using TCPingInfoView.Forms;
 
 namespace TCPingInfoView
 {

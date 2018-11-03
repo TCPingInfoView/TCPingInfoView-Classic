@@ -1,4 +1,4 @@
-﻿namespace TCPingInfoView
+﻿namespace TCPingInfoView.Forms
 {
 	partial class AboutForm
 	{

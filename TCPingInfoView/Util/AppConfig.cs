@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
+using TCPingInfoView.Forms;
 
 namespace TCPingInfoView.Util
 {
@@ -34,7 +35,7 @@ namespace TCPingInfoView.Util
 		#endregion
 
 		[IgnoreDataMember]
-		public string JsonStr => SimpleJson.SimpleJson.SerializeObject(this);
+		public string JsonStr => SimpleJson.SerializeObject(this);
 
 		[IgnoreDataMember]
 		public readonly string Filepath;
@@ -85,7 +86,7 @@ namespace TCPingInfoView.Util
 
 		public void Load(string jsonStr)
 		{
-			var config = SimpleJson.SimpleJson.DeserializeObject<AppConfig>(jsonStr);
+			var config = SimpleJson.DeserializeObject<AppConfig>(jsonStr);
 			Load(config);
 		}
 

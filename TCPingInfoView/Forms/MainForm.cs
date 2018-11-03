@@ -15,7 +15,7 @@ using TCPingInfoView.Properties;
 using TCPingInfoView.Util;
 using Timer = System.Threading.Timer;
 
-namespace TCPingInfoView
+namespace TCPingInfoView.Forms
 {
 	public partial class MainForm : Form
 	{
@@ -153,6 +153,8 @@ namespace TCPingInfoView
 				Exit_Button.Image = Util.Util.ResizeImage(Resources.Exit, DpiPicSize);
 				Load_Button.ImageScaling = ToolStripItemImageScaling.None;
 				Load_Button.Image = Util.Util.ResizeImage(Resources.Load, DpiPicSize);
+				Minimize_Button.ImageScaling = ToolStripItemImageScaling.None;
+				Minimize_Button.Image = Util.Util.ResizeImage(Resources.Minimize, DpiPicSize);
 			}
 			else
 			{
@@ -160,6 +162,7 @@ namespace TCPingInfoView
 				Start_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
 				Exit_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
 				Load_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
+				Minimize_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
 			}
 		}
 
@@ -481,6 +484,11 @@ namespace TCPingInfoView
 		}
 
 		private void ShowHide_MenuItem_Click(object sender, EventArgs e)
+		{
+			TriggerMainFormDisplay();
+		}
+
+		private void Minimize_Button_Click(object sender, EventArgs e)
 		{
 			TriggerMainFormDisplay();
 		}
@@ -1043,5 +1051,6 @@ namespace TCPingInfoView
 		}
 
 		#endregion
+
 	}
 }

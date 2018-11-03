@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using TCPingInfoView.Control;
 
-namespace TCPingInfoView
+namespace TCPingInfoView.Forms
 {
 	partial class MainForm
 	{
@@ -83,6 +83,7 @@ namespace TCPingInfoView
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.Search_TextBox = new TCPingInfoView.Control.ToolStripTextBoxWithHintText();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.Minimize_Button = new System.Windows.Forms.ToolStripButton();
 			this.MainList = new TCPingInfoView.Control.DoubleBufferDataGridView();
 			this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column2 = new TCPingInfoView.Control.TextAndImageColumn();
@@ -410,11 +411,12 @@ namespace TCPingInfoView
             this.toolStripSeparator4,
             this.Search_TextBox,
             this.toolStripSeparator3,
+            this.Minimize_Button,
             this.Exit_Button});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 25);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.Size = new System.Drawing.Size(912, 25);
-			this.toolStrip1.TabIndex = 4;
+			this.toolStrip1.TabIndex = 8;
 			this.toolStrip1.TabStop = true;
 			this.toolStrip1.Text = "toolStrip1";
 			// 
@@ -440,6 +442,16 @@ namespace TCPingInfoView
 			// 
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
 			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+			// 
+			// Minimize_Button
+			// 
+			this.Minimize_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.Minimize_Button.Image = global::TCPingInfoView.Properties.Resources.Minimize;
+			this.Minimize_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.Minimize_Button.Name = "Minimize_Button";
+			this.Minimize_Button.Size = new System.Drawing.Size(23, 22);
+			this.Minimize_Button.Text = "最小化到托盘";
+			this.Minimize_Button.Click += new System.EventHandler(this.Minimize_Button_Click);
 			// 
 			// MainList
 			// 
@@ -500,7 +512,7 @@ namespace TCPingInfoView
 			this.MainList.RowHeadersVisible = false;
 			this.MainList.Size = new System.Drawing.Size(912, 478);
 			this.MainList.StandardTab = true;
-			this.MainList.TabIndex = 6;
+			this.MainList.TabIndex = 4;
 			this.MainList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.MainList_CellDoubleClick);
 			this.MainList.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.MainList_CellFormatting);
 			this.MainList.SelectionChanged += new System.EventHandler(this.MainList_SelectionChanged);
@@ -625,7 +637,7 @@ namespace TCPingInfoView
 			this.DateList.RowHeadersVisible = false;
 			this.DateList.Size = new System.Drawing.Size(912, 125);
 			this.DateList.StandardTab = true;
-			this.DateList.TabIndex = 8;
+			this.DateList.TabIndex = 6;
 			this.DateList.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.DateList_CellFormatting);
 			this.DateList.Enter += new System.EventHandler(this.DateList_Enter);
 			this.DateList.Leave += new System.EventHandler(this.DateList_Leave);
@@ -739,6 +751,7 @@ namespace TCPingInfoView
 		private ToolStripMenuItem Reset_MenuItem;
 		private ToolStripSeparator toolStripSeparator3;
 		private ToolStripTextBoxWithHintText Search_TextBox;
+		private ToolStripButton Minimize_Button;
 	}
 }
 
