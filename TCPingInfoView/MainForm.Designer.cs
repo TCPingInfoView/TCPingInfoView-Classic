@@ -209,31 +209,31 @@ namespace TCPingInfoView
             this.toolStripSeparator2,
             this.Exit_MenuItem});
 			this.NotifyIcon_MenuStrip.Name = "NotifyIcon_MenuStrip";
-			this.NotifyIcon_MenuStrip.Size = new System.Drawing.Size(181, 148);
+			this.NotifyIcon_MenuStrip.Size = new System.Drawing.Size(137, 126);
 			// 
 			// ShowHide_MenuItem
 			// 
 			this.ShowHide_MenuItem.Name = "ShowHide_MenuItem";
-			this.ShowHide_MenuItem.Size = new System.Drawing.Size(180, 22);
+			this.ShowHide_MenuItem.Size = new System.Drawing.Size(136, 22);
 			this.ShowHide_MenuItem.Text = "显示/隐藏";
 			this.ShowHide_MenuItem.Click += new System.EventHandler(this.ShowHide_MenuItem_Click);
 			// 
 			// StartStop_MenuItem
 			// 
 			this.StartStop_MenuItem.Name = "StartStop_MenuItem";
-			this.StartStop_MenuItem.Size = new System.Drawing.Size(180, 22);
+			this.StartStop_MenuItem.Size = new System.Drawing.Size(136, 22);
 			this.StartStop_MenuItem.Text = "开始";
 			this.StartStop_MenuItem.Click += new System.EventHandler(this.StartStop_MenuItem_Click);
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+			this.toolStripSeparator2.Size = new System.Drawing.Size(133, 6);
 			// 
 			// Exit_MenuItem
 			// 
 			this.Exit_MenuItem.Name = "Exit_MenuItem";
-			this.Exit_MenuItem.Size = new System.Drawing.Size(180, 22);
+			this.Exit_MenuItem.Size = new System.Drawing.Size(136, 22);
 			this.Exit_MenuItem.Text = "退出";
 			this.Exit_MenuItem.Click += new System.EventHandler(this.Exit_MenuItem_Click);
 			// 
@@ -346,6 +346,7 @@ namespace TCPingInfoView
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.Size = new System.Drawing.Size(912, 25);
 			this.toolStrip1.TabIndex = 4;
+			this.toolStrip1.TabStop = true;
 			this.toolStrip1.Text = "toolStrip1";
 			// 
 			// toolStripSeparator5
@@ -607,21 +608,21 @@ namespace TCPingInfoView
 			// Reset_MenuItem
 			// 
 			this.Reset_MenuItem.Name = "Reset_MenuItem";
-			this.Reset_MenuItem.Size = new System.Drawing.Size(180, 22);
+			this.Reset_MenuItem.Size = new System.Drawing.Size(136, 22);
 			this.Reset_MenuItem.Text = "计数重置";
 			this.Reset_MenuItem.Click += new System.EventHandler(this.Reset_MenuItem_Click);
 			// 
 			// LoadFile_MenuItem
 			// 
 			this.LoadFile_MenuItem.Name = "LoadFile_MenuItem";
-			this.LoadFile_MenuItem.Size = new System.Drawing.Size(180, 22);
+			this.LoadFile_MenuItem.Size = new System.Drawing.Size(136, 22);
 			this.LoadFile_MenuItem.Text = "从文件载入";
 			this.LoadFile_MenuItem.Click += new System.EventHandler(this.LoadFile_MenuItem_Click);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(133, 6);
 			// 
 			// MainForm
 			// 
