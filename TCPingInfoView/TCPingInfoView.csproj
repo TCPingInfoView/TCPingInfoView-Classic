@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\Debug_Steam\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -29,7 +29,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\Release_Steam\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -154,7 +154,7 @@
     <Compile Include="Forms\DisplayedColumns.cs">
       <SubType>Form</SubType>
     </Compile>
-	<Compile Include="Forms\DisplayedColumns.Designer.cs">
+    <Compile Include="Forms\DisplayedColumns.Designer.cs">
       <DependentUpon>DisplayedColumns.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\LogForm.cs">
@@ -250,7 +250,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  
   <ItemGroup>
     <None Include="Resources\TCPing.png" />
   </ItemGroup>
