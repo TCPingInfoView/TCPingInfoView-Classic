@@ -973,5 +973,75 @@ namespace TCPingInfoView
 
 		#endregion
 
+		#region 搜索
+
+		private bool IsContainsString(int rowIndex, string str)
+		{
+			for (var i = 0; i < MainList.ColumnCount; ++i)
+			{
+				if (MainList.Columns[i].Visible)
+				{
+					var value = MainList.Rows[rowIndex].Cells[i].Value;
+					if (value != null)
+					{
+						var s = MainList.Rows[rowIndex].Cells[i].Value.ToString();
+						if (!string.IsNullOrWhiteSpace(s) && s.Contains(str))
+						{
+							return true;
+						}
+					}
+				}
+			}
+			return false;
+		}
+
+		private void SearchMainList()
+		{
+			var index = 0;
+			if (MainList.SelectedRows.Count > 0)
+			{
+				index = MainList.SelectedRows[0].Index;
+			}
+
+			for (var i = 0; i < MainList.RowCount + 1; ++i)
+			{
+				if (IsContainsString(index, Search_TextBox.Text))
+				{
+					if (!MainList.Rows[index].Selected)
+					{
+						MainList.Rows[index].Selected = true;
+						MainList.CurrentCell = MainList.Rows[index].Cells[0];
+						return;
+					}
+					MainList.ClearSelection();
+				}
+
+				if (index == MainList.RowCount - 1)
+				{
+					index = 0;
+				}
+				else
+				{
+					++index;
+				}
+			}
+
+			MainList.ClearSelection();
+		}
+
+		private void SearchTextBox_TextChanged(object sender, EventArgs e)
+		{
+			SearchMainList();
+		}
+
+		private void SearchTextBox_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Return)
+			{
+				SearchMainList();
+			}
+		}
+
+		#endregion
 	}
 }

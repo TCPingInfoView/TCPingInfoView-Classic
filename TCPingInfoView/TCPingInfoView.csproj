@@ -67,6 +67,7 @@
     <Compile Include="Collection\MainTable.cs" />
     <Compile Include="Control\DoubleBufferDataGridView.cs" />
     <Compile Include="Control\TextAndImageColumn.cs" />
+    <Compile Include="Control\ToolStripTextBoxWithHintText.cs" />
     <Compile Include="DisplayedColumns.cs">
       <SubType>Form</SubType>
     </Compile>
