@@ -56,7 +56,7 @@ namespace TCPingInfoView.Forms
 
 		#region 超时设置
 
-		public static int ReverseDNSTimeout = 2000;
+		public static int ReverseDNSTimeout = 3000;
 		public static int Timeout = 3000;
 		public static int HighLatency = 300;
 		public static Color TimeoutColor = Color.Red;
@@ -705,6 +705,11 @@ namespace TCPingInfoView.Forms
 				return;
 			}
 
+			if (!DateList.Visible)
+			{
+				return;
+			}
+
 			if (MainList.SelectedRows[0].Cells[0].Value is int index)
 			{
 				LoadLogs(index);
@@ -713,19 +718,26 @@ namespace TCPingInfoView.Forms
 
 		private void LoadLogs(int index)
 		{
-			if (index <= 0)
+			try
 			{
-				DateTable.Clear();
-			}
-			else
-			{
-				DateTable.Clear();
-				dateTable = (ConcurrentList<DateTable>)mainTable[index - 1].Info;
-				ToLogs(dateTable);
-				if (dateTable.Count > 0)
+				if (index <= 0)
 				{
-					DateList.Rows[0].Selected = true;
+					DateTable.Clear();
 				}
+				else
+				{
+					DateTable.Clear();
+					dateTable = (ConcurrentList<DateTable>)mainTable[index - 1].Info;
+					ToLogs(dateTable);
+					if (dateTable.Count > 0)
+					{
+						DateList.Rows[0].Selected = true;
+					}
+				}
+			}
+			catch
+			{
+				// ignored
 			}
 		}
 

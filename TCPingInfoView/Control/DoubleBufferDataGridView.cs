@@ -36,10 +36,16 @@ namespace TCPingInfoView.Control
 				w = RowHeadersWidth - 1;
 			}
 
-			for (var j = 0; j < ColumnCount; ++j)
+			for (var i = 0; i < Columns.Count; ++i)
 			{
-				g.DrawLine(pen, new Point(w, 0), new Point(w, rowHeight));
-				w += Columns[j].Width;
+				for (var j = 0; j < Columns.Count; ++j)
+				{
+					if (Columns[j].DisplayIndex == i && Columns[j].Visible)
+					{
+						g.DrawLine(pen, new Point(w, 0), new Point(w, rowHeight));
+						w += Columns[j].Width;
+					}
+				}
 			}
 
 			if (Height <= h)
