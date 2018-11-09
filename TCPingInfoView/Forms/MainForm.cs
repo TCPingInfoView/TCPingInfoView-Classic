@@ -296,6 +296,12 @@ namespace TCPingInfoView.Forms
 			{
 				MainList.Rows[0].Selected = true;
 			}
+
+			if (SteamManager.IsLoaded)
+			{
+				SteamManager.SetGameInfo($@"正在测试 {mainTable.Count} 个项目");
+			}
+
 			FirstPing();
 		}
 

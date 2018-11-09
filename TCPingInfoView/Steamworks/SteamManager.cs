@@ -48,6 +48,11 @@ namespace TCPingInfoView.Steamworks
 			var achievement = new Achievement(SteamWorksClient, 0);
 			return !achievement.State && achievement.Trigger();
 		}
+
+		public static bool SetGameInfo(string value, string key = @"status")
+		{
+			return SteamWorksClient.User.SetRichPresence(key, value);
+		}
 	}
 
 }
