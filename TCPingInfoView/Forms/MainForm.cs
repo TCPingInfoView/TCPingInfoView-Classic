@@ -601,7 +601,7 @@ namespace TCPingInfoView.Forms
 		#region 退出程序
 
 		/// <summary>
-		/// 关闭前是否确认
+		/// 关闭前确认
 		/// </summary>
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
@@ -614,8 +614,7 @@ namespace TCPingInfoView.Forms
 					return;
 				}
 
-				var dr = MessageBox.Show(@"「是」退出，「否」最小化", @"是否退出？", MessageBoxButtons.YesNoCancel,
-						MessageBoxIcon.Question);
+				var dr = MessageBox.Show(@"「是」退出，「否」最小化", @"是否退出？", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 				if (dr == DialogResult.Yes)
 				{
 					Exit(); //Application.Exit();
