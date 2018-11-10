@@ -140,7 +140,6 @@ namespace TCPingInfoView.Forms
             this.toolStripSeparator2,
             this.Exit_MenuItem});
 			this.NotifyIcon_MenuStrip.Name = "NotifyIcon_MenuStrip";
-			this.NotifyIcon_MenuStrip.OwnerItem = this.File_MenuItem;
 			this.NotifyIcon_MenuStrip.Size = new System.Drawing.Size(137, 126);
 			// 
 			// ShowHide_MenuItem
@@ -204,7 +203,6 @@ namespace TCPingInfoView.Forms
             this.DisplayedColumns_MenuItem,
             this.ShowLogForm_MenuItem});
 			this.MainList_MenuStrip.Name = "MainList_MenuStrip";
-			this.MainList_MenuStrip.OwnerItem = this.View_MenuItem;
 			this.MainList_MenuStrip.Size = new System.Drawing.Size(233, 98);
 			// 
 			// AutoColumnsSize_MenuItem
