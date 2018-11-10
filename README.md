@@ -28,7 +28,6 @@ www.google.com 谷歌，默认443端口
 ## 尚未完成
 * [Steam上架](https://store.steampowered.com/app/828090)
 * 多语言
-* 检测重复运行，并提示
 * 内置简单编辑器
 * 可设置高延迟上限
 * 设置数据上限
