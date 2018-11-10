@@ -472,6 +472,10 @@ namespace TCPingInfoView.Forms
 		private void MainForm_Resize(object sender, EventArgs e)
 		{
 			ChangedSize();
+			if (WindowState == FormWindowState.Minimized)
+			{
+				TriggerMainFormDisplay();
+			}
 		}
 
 		#endregion
@@ -496,12 +500,16 @@ namespace TCPingInfoView.Forms
 		private void TriggerMainFormDisplay()
 		{
 			Visible = !Visible;
-			if (WindowState == FormWindowState.Minimized)
+			if (Visible)
 			{
-				WindowState = FormWindowState.Normal;
+				if (WindowState == FormWindowState.Minimized)
+				{
+					WindowState = FormWindowState.Normal;
+				}
+
+				TopMost = true;
+				TopMost = false;
 			}
-			TopMost = true;
-			TopMost = false;
 		}
 
 		#endregion
@@ -630,6 +638,11 @@ namespace TCPingInfoView.Forms
 
 		private void SaveConfig()
 		{
+			if (!Visible)
+			{
+				TriggerMainFormDisplay();
+			}
+			//
 			Config.MainFormHeight = Height;
 			Config.MainFormWidth = Width;
 			Config.DateListHeight = DateList.Height;
