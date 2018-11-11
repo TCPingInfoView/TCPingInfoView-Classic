@@ -41,7 +41,6 @@ namespace TCPingInfoView.Forms
 
 		#region 表格显示参数
 
-		private int RemainingHeight;
 		private double ListRatio;
 		public const int ColumnsCount = 12;
 
@@ -196,11 +195,30 @@ namespace TCPingInfoView.Forms
 			}
 		}
 
+		private void SetMiniSize()
+		{
+			var miniHeight = Height - ClientRectangle.Height + menuStrip1.Height + toolStrip1.Height + statusStrip1.Height;
+			
+			var h1 = MainList.RowTemplate.Height + MainList.ColumnHeadersHeight;
+			miniHeight += h1;
+			splitter1.MinExtra = h1;
+			MainList.MinimumSize = new Size(0, h1);
+
+			var h2 = DateList.RowTemplate.Height + DateList.ColumnHeadersHeight;
+			miniHeight += h2;
+			splitter1.MinSize = h2;
+			DateList.MinimumSize = new Size(0, h2);
+
+			miniHeight += splitter1.Height;
+			MinimumSize = new Size(0, miniHeight);
+		}
+
 		private void MainForm_Load(object sender, EventArgs e)
 		{
 			LoadSetting();
 
-			RemainingHeight = Height - (MainList.Height + DateList.Height);
+			SetMiniSize();
+
 			ChangedRatio();
 
 			LoadButtons();
@@ -455,13 +473,17 @@ namespace TCPingInfoView.Forms
 
 		private void ChangedSize()
 		{
-			var height = Height - RemainingHeight;
+			var height = Height - MinimumSize.Height;
 			DateList.Height = Convert.ToInt32(ListRatio * height);
 		}
 
 		private void ChangedRatio()
 		{
 			ListRatio = Convert.ToDouble(DateList.Height) / Convert.ToDouble(MainList.Height + DateList.Height);
+			if (!(ListRatio < 1 && ListRatio > 0))
+			{
+				ListRatio = 0.1;
+			}
 		}
 
 		private void splitter1_SplitterMoved(object sender, SplitterEventArgs e)
