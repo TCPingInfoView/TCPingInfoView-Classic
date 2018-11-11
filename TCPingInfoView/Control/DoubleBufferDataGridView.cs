@@ -84,7 +84,7 @@ namespace TCPingInfoView.Control
 		protected override void OnColumnHeaderMouseClick(DataGridViewCellMouseEventArgs e)
 		{
 			base.OnColumnHeaderMouseClick(e);
-			if (SelectedCells.Count > 0)
+			if (SelectedCells.Count == 1)
 			{
 				Rows[SelectedCells[0].RowIndex].Selected = true;
 			}
@@ -93,7 +93,7 @@ namespace TCPingInfoView.Control
 		protected override void OnSelectionChanged(EventArgs e)
 		{
 			base.OnSelectionChanged(e);
-			if (SelectedCells.Count > 0)
+			if (SelectedCells.Count == 1)
 			{
 				Rows[SelectedCells[0].RowIndex].Selected = true;
 			}

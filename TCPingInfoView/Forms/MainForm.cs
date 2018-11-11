@@ -198,7 +198,7 @@ namespace TCPingInfoView.Forms
 		private void SetMiniSize()
 		{
 			var miniHeight = Height - ClientRectangle.Height + menuStrip1.Height + toolStrip1.Height + statusStrip1.Height;
-			
+
 			var h1 = MainList.RowTemplate.Height + MainList.ColumnHeadersHeight;
 			miniHeight += h1;
 			splitter1.MinExtra = h1;
@@ -419,12 +419,12 @@ namespace TCPingInfoView.Forms
 
 			mainTable[index].AddNewLog(log);
 
-			if (MainList.SelectedRows.Count > 0)
+			if (MainList.SelectedRows.Count == 1)
 			{
 				var i = MainList.SelectedRows[0].Cells[0].Value as int?;
-				if (i == index)
+				if (i == index && DateList.Visible)
 				{
-					DateList.Invoke(() => { LoadLogs(index); });
+					DateList.Invoke(() => { LoadLogs(log); });
 				}
 			}
 		}
@@ -734,7 +734,7 @@ namespace TCPingInfoView.Forms
 
 		private void MainList_SelectionChanged(object sender, EventArgs e)
 		{
-			if (MainList.SelectedRows.Count <= 0)
+			if (MainList.SelectedRows.Count != 1)
 			{
 				return;
 			}
@@ -747,6 +747,22 @@ namespace TCPingInfoView.Forms
 			if (MainList.SelectedRows[0].Cells[0].Value is int index)
 			{
 				LoadLogs(index);
+			}
+		}
+
+		private void LoadLogs(DateTable log)
+		{
+			try
+			{
+				DateTable.Add(log);
+				if (DateList.SelectedRows.Count == 0)
+				{
+					DateList.Rows[0].Selected = true;
+				}
+			}
+			catch
+			{
+				// ignored
 			}
 		}
 
@@ -954,6 +970,16 @@ namespace TCPingInfoView.Forms
 			_isShowDateList = IsShowDateList_MenuItem.Checked;
 			splitter1.Visible = _isShowDateList;
 			DateList.Visible = _isShowDateList;
+			if (DateList.Visible)
+			{
+				if (MainList.SelectedRows.Count == 1)
+				{
+					if (MainList.SelectedRows[0].Cells[0].Value is int index)
+					{
+						LoadLogs(index);
+					}
+				}
+			}
 		}
 
 		#endregion
@@ -978,7 +1004,7 @@ namespace TCPingInfoView.Forms
 		private void ShowLogForm_MenuItem_Click(object sender, EventArgs e)
 		{
 			var i = MainList.SelectedRows.Count;
-			if (i > 0)
+			if (i == 1)
 			{
 				if (MainList.Rows[MainList.SelectedRows[0].Index].Cells[0].Value is int index)
 				{
@@ -1052,7 +1078,7 @@ namespace TCPingInfoView.Forms
 		private void SearchMainList()
 		{
 			var index = 0;
-			if (MainList.SelectedRows.Count > 0)
+			if (MainList.SelectedRows.Count == 1)
 			{
 				index = MainList.SelectedRows[0].Index;
 			}
