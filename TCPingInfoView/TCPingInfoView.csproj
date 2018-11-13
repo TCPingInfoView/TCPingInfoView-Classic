@@ -150,9 +150,6 @@
     <None Include="Resources\Test.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\TCPing_White.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Exit.png" />
   </ItemGroup>
   <ItemGroup>

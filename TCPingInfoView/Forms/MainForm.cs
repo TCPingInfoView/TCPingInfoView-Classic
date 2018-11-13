@@ -23,7 +23,7 @@ namespace TCPingInfoView.Forms
 		{
 			InitializeComponent();
 			Icon = Resources.TCPing;
-			notifyIcon1.Icon = Resources.TCPing_White;
+			notifyIcon1.Icon = Resources.TCPing;
 			Config.Load();
 		}
 
