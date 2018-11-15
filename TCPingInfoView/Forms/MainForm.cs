@@ -50,6 +50,7 @@ namespace TCPingInfoView.Forms
 
 		private bool _isNotifyClose;
 		private bool _isShowDateList;
+		private FormWindowState DefaultState = FormWindowState.Normal;
 
 		#endregion
 
@@ -372,6 +373,7 @@ namespace TCPingInfoView.Forms
 						state.Stop();
 					}
 				});
+				//notifyIcon1.ShowBalloonTip(1000, ExeName, @"载入完毕", ToolTipIcon.Info);
 			});
 			PingTasks.Add(t);
 			t.Start();
@@ -409,6 +411,10 @@ namespace TCPingInfoView.Forms
 			if (latency != null)
 			{
 				res = Convert.ToInt32(Math.Round(latency.Value));
+			}
+			else
+			{
+				//notifyIcon1.ShowBalloonTip(1000, time.ToString(CultureInfo.CurrentCulture), $"{mainTable[index].HostsName}\n{ipe}", ToolTipIcon.Error);
 			}
 
 			var log = new DateTable
@@ -498,11 +504,15 @@ namespace TCPingInfoView.Forms
 			{
 				TriggerMainFormDisplay();
 			}
+			else
+			{
+				DefaultState = WindowState;
+			}
 		}
 
 		#endregion
 
-		#region 主窗口显示隐藏
+		#region 主窗口切换显示隐藏
 
 		private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
@@ -526,7 +536,7 @@ namespace TCPingInfoView.Forms
 			{
 				if (WindowState == FormWindowState.Minimized)
 				{
-					WindowState = FormWindowState.Normal;
+					WindowState = DefaultState;
 				}
 
 				TopMost = true;
