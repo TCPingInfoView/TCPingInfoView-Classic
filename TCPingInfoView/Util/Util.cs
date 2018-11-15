@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TCPingInfoView.Collection;
@@ -116,10 +117,25 @@ namespace TCPingInfoView.Util
 			tasks.RemoveAll(x => x.IsCompleted);
 		}
 
-		public static double GetDpi(this Form form)
+		[DllImport(@"user32.dll")]
+		private static extern bool SetProcessDPIAware();
+
+		public static void SetDPIAware()
 		{
-			var graphics = form.CreateGraphics();
-			return graphics.DpiX / 96;
+			if (Environment.OSVersion.Version.Major >= 6)
+			{
+				SetProcessDPIAware();
+			}
+		}
+
+		public static bool IsDPISystemRequired()
+		{
+			return Environment.OSVersion.Version.CompareTo(new Version(10, 0, 15063, 0)) >= 0;
+		}
+
+		public static double GetDpi(this System.Windows.Forms.Control form)
+		{
+			return form.CreateGraphics().DpiX / 96;
 		}
 
 		public static Image ResizeImage(Image imgToResize, Size size)

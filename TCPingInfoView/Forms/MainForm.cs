@@ -22,6 +22,11 @@ namespace TCPingInfoView.Forms
 		public MainForm()
 		{
 			InitializeComponent();
+			//之后再绑定 ContextMenuStrip，否则可能出BUG
+			//Another Fix:https://github.com/HMBSbige/TCPingInfoView/commit/e058c15dc7265358ed08f75765d62f9ece6b410e#diff-654cfc907abeeabf4121da2c3df241e7L143
+			File_MenuItem.DropDown = NotifyIcon_MenuStrip;
+			View_MenuItem.DropDown = MainList_MenuStrip;
+			//Load Icon
 			Icon = Resources.TCPing;
 			notifyIcon1.Icon = Resources.TCPing;
 			Config.Load();
@@ -31,7 +36,7 @@ namespace TCPingInfoView.Forms
 		private readonly AppConfig Config = new AppConfig($@".\{ExeName}.json");
 		private static string ListPath => $@".\{ExeName}.txt";
 
-		#region DPI
+		#region DPI参数
 
 		private double Dpi => this.GetDpi();
 		private static Size DefPicSize => new Size(16, 16);
@@ -101,6 +106,48 @@ namespace TCPingInfoView.Forms
 
 		#endregion
 
+		#region DPI改变
+
+		private void MainForm_DpiChanged(object sender, DpiChangedEventArgs e)
+		{
+			//TODO
+			MessageBox.Show($@"DPI:{e.DeviceDpiOld}=>{e.DeviceDpiNew}");
+			Util.Util.SetDPIAware();
+			LoadButtonsByDpi();
+		}
+
+		private void LoadButtonsByDpi()
+		{
+			if (!Util.Util.IsDPISystemRequired() && Dpi > 1.0)
+			{
+				MessageBox.Show($@"Program may not support for high DPI({Dpi * 100}%) in your system:{Environment.OSVersion.Version}", @"Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+			}
+
+			if (Dpi > 1.0)
+			{
+				Test_Button.ImageScaling = ToolStripItemImageScaling.None;
+				Test_Button.Image = Util.Util.ResizeImage(Resources.Test, DpiPicSize);
+				Start_Button.ImageScaling = ToolStripItemImageScaling.None;
+				Start_Button.Image = Util.Util.ResizeImage(Resources.Start, DpiPicSize);
+				Exit_Button.ImageScaling = ToolStripItemImageScaling.None;
+				Exit_Button.Image = Util.Util.ResizeImage(Resources.Exit, DpiPicSize);
+				Load_Button.ImageScaling = ToolStripItemImageScaling.None;
+				Load_Button.Image = Util.Util.ResizeImage(Resources.Load, DpiPicSize);
+				Minimize_Button.ImageScaling = ToolStripItemImageScaling.None;
+				Minimize_Button.Image = Util.Util.ResizeImage(Resources.Minimize, DpiPicSize);
+			}
+			else
+			{
+				Test_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
+				Start_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
+				Exit_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
+				Load_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
+				Minimize_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
+			}
+		}
+
+		#endregion
+
 		#region 窗口第一次载入
 
 		private void LoadMainList()
@@ -139,31 +186,6 @@ namespace TCPingInfoView.Forms
 
 			DateList.Columns[0].DataPropertyName = @"Date";
 			DateList.Columns[1].DataPropertyName = @"Latency";
-		}
-
-		private void LoadButtons()
-		{
-			if (Dpi > 1.0)
-			{
-				Test_Button.ImageScaling = ToolStripItemImageScaling.None;
-				Test_Button.Image = Util.Util.ResizeImage(Resources.Test, DpiPicSize);
-				Start_Button.ImageScaling = ToolStripItemImageScaling.None;
-				Start_Button.Image = Util.Util.ResizeImage(Resources.Start, DpiPicSize);
-				Exit_Button.ImageScaling = ToolStripItemImageScaling.None;
-				Exit_Button.Image = Util.Util.ResizeImage(Resources.Exit, DpiPicSize);
-				Load_Button.ImageScaling = ToolStripItemImageScaling.None;
-				Load_Button.Image = Util.Util.ResizeImage(Resources.Load, DpiPicSize);
-				Minimize_Button.ImageScaling = ToolStripItemImageScaling.None;
-				Minimize_Button.Image = Util.Util.ResizeImage(Resources.Minimize, DpiPicSize);
-			}
-			else
-			{
-				Test_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
-				Start_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
-				Exit_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
-				Load_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
-				Minimize_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
-			}
 		}
 
 		private void LoadSetting()
@@ -222,7 +244,7 @@ namespace TCPingInfoView.Forms
 
 			ChangedRatio();
 
-			LoadButtons();
+			LoadButtonsByDpi();
 
 			MainList.AutoGenerateColumns = false;
 			MainList.DataSource = MainTable;
