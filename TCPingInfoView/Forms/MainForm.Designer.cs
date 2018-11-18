@@ -41,6 +41,12 @@ namespace TCPingInfoView.Forms
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.File_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.View_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Options_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.IsNotifyClose_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.IsShowDateList_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Help_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.About_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NotifyIcon_MenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ShowHide_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LoadFile_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,18 +55,12 @@ namespace TCPingInfoView.Forms
             this.Reset_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.Exit_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.View_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainList_MenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.AutoColumnsSize_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AutoColumnsSizeAndHeader_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.DisplayedColumns_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ShowLogForm_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.Options_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.IsNotifyClose_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.IsShowDateList_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.Help_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.About_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
@@ -128,6 +128,54 @@ namespace TCPingInfoView.Forms
             this.File_MenuItem.Size = new System.Drawing.Size(58, 21);
             this.File_MenuItem.Text = "文件(&F)";
             // 
+            // View_MenuItem
+            // 
+            this.View_MenuItem.Name = "View_MenuItem";
+            this.View_MenuItem.Size = new System.Drawing.Size(60, 21);
+            this.View_MenuItem.Text = "查看(&V)";
+            // 
+            // Options_MenuItem
+            // 
+            this.Options_MenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.IsNotifyClose_MenuItem,
+            this.IsShowDateList_MenuItem});
+            this.Options_MenuItem.Name = "Options_MenuItem";
+            this.Options_MenuItem.Size = new System.Drawing.Size(62, 21);
+            this.Options_MenuItem.Text = "选项(&O)";
+            // 
+            // IsNotifyClose_MenuItem
+            // 
+            this.IsNotifyClose_MenuItem.Name = "IsNotifyClose_MenuItem";
+            this.IsNotifyClose_MenuItem.Size = new System.Drawing.Size(148, 22);
+            this.IsNotifyClose_MenuItem.Text = "关闭时提示";
+            this.IsNotifyClose_MenuItem.CheckedChanged += new System.EventHandler(this.IsNotifyClose_MenuItem_CheckedChanged);
+            this.IsNotifyClose_MenuItem.Click += new System.EventHandler(this.IsNotifyClose_MenuItem_Click);
+            // 
+            // IsShowDateList_MenuItem
+            // 
+            this.IsShowDateList_MenuItem.Checked = true;
+            this.IsShowDateList_MenuItem.CheckState = System.Windows.Forms.CheckState.Indeterminate;
+            this.IsShowDateList_MenuItem.Name = "IsShowDateList_MenuItem";
+            this.IsShowDateList_MenuItem.Size = new System.Drawing.Size(148, 22);
+            this.IsShowDateList_MenuItem.Text = "显示日期表格";
+            this.IsShowDateList_MenuItem.CheckStateChanged += new System.EventHandler(this.IsShowDateList_MenuItem_CheckStateChanged);
+            this.IsShowDateList_MenuItem.Click += new System.EventHandler(this.IsShowDateList_MenuItem_Click);
+            // 
+            // Help_MenuItem
+            // 
+            this.Help_MenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.About_MenuItem});
+            this.Help_MenuItem.Name = "Help_MenuItem";
+            this.Help_MenuItem.Size = new System.Drawing.Size(61, 21);
+            this.Help_MenuItem.Text = "帮助(&H)";
+            // 
+            // About_MenuItem
+            // 
+            this.About_MenuItem.Name = "About_MenuItem";
+            this.About_MenuItem.Size = new System.Drawing.Size(100, 22);
+            this.About_MenuItem.Text = "关于";
+            this.About_MenuItem.Click += new System.EventHandler(this.About_MenuItem_Click);
+            // 
             // NotifyIcon_MenuStrip
             // 
             this.NotifyIcon_MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -186,12 +234,6 @@ namespace TCPingInfoView.Forms
             this.Exit_MenuItem.Text = "退出";
             this.Exit_MenuItem.Click += new System.EventHandler(this.Exit_MenuItem_Click);
             // 
-            // View_MenuItem
-            // 
-            this.View_MenuItem.Name = "View_MenuItem";
-            this.View_MenuItem.Size = new System.Drawing.Size(60, 21);
-            this.View_MenuItem.Text = "查看(&V)";
-            // 
             // MainList_MenuStrip
             // 
             this.MainList_MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -235,48 +277,6 @@ namespace TCPingInfoView.Forms
             this.ShowLogForm_MenuItem.Size = new System.Drawing.Size(232, 22);
             this.ShowLogForm_MenuItem.Text = "属性";
             this.ShowLogForm_MenuItem.Click += new System.EventHandler(this.ShowLogForm_MenuItem_Click);
-            // 
-            // Options_MenuItem
-            // 
-            this.Options_MenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.IsNotifyClose_MenuItem,
-            this.IsShowDateList_MenuItem});
-            this.Options_MenuItem.Name = "Options_MenuItem";
-            this.Options_MenuItem.Size = new System.Drawing.Size(62, 21);
-            this.Options_MenuItem.Text = "选项(&O)";
-            // 
-            // IsNotifyClose_MenuItem
-            // 
-            this.IsNotifyClose_MenuItem.Name = "IsNotifyClose_MenuItem";
-            this.IsNotifyClose_MenuItem.Size = new System.Drawing.Size(180, 22);
-            this.IsNotifyClose_MenuItem.Text = "关闭时提示";
-            this.IsNotifyClose_MenuItem.CheckedChanged += new System.EventHandler(this.IsNotifyClose_MenuItem_CheckedChanged);
-            this.IsNotifyClose_MenuItem.Click += new System.EventHandler(this.IsNotifyClose_MenuItem_Click);
-            // 
-            // IsShowDateList_MenuItem
-            // 
-            this.IsShowDateList_MenuItem.Checked = true;
-            this.IsShowDateList_MenuItem.CheckState = System.Windows.Forms.CheckState.Indeterminate;
-            this.IsShowDateList_MenuItem.Name = "IsShowDateList_MenuItem";
-            this.IsShowDateList_MenuItem.Size = new System.Drawing.Size(180, 22);
-            this.IsShowDateList_MenuItem.Text = "显示日期表格";
-            this.IsShowDateList_MenuItem.CheckStateChanged += new System.EventHandler(this.IsShowDateList_MenuItem_CheckStateChanged);
-            this.IsShowDateList_MenuItem.Click += new System.EventHandler(this.IsShowDateList_MenuItem_Click);
-            // 
-            // Help_MenuItem
-            // 
-            this.Help_MenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.About_MenuItem});
-            this.Help_MenuItem.Name = "Help_MenuItem";
-            this.Help_MenuItem.Size = new System.Drawing.Size(61, 21);
-            this.Help_MenuItem.Text = "帮助(&H)";
-            // 
-            // About_MenuItem
-            // 
-            this.About_MenuItem.Name = "About_MenuItem";
-            this.About_MenuItem.Size = new System.Drawing.Size(100, 22);
-            this.About_MenuItem.Text = "关于";
-            this.About_MenuItem.Click += new System.EventHandler(this.About_MenuItem_Click);
             // 
             // statusStrip1
             // 
@@ -655,8 +655,8 @@ namespace TCPingInfoView.Forms
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(912, 678);
             this.Controls.Add(this.MainList);
             this.Controls.Add(this.splitter1);

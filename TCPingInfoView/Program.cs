@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Windows.Forms;
 using TCPingInfoView.Forms;
+using TCPingInfoView.Util;
 
 namespace TCPingInfoView
 {
@@ -28,7 +29,10 @@ namespace TCPingInfoView
 					}
 				}
 
-				Util.Util.SetDPIAware();
+				if (!DpiUtils.CheckHighDpiEnvironment())
+				{
+					MessageBox.Show(@"TCPingInfoView 可能无法正常适配你的高 DPI 环境！", @"High DPI Environment Check", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				}
 
 				Application.EnableVisualStyles();
 				Application.SetCompatibleTextRenderingDefault(false);

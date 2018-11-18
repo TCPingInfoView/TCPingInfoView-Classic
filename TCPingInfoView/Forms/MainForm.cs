@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace TCPingInfoView.Forms
 
 		#region DPI参数
 
-		private double Dpi => this.GetDpi();
+		private double Dpi => this.GetDeviceDpi();
 		private static Size DefPicSize => new Size(16, 16);
 		private Size DpiPicSize => new Size(Convert.ToInt32(DefPicSize.Width * Dpi), Convert.ToInt32(DefPicSize.Height * Dpi));
 
@@ -110,19 +111,20 @@ namespace TCPingInfoView.Forms
 
 		private void MainForm_DpiChanged(object sender, DpiChangedEventArgs e)
 		{
-			//TODO
-			MessageBox.Show($@"DPI:{e.DeviceDpiOld}=>{e.DeviceDpiNew}");
-			Util.Util.SetDPIAware();
-			LoadButtonsByDpi();
+			Debug.WriteLine($@"DPI:{e.DeviceDpiOld}=>{e.DeviceDpiNew}	{this.GetDeviceDpi() * 100}%");
+			LoadControlsByDpi();
+			Task.Run(() =>
+			{
+				this.Invoke(() =>
+				{
+					++Height;
+					--Height;
+				});
+			});
 		}
 
-		private void LoadButtonsByDpi()
+		private void LoadControlsByDpi()
 		{
-			if (!Util.Util.IsDPISystemRequired() && Dpi > 1.0)
-			{
-				MessageBox.Show($@"Program may not support for high DPI({Dpi * 100}%) in your system:{Environment.OSVersion.Version}", @"Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-			}
-
 			if (Dpi > 1.0)
 			{
 				Test_Button.ImageScaling = ToolStripItemImageScaling.None;
@@ -139,6 +141,7 @@ namespace TCPingInfoView.Forms
 			else
 			{
 				Test_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
+				Test_Button.Image = Resources.Test;
 				Start_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
 				Exit_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
 				Load_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
@@ -244,7 +247,7 @@ namespace TCPingInfoView.Forms
 
 			ChangedRatio();
 
-			LoadButtonsByDpi();
+			LoadControlsByDpi();
 
 			MainList.AutoGenerateColumns = false;
 			MainList.DataSource = MainTable;
