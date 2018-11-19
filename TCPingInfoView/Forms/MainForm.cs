@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -23,8 +24,13 @@ namespace TCPingInfoView.Forms
 		public MainForm()
 		{
 			InitializeComponent();
+			//之后再绑定 ContextMenuStrip，否则可能出BUG
+			//Another Fix:https://github.com/HMBSbige/TCPingInfoView/commit/e058c15dc7265358ed08f75765d62f9ece6b410e#diff-654cfc907abeeabf4121da2c3df241e7L143
+			File_MenuItem.DropDown = NotifyIcon_MenuStrip;
+			View_MenuItem.DropDown = MainList_MenuStrip;
+			//Load Icon
 			Icon = Resources.TCPing;
-			notifyIcon1.Icon = Resources.TCPing_White;
+			notifyIcon1.Icon = Resources.TCPing;
 			Config.Load();
 		}
 
@@ -32,9 +38,9 @@ namespace TCPingInfoView.Forms
 		private readonly AppConfig Config = new AppConfig($@".\{ExeName}.json");
 		private static string ListPath => $@".\{ExeName}.txt";
 
-		#region DPI
+		#region DPI参数
 
-		private double Dpi => this.GetDpi();
+		private double Dpi => this.GetDeviceDpi();
 		private static Size DefPicSize => new Size(16, 16);
 		private Size DpiPicSize => new Size(Convert.ToInt32(DefPicSize.Width * Dpi), Convert.ToInt32(DefPicSize.Height * Dpi));
 
@@ -42,7 +48,6 @@ namespace TCPingInfoView.Forms
 
 		#region 表格显示参数
 
-		private int RemainingHeight;
 		private double ListRatio;
 		public const int ColumnsCount = 12;
 
@@ -52,6 +57,7 @@ namespace TCPingInfoView.Forms
 
 		private bool _isNotifyClose;
 		private bool _isShowDateList;
+		private FormWindowState DefaultState = FormWindowState.Normal;
 
 		#endregion
 
@@ -102,6 +108,50 @@ namespace TCPingInfoView.Forms
 
 		#endregion
 
+		#region DPI改变
+
+		private void MainForm_DpiChanged(object sender, DpiChangedEventArgs e)
+		{
+			Debug.WriteLine($@"DPI:{e.DeviceDpiOld}=>{e.DeviceDpiNew}	{this.GetDeviceDpi() * 100}%");
+			LoadControlsByDpi();
+			Task.Run(() =>
+			{
+				this.Invoke(() =>
+				{
+					++Height;
+					--Height;
+				});
+			});
+		}
+
+		private void LoadControlsByDpi()
+		{
+			if (Dpi > 1.0)
+			{
+				Test_Button.ImageScaling = ToolStripItemImageScaling.None;
+				Test_Button.Image = Util.Util.ResizeImage(Resources.Test, DpiPicSize);
+				Start_Button.ImageScaling = ToolStripItemImageScaling.None;
+				Start_Button.Image = Util.Util.ResizeImage(Resources.Start, DpiPicSize);
+				Exit_Button.ImageScaling = ToolStripItemImageScaling.None;
+				Exit_Button.Image = Util.Util.ResizeImage(Resources.Exit, DpiPicSize);
+				Load_Button.ImageScaling = ToolStripItemImageScaling.None;
+				Load_Button.Image = Util.Util.ResizeImage(Resources.Load, DpiPicSize);
+				Minimize_Button.ImageScaling = ToolStripItemImageScaling.None;
+				Minimize_Button.Image = Util.Util.ResizeImage(Resources.Minimize, DpiPicSize);
+			}
+			else
+			{
+				Test_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
+				Test_Button.Image = Resources.Test;
+				Start_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
+				Exit_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
+				Load_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
+				Minimize_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
+			}
+		}
+
+		#endregion
+
 		#region 窗口第一次载入
 
 		private void LoadMainList()
@@ -142,36 +192,21 @@ namespace TCPingInfoView.Forms
 			DateList.Columns[1].DataPropertyName = @"Latency";
 		}
 
-		private void LoadButtons()
-		{
-			if (Dpi > 1.0)
-			{
-				Test_Button.ImageScaling = ToolStripItemImageScaling.None;
-				Test_Button.Image = Util.Util.ResizeImage(Resources.Test, DpiPicSize);
-				Start_Button.ImageScaling = ToolStripItemImageScaling.None;
-				Start_Button.Image = Util.Util.ResizeImage(Resources.Start, DpiPicSize);
-				Exit_Button.ImageScaling = ToolStripItemImageScaling.None;
-				Exit_Button.Image = Util.Util.ResizeImage(Resources.Exit, DpiPicSize);
-				Load_Button.ImageScaling = ToolStripItemImageScaling.None;
-				Load_Button.Image = Util.Util.ResizeImage(Resources.Load, DpiPicSize);
-				Minimize_Button.ImageScaling = ToolStripItemImageScaling.None;
-				Minimize_Button.Image = Util.Util.ResizeImage(Resources.Minimize, DpiPicSize);
-			}
-			else
-			{
-				Test_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
-				Start_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
-				Exit_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
-				Load_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
-				Minimize_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
-			}
-		}
-
 		private void LoadSetting()
 		{
 			Height = Config.MainFormHeight;
 			Width = Config.MainFormWidth;
 			DateList.Height = Config.DateListHeight;
+
+			if (Util.Util.IsOnScreen(new Point(Config.StartPositionLeft, Config.StartPositionTop), this))
+			{
+				StartPosition = FormStartPosition.Manual;
+				Location = new Point(Config.StartPositionLeft, Config.StartPositionTop);
+			}
+			else
+			{
+				StartPosition = FormStartPosition.CenterScreen;
+			}
 
 			IsNotifyClose_MenuItem.Checked = Config.IsNotifyClose;
 			IsShowDateList_MenuItem.CheckState = Config.IsShowDateList ? CheckState.Checked : CheckState.Unchecked;
@@ -197,6 +232,24 @@ namespace TCPingInfoView.Forms
 			}
 		}
 
+		private void SetMiniSize()
+		{
+			var miniHeight = Height - ClientRectangle.Height + menuStrip1.Height + toolStrip1.Height + statusStrip1.Height;
+
+			var h1 = MainList.RowTemplate.Height + MainList.ColumnHeadersHeight;
+			miniHeight += h1;
+			splitter1.MinExtra = h1;
+			MainList.MinimumSize = new Size(0, h1);
+
+			var h2 = DateList.RowTemplate.Height + DateList.ColumnHeadersHeight;
+			miniHeight += h2;
+			splitter1.MinSize = h2;
+			DateList.MinimumSize = new Size(0, h2);
+
+			miniHeight += splitter1.Height;
+			MinimumSize = new Size(0, miniHeight);
+		}
+
 		private void LoadSteam()
 		{
 			if (SteamManager.IsLoaded)
@@ -207,14 +260,20 @@ namespace TCPingInfoView.Forms
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
+			if (!DpiUtils.CheckHighDpiEnvironment())
+			{
+				MessageBox.Show(@"TCPingInfoView 可能无法正常适配你的高 DPI 环境！", @"High DPI Environment Check", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+			}
+
 			LoadSetting();
 
 			LoadSteam();
 
-			RemainingHeight = Height - (MainList.Height + DateList.Height);
+			SetMiniSize();
+
 			ChangedRatio();
 
-			LoadButtons();
+			LoadControlsByDpi();
 
 			MainList.AutoGenerateColumns = false;
 			MainList.DataSource = MainTable;
@@ -371,6 +430,7 @@ namespace TCPingInfoView.Forms
 						state.Stop();
 					}
 				});
+				//notifyIcon1.ShowBalloonTip(1000, ExeName, @"载入完毕", ToolTipIcon.Info);
 			});
 			PingTasks.Add(t);
 			t.Start();
@@ -409,6 +469,10 @@ namespace TCPingInfoView.Forms
 			{
 				res = Convert.ToInt32(Math.Round(latency.Value));
 			}
+			else
+			{
+				//notifyIcon1.ShowBalloonTip(1000, time.ToString(CultureInfo.CurrentCulture), $"{mainTable[index].HostsName}\n{ipe}", ToolTipIcon.Error);
+			}
 
 			var log = new DateTable
 			{
@@ -418,12 +482,12 @@ namespace TCPingInfoView.Forms
 
 			mainTable[index].AddNewLog(log);
 
-			if (MainList.SelectedRows.Count > 0)
+			if (MainList.SelectedRows.Count == 1)
 			{
 				var i = MainList.SelectedRows[0].Cells[0].Value as int?;
-				if (i == index)
+				if (i == index && DateList.Visible)
 				{
-					DateList.Invoke(() => { LoadLogs(index); });
+					DateList.Invoke(() => { LoadLogs(log); });
 				}
 			}
 		}
@@ -472,13 +536,17 @@ namespace TCPingInfoView.Forms
 
 		private void ChangedSize()
 		{
-			var height = Height - RemainingHeight;
+			var height = Height - MinimumSize.Height;
 			DateList.Height = Convert.ToInt32(ListRatio * height);
 		}
 
 		private void ChangedRatio()
 		{
 			ListRatio = Convert.ToDouble(DateList.Height) / Convert.ToDouble(MainList.Height + DateList.Height);
+			if (!(ListRatio < 1 && ListRatio > 0))
+			{
+				ListRatio = 0.1;
+			}
 		}
 
 		private void splitter1_SplitterMoved(object sender, SplitterEventArgs e)
@@ -493,11 +561,15 @@ namespace TCPingInfoView.Forms
 			{
 				TriggerMainFormDisplay();
 			}
+			else
+			{
+				DefaultState = WindowState;
+			}
 		}
 
 		#endregion
 
-		#region 主窗口显示隐藏
+		#region 主窗口切换显示隐藏
 
 		private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
@@ -521,7 +593,7 @@ namespace TCPingInfoView.Forms
 			{
 				if (WindowState == FormWindowState.Minimized)
 				{
-					WindowState = FormWindowState.Normal;
+					WindowState = DefaultState;
 				}
 
 				TopMost = true;
@@ -669,6 +741,8 @@ namespace TCPingInfoView.Forms
 			//
 			Config.MainFormHeight = Height;
 			Config.MainFormWidth = Width;
+			Config.StartPositionLeft = Location.X;
+			Config.StartPositionTop = Location.Y;
 			Config.DateListHeight = DateList.Height;
 			Config.IsNotifyClose = _isNotifyClose;
 			Config.IsShowDateList = _isShowDateList;
@@ -738,7 +812,7 @@ namespace TCPingInfoView.Forms
 
 		private void MainList_SelectionChanged(object sender, EventArgs e)
 		{
-			if (MainList.SelectedRows.Count <= 0)
+			if (MainList.SelectedRows.Count != 1)
 			{
 				return;
 			}
@@ -751,6 +825,22 @@ namespace TCPingInfoView.Forms
 			if (MainList.SelectedRows[0].Cells[0].Value is int index)
 			{
 				LoadLogs(index);
+			}
+		}
+
+		private void LoadLogs(DateTable log)
+		{
+			try
+			{
+				DateTable.Add(log);
+				if (DateList.SelectedRows.Count == 0)
+				{
+					DateList.Rows[0].Selected = true;
+				}
+			}
+			catch
+			{
+				// ignored
 			}
 		}
 
@@ -958,6 +1048,16 @@ namespace TCPingInfoView.Forms
 			_isShowDateList = IsShowDateList_MenuItem.Checked;
 			splitter1.Visible = _isShowDateList;
 			DateList.Visible = _isShowDateList;
+			if (DateList.Visible)
+			{
+				if (MainList.SelectedRows.Count == 1)
+				{
+					if (MainList.SelectedRows[0].Cells[0].Value is int index)
+					{
+						LoadLogs(index);
+					}
+				}
+			}
 		}
 
 		#endregion
@@ -982,7 +1082,7 @@ namespace TCPingInfoView.Forms
 		private void ShowLogForm_MenuItem_Click(object sender, EventArgs e)
 		{
 			var i = MainList.SelectedRows.Count;
-			if (i > 0)
+			if (i == 1)
 			{
 				if (MainList.Rows[MainList.SelectedRows[0].Index].Cells[0].Value is int index)
 				{
@@ -1056,7 +1156,7 @@ namespace TCPingInfoView.Forms
 		private void SearchMainList()
 		{
 			var index = 0;
-			if (MainList.SelectedRows.Count > 0)
+			if (MainList.SelectedRows.Count == 1)
 			{
 				index = MainList.SelectedRows[0].Index;
 			}
