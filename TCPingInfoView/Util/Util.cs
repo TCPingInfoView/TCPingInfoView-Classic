@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -166,6 +167,12 @@ namespace TCPingInfoView.Util
 				column.AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet;
 				column.Width = widthCol;
 			}
+		}
+
+		public static bool IsOnScreen(Point topLeft, Form form)
+		{
+			var screens = Screen.AllScreens;
+			return (from screen in screens let formRectangle = new Rectangle(topLeft.X, topLeft.Y, form.Width, form.Height) where screen.WorkingArea.IntersectsWith(formRectangle) select screen).Any();
 		}
 
 		public static void Invoke(this System.Windows.Forms.Control control, MethodInvoker action)

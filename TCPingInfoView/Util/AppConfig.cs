@@ -32,6 +32,12 @@ namespace TCPingInfoView.Util
 		[DataMember(Name = @"ColumnsWidth")]
 		public List<int> ColumnsWidth;
 
+		[DataMember(Name = @"StartPositionLeft")]
+		public int StartPositionLeft;
+
+		[DataMember(Name = @"StartPositionTop")]
+		public int StartPositionTop;
+
 		#endregion
 
 		[IgnoreDataMember]
@@ -52,6 +58,8 @@ namespace TCPingInfoView.Util
 		{
 			MainFormHeight = 717;
 			MainFormWidth = 928;
+			StartPositionLeft = -1000;
+			StartPositionTop = -1000;
 			DateListHeight = 125;
 			IsNotifyClose = true;
 			IsShowDateList = true;
@@ -94,6 +102,8 @@ namespace TCPingInfoView.Util
 		{
 			MainFormHeight = config.MainFormHeight;
 			MainFormWidth = config.MainFormWidth;
+			StartPositionLeft = config.StartPositionLeft;
+			StartPositionTop = config.StartPositionTop;
 			DateListHeight = config.DateListHeight;
 			IsNotifyClose = config.IsNotifyClose;
 			IsShowDateList = config.IsShowDateList;

@@ -197,6 +197,16 @@ namespace TCPingInfoView.Forms
 			Width = Config.MainFormWidth;
 			DateList.Height = Config.DateListHeight;
 
+			if (Util.Util.IsOnScreen(new Point(Config.StartPositionLeft, Config.StartPositionTop), this))
+			{
+				StartPosition = FormStartPosition.Manual;
+				Location = new Point(Config.StartPositionLeft, Config.StartPositionTop);
+			}
+			else
+			{
+				StartPosition = FormStartPosition.CenterScreen;
+			}
+
 			IsNotifyClose_MenuItem.Checked = Config.IsNotifyClose;
 			IsShowDateList_MenuItem.CheckState = Config.IsShowDateList ? CheckState.Checked : CheckState.Unchecked;
 
@@ -706,6 +716,8 @@ namespace TCPingInfoView.Forms
 			//
 			Config.MainFormHeight = Height;
 			Config.MainFormWidth = Width;
+			Config.StartPositionLeft = Location.X;
+			Config.StartPositionTop = Location.Y;
 			Config.DateListHeight = DateList.Height;
 			Config.IsNotifyClose = _isNotifyClose;
 			Config.IsShowDateList = _isShowDateList;
