@@ -241,6 +241,11 @@ namespace TCPingInfoView.Forms
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
+			if (!DpiUtils.CheckHighDpiEnvironment())
+			{
+				MessageBox.Show(@"TCPingInfoView 可能无法正常适配你的高 DPI 环境！", @"High DPI Environment Check", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+			}
+
 			LoadSetting();
 
 			SetMiniSize();

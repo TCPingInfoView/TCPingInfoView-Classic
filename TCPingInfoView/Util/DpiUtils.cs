@@ -175,7 +175,17 @@ namespace TCPingInfoView.Util
 		{
 			try
 			{
-				if (HasHighDpiScreen() && (!IsDotNetAbove47() || !IsNewDpiAwarenessOn() || !IsRequiredNewDPISystem()))
+				if (!IsNewDpiAwarenessOn())
+				{
+					return false;
+				}
+
+				if (Screen.AllScreens.Length == 1)
+				{
+					return true;
+				}
+
+				if (HasHighDpiScreen() && (!IsDotNetAbove47() || !IsRequiredNewDPISystem()))
 				{
 					return false;
 				}

@@ -29,11 +29,6 @@ namespace TCPingInfoView
 					}
 				}
 
-				if (!DpiUtils.CheckHighDpiEnvironment())
-				{
-					MessageBox.Show(@"TCPingInfoView 可能无法正常适配你的高 DPI 环境！", @"High DPI Environment Check", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-				}
-
 				Application.EnableVisualStyles();
 				Application.SetCompatibleTextRenderingDefault(false);
 				Application.Run(new MainForm());
