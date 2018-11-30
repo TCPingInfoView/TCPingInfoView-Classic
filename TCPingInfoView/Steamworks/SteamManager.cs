@@ -45,13 +45,33 @@ namespace TCPingInfoView.Steamworks
 
 		public static bool UnlockAchievement(string identifier)
 		{
-			var achievement = new Achievement(SteamWorksClient, 0);
-			return !achievement.State && achievement.Trigger();
+			if (IsLoaded)
+			{
+				foreach (var achievement in SteamWorksClient.Achievements.All)
+				{
+					if (achievement.Id == identifier)
+					{
+						return !achievement.State && achievement.Trigger();
+					}
+				}
+				return false;
+			}
+			else
+			{
+				return false;
+			}
 		}
 
 		public static bool SetGameInfo(string value, string key = @"status")
 		{
-			return SteamWorksClient.User.SetRichPresence(key, value);
+			if (IsLoaded)
+			{
+				return SteamWorksClient.User.SetRichPresence(key, value);
+			}
+			else
+			{
+				return false;
+			}
 		}
 	}
 

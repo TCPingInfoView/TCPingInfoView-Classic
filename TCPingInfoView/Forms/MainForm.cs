@@ -356,10 +356,7 @@ namespace TCPingInfoView.Forms
 				MainList.Rows[0].Selected = true;
 			}
 
-			if (SteamManager.IsLoaded)
-			{
-				SteamManager.SetGameInfo($@"正在测试 {mainTable.Count} 个项目");
-			}
+			SteamManager.SetGameInfo($@"正在测试 {mainTable.Count} 个项目");
 
 			FirstPing();
 		}
@@ -639,12 +636,9 @@ namespace TCPingInfoView.Forms
 
 			StartStop_MenuItem.Text = @"停止";
 
-			if (SteamManager.IsLoaded)
+			if (SteamManager.UnlockAchievement(@"FIRST_TIME_TCPing"))
 			{
-				if (SteamManager.UnlockAchievement(@"FIRST_TIME_TCPing"))
-				{
-					//Console.WriteLine(@"nb");
-				}
+				//Console.WriteLine(@"nb");
 			}
 		}
 
