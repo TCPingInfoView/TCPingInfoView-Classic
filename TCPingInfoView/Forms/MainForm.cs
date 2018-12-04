@@ -356,7 +356,7 @@ namespace TCPingInfoView.Forms
 				MainList.Rows[0].Selected = true;
 			}
 
-			SteamManager.SetGameInfo($@"正在测试 {mainTable.Count} 个项目");
+			SteamManager.SetStatus(mainTable.Count);
 
 			FirstPing();
 		}

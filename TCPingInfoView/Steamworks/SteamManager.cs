@@ -73,6 +73,19 @@ namespace TCPingInfoView.Steamworks
 				return false;
 			}
 		}
+
+		public static void SetStatus(int Count)
+		{
+			SetGameInfo($@"正在测试 {Count} 个项目");
+			SetGameInfo(@"#Status", @"steam_display");
+			SetGameInfo($@"{Count}", @"Count");
+		}
+
+		public static void SetCustomString(string str)
+		{
+			SetGameInfo(@"#Custom", @"steam_display");
+			SetGameInfo(str, @"CustomString");
+		}
 	}
 
 }
