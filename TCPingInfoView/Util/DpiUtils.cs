@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using TCPingInfoView.I18n;
 
 namespace TCPingInfoView.Util
 {
@@ -101,7 +102,7 @@ namespace TCPingInfoView.Util
 			}
 			catch (Exception e)
 			{
-				Trace.WriteLine($@"Exception when initializing per-monitor DPI: {e}");
+				Trace.WriteLine(string.Format(I18N.GetString(@"Exception when initializing per-monitor DPI: {0}"), e));
 			}
 		}
 

@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using TCPingInfoView.Forms;
+using TCPingInfoView.I18n;
 
 namespace TCPingInfoView
 {
@@ -21,10 +22,10 @@ namespace TCPingInfoView
 				if (!mutex.WaitOne(0, false))
 				{
 					MessageBox.Show(
-							$@"{ExeName} 已经在运行！" + Environment.NewLine +
-							$@"请在任务栏里寻找 {ExeName} 图标。" + Environment.NewLine +
-							@"如果想启动多份，建议另外复制一份到别的目录。",
-							$@"{ExeName} 已经在运行", MessageBoxButtons.OK, MessageBoxIcon.Information);
+							string.Format(I18N.GetString(@"{0} is already running!"), ExeName) + Environment.NewLine +
+							string.Format(I18N.GetString(@"Find {0} icon in your notify tray."), ExeName) + Environment.NewLine +
+							I18N.GetString(@"If you want to start more instances, make a copy in another directory."),
+							string.Format(I18N.GetString(@"{0} is already running!"), ExeName), MessageBoxButtons.OK, MessageBoxIcon.Information);
 					return;
 				}
 
