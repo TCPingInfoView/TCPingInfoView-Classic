@@ -57,8 +57,7 @@
 			// 
 			// textBox1
 			// 
-			this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.textBox1.BackColor = System.Drawing.SystemColors.Window;
 			this.textBox1.Location = new System.Drawing.Point(104, 12);
 			this.textBox1.Name = "textBox1";
@@ -187,8 +186,7 @@
 			// 
 			// textBox2
 			// 
-			this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.textBox2.BackColor = System.Drawing.SystemColors.Window;
 			this.textBox2.Location = new System.Drawing.Point(104, 39);
 			this.textBox2.Name = "textBox2";
@@ -198,8 +196,7 @@
 			// 
 			// textBox3
 			// 
-			this.textBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.textBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.textBox3.BackColor = System.Drawing.SystemColors.Window;
 			this.textBox3.Location = new System.Drawing.Point(104, 66);
 			this.textBox3.Name = "textBox3";
@@ -209,8 +206,7 @@
 			// 
 			// textBox4
 			// 
-			this.textBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.textBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.textBox4.BackColor = System.Drawing.SystemColors.Window;
 			this.textBox4.Location = new System.Drawing.Point(104, 93);
 			this.textBox4.Name = "textBox4";
@@ -220,8 +216,7 @@
 			// 
 			// textBox5
 			// 
-			this.textBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.textBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.textBox5.BackColor = System.Drawing.SystemColors.Window;
 			this.textBox5.Location = new System.Drawing.Point(104, 120);
 			this.textBox5.Name = "textBox5";
@@ -231,8 +226,7 @@
 			// 
 			// textBox6
 			// 
-			this.textBox6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.textBox6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.textBox6.BackColor = System.Drawing.SystemColors.Window;
 			this.textBox6.Location = new System.Drawing.Point(104, 147);
 			this.textBox6.Name = "textBox6";
@@ -242,8 +236,7 @@
 			// 
 			// textBox7
 			// 
-			this.textBox7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.textBox7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.textBox7.BackColor = System.Drawing.SystemColors.Window;
 			this.textBox7.Location = new System.Drawing.Point(104, 174);
 			this.textBox7.Name = "textBox7";
@@ -253,8 +246,7 @@
 			// 
 			// textBox8
 			// 
-			this.textBox8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.textBox8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.textBox8.BackColor = System.Drawing.SystemColors.Window;
 			this.textBox8.Location = new System.Drawing.Point(104, 201);
 			this.textBox8.Name = "textBox8";
@@ -264,8 +256,7 @@
 			// 
 			// textBox9
 			// 
-			this.textBox9.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.textBox9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.textBox9.BackColor = System.Drawing.SystemColors.Window;
 			this.textBox9.Location = new System.Drawing.Point(104, 228);
 			this.textBox9.Name = "textBox9";
@@ -275,8 +266,7 @@
 			// 
 			// textBox10
 			// 
-			this.textBox10.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.textBox10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.textBox10.BackColor = System.Drawing.SystemColors.Window;
 			this.textBox10.Location = new System.Drawing.Point(104, 255);
 			this.textBox10.Name = "textBox10";
@@ -286,8 +276,7 @@
 			// 
 			// textBox11
 			// 
-			this.textBox11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.textBox11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.textBox11.BackColor = System.Drawing.SystemColors.Window;
 			this.textBox11.Location = new System.Drawing.Point(104, 282);
 			this.textBox11.Name = "textBox11";
@@ -297,8 +286,7 @@
 			// 
 			// textBox12
 			// 
-			this.textBox12.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.textBox12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.textBox12.BackColor = System.Drawing.SystemColors.Window;
 			this.textBox12.Location = new System.Drawing.Point(104, 309);
 			this.textBox12.Name = "textBox12";

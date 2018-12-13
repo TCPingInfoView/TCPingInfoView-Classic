@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using TCPingInfoView.I18n;
 
 namespace TCPingInfoView.Forms
 {
@@ -13,8 +14,16 @@ namespace TCPingInfoView.Forms
 
 		private readonly DataGridViewColumnCollection Columns;
 
+		private void LoadI18N()
+		{
+			Text = I18N.GetString(@"Column Settings");
+			OK_button.Text = I18N.GetString(@"OK");
+			Cancel_button.Text = I18N.GetString(@"Cancel");
+		}
+
 		private void DisplayedColumns_Load(object sender, EventArgs e)
 		{
+			LoadI18N();
 			foreach (DataGridViewColumn column in Columns)
 			{
 				checkedListBox1.Items.Add(column.HeaderText);
