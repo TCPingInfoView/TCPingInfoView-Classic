@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
@@ -213,14 +212,6 @@ namespace TCPingInfoView.NetUtils
 				Debug.WriteLine($@"Average :{times.Average()}ms");
 				return Math.Round(times.Average(), 2);
 			}
-		}
-
-		public static async Task<IPAddress> GetPublicIpAddress()
-		{
-			var httpClient = new HttpClient();
-			var ip = await httpClient.GetStringAsync(@"http://api.ip.la");
-			Debug.WriteLine($@"Public IP address is: {ip}");
-			return IPAddress.Parse(ip.Trim());
 		}
 	}
 }

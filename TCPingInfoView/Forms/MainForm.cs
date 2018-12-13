@@ -92,12 +92,6 @@ namespace TCPingInfoView.Forms
 
 		#endregion
 
-		#region 委托
-
-		private delegate void VoidMethodDelegate();
-
-		#endregion
-
 		#region Timer
 
 		private Timer TestAllTimer;
@@ -357,11 +351,7 @@ namespace TCPingInfoView.Forms
 			{
 				Parallel.For(0, mainTable.Count, (i, state) =>
 				{
-					try
-					{
-						cts_PingTask.Token.ThrowIfCancellationRequested();
-					}
-					catch (OperationCanceledException)
+					if (cts_PingTask.IsCancellationRequested)
 					{
 						state.Stop();
 						return;
@@ -371,11 +361,7 @@ namespace TCPingInfoView.Forms
 					{
 						PingOne(i);
 
-						try
-						{
-							cts_PingTask.Token.ThrowIfCancellationRequested();
-						}
-						catch (OperationCanceledException)
+						if (cts_PingTask.IsCancellationRequested)
 						{
 							state.Stop();
 							return;
@@ -387,11 +373,7 @@ namespace TCPingInfoView.Forms
 					{
 						var ip = NetTest.GetIP(mainTable[i].HostsName);
 
-						try
-						{
-							cts_PingTask.Token.ThrowIfCancellationRequested();
-						}
-						catch (OperationCanceledException)
+						if (cts_PingTask.IsCancellationRequested)
 						{
 							state.Stop();
 							return;
@@ -404,11 +386,7 @@ namespace TCPingInfoView.Forms
 						PingOne(i);
 					}
 
-					try
-					{
-						cts_PingTask.Token.ThrowIfCancellationRequested();
-					}
-					catch (OperationCanceledException)
+					if (cts_PingTask.IsCancellationRequested)
 					{
 						state.Stop();
 					}
@@ -481,11 +459,7 @@ namespace TCPingInfoView.Forms
 			{
 				Parallel.For(0, mainTable.Count, (i, state) =>
 				{
-					try
-					{
-						cts_PingTask.Token.ThrowIfCancellationRequested();
-					}
-					catch (OperationCanceledException)
+					if (cts_PingTask.IsCancellationRequested)
 					{
 						state.Stop();
 						return;
@@ -493,11 +467,7 @@ namespace TCPingInfoView.Forms
 
 					PingOne(i);
 
-					try
-					{
-						cts_PingTask.Token.ThrowIfCancellationRequested();
-					}
-					catch (OperationCanceledException)
+					if (cts_PingTask.IsCancellationRequested)
 					{
 						state.Stop();
 					}
@@ -646,21 +616,20 @@ namespace TCPingInfoView.Forms
 		{
 			Start_Button.Enabled = false;
 			StartStop_MenuItem.Enabled = false;
-			VoidMethodDelegate method;
-			if (Start_Button.Text == @"开始")
-			{
-				method = StartPing;
-			}
-			else
-			{
-				method = StopPing;
-			}
 
-			var t = new Task(() => { method(); });
-			t.Start();
-			t.ContinueWith(task =>
+			Task.Run(() =>
 			{
-				BeginInvoke(new VoidMethodDelegate(() =>
+				if (Start_Button.Text == @"开始")
+				{
+					StartPing();
+				}
+				else
+				{
+					StopPing();
+				}
+			}).ContinueWith(task =>
+			{
+				BeginInvoke(new Action(() =>
 				{
 					Start_Button.Enabled = true;
 					StartStop_MenuItem.Enabled = true;
