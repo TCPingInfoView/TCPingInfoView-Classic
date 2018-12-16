@@ -29,10 +29,26 @@ namespace TCPingInfoView.Forms
 				checkedListBox1.Items.Add(column.HeaderText);
 			}
 
+			Width = Math.Max(GetWidth(), Width);
+
 			for (var i = 0; i < Columns.Count; ++i)
 			{
 				checkedListBox1.SetItemChecked(i, Columns[i].Visible);
 			}
+		}
+
+		private int GetWidth()
+		{
+			var max = 0;
+			foreach (string str in checkedListBox1.Items)
+			{
+				int width = TextRenderer.MeasureText(str, checkedListBox1.Font).Width;
+				if (width > max)
+				{
+					max = width;
+				}
+			}
+			return max + 100;
 		}
 
 		private void OK_button_Click(object sender, EventArgs e)
