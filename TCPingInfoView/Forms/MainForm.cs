@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TCPingInfoView.Collection;
 using TCPingInfoView.Control;
+using TCPingInfoView.I18n;
 using TCPingInfoView.NetUtils;
 using TCPingInfoView.Properties;
 using TCPingInfoView.Util;
@@ -147,20 +148,51 @@ namespace TCPingInfoView.Forms
 
 		#region 窗口第一次载入
 
+		private void LoadLanguage()
+		{
+			Load_Button.Text = I18N.GetString(@"Load");
+			Test_Button.Text = I18N.GetString(@"Test");
+			Start_Button.Text = I18N.GetString(@"Start");
+			Search_TextBox.CueBanner = I18N.GetString(@"Find");
+			Minimize_Button.Text = I18N.GetString(@"Minimize to Tray");
+			Exit_Button.Text = I18N.GetString(@"Exit");
+
+			File_MenuItem.Text = I18N.GetString(@"&File");
+			View_MenuItem.Text = I18N.GetString(@"&View");
+			Options_MenuItem.Text = I18N.GetString(@"&Options");
+			Help_MenuItem.Text = I18N.GetString(@"&Help");
+
+			ShowHide_MenuItem.Text = I18N.GetString(@"Show/Hide");
+			LoadFile_MenuItem.Text = I18N.GetString(@"Load Endpoints From File");
+			StartStop_MenuItem.Text = I18N.GetString(@"Start");
+			Reset_MenuItem.Text = I18N.GetString(@"Reset");
+			Exit_MenuItem.Text = I18N.GetString(@"Exit");
+
+			AutoColumnsSize_MenuItem.Text = I18N.GetString(@"Auto Size Columns Except Headers");
+			AutoColumnsSizeAndHeader_MenuItem.Text = I18N.GetString(@"Auto Size Columns");
+			DisplayedColumns_MenuItem.Text = I18N.GetString(@"Choose Columns");
+			ShowLogForm_MenuItem.Text = I18N.GetString(@"Properties");
+
+			IsNotifyClose_MenuItem.Text = I18N.GetString(@"Confirm Before Closing the Window");
+			IsShowDateList_MenuItem.Text = I18N.GetString(@"Show Log List");
+
+			About_MenuItem.Text = I18N.GetString(@"About");
+		}
+
 		private void LoadMainList()
 		{
-			MainList.Columns[0].HeaderText = @"列表顺序";
-			MainList.Columns[1].HeaderText = @"主机名";
-			MainList.Columns[2].HeaderText = @"IP:端口";
-			MainList.Columns[3].HeaderText = @"失败率";
-			MainList.Columns[4].HeaderText = @"延迟(ms)";
-			MainList.Columns[5].HeaderText = @"说明";
-			MainList.Columns[6].HeaderText = @"平均用时(ms)";
-			MainList.Columns[7].HeaderText = @"成功率";
-			MainList.Columns[8].HeaderText = @"成功次数";
-			MainList.Columns[9].HeaderText = @"失败次数";
-			MainList.Columns[10].HeaderText = @"最长用时(ms)";
-			MainList.Columns[11].HeaderText = @"最短用时(ms)";
+			MainList.Columns[0].HeaderText = I18N.GetString(@"Order");
+			MainList.Columns[1].HeaderText = I18N.GetString(@"Host Name");
+			MainList.Columns[2].HeaderText = I18N.GetString(@"IP:Port");
+			MainList.Columns[3].HeaderText = I18N.GetString(@"% Failed");
+			MainList.Columns[4].HeaderText = I18N.GetString(@"Latency(ms)");
+			MainList.Columns[5].HeaderText = I18N.GetString(@"Description");
+			MainList.Columns[6].HeaderText = I18N.GetString(@"Average TCPing Latency(ms)");
+			MainList.Columns[7].HeaderText = I18N.GetString(@"% Succeed");
+			MainList.Columns[8].HeaderText = I18N.GetString(@"Succeed Count");
+			MainList.Columns[9].HeaderText = I18N.GetString(@"Failed Count");
+			MainList.Columns[10].HeaderText = I18N.GetString(@"Max TCPing Latency(ms)");
+			MainList.Columns[11].HeaderText = I18N.GetString(@"Min TCPing Latency(ms)");
 
 			MainList.Columns[0].DataPropertyName = @"Index";
 			MainList.Columns[1].DataPropertyName = @"HostsName";
@@ -178,8 +210,8 @@ namespace TCPingInfoView.Forms
 
 		private void LoadDateList()
 		{
-			DateList.Columns[0].HeaderText = @"TCPing 通信时间";
-			DateList.Columns[1].HeaderText = @"延迟(ms)";
+			DateList.Columns[0].HeaderText = I18N.GetString(@"Sent On");
+			DateList.Columns[1].HeaderText = I18N.GetString(@"Latency(ms)");
 
 			DateList.Columns[0].DataPropertyName = @"Date";
 			DateList.Columns[1].DataPropertyName = @"Latency";
@@ -245,9 +277,11 @@ namespace TCPingInfoView.Forms
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
+			LoadLanguage();
+
 			if (!DpiUtils.CheckHighDpiEnvironment())
 			{
-				MessageBox.Show(@"TCPingInfoView 可能无法正常适配你的高 DPI 环境！", @"High DPI Environment Check", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				MessageBox.Show(I18N.GetString(@"TCPingInfoView may not be able to adapt to your high DPI environment properly!"), I18N.GetString(@"High DPI Environment Check"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
 
 			LoadSetting();
@@ -558,6 +592,7 @@ namespace TCPingInfoView.Forms
 
 		#region 循环Ping
 
+		//TODO:Button enabled changed event
 		private void Start_Button_Click(object sender, EventArgs e)
 		{
 			TriggerRun();
@@ -577,7 +612,7 @@ namespace TCPingInfoView.Forms
 		{
 			TestAllTimer?.Dispose();
 			TestAllTimer = new Timer(StartCore, null, 0, interval);
-			Start_Button.Text = @"停止";
+			Start_Button.Text = I18N.GetString(@"Stop");
 
 			if (Dpi > 1.0)
 			{
@@ -590,13 +625,13 @@ namespace TCPingInfoView.Forms
 				Start_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
 			}
 
-			StartStop_MenuItem.Text = @"停止";
+			StartStop_MenuItem.Text = I18N.GetString(@"Stop");
 		}
 
 		private void StopPing()
 		{
 			TestAllTimer?.Dispose();
-			Start_Button.Text = @"开始";
+			Start_Button.Text = I18N.GetString(@"Start");
 
 			if (Dpi > 1.0)
 			{
@@ -609,7 +644,7 @@ namespace TCPingInfoView.Forms
 				Start_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
 			}
 
-			StartStop_MenuItem.Text = @"开始";
+			StartStop_MenuItem.Text = I18N.GetString(@"Start");
 		}
 
 		private void TriggerRun()
@@ -619,7 +654,7 @@ namespace TCPingInfoView.Forms
 
 			Task.Run(() =>
 			{
-				if (Start_Button.Text == @"开始")
+				if (Start_Button.Text == I18N.GetString(@"Start"))
 				{
 					StartPing();
 				}
@@ -655,7 +690,7 @@ namespace TCPingInfoView.Forms
 					return;
 				}
 
-				var dr = MessageBox.Show(@"「是」退出，「否」最小化", @"是否退出？", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+				var dr = MessageBox.Show(I18N.GetString(@"If you click ""No"", TCPingInfoView will minimize to Notify Tray"), I18N.GetString(@"Want to Exit?"), MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 				if (dr == DialogResult.Yes)
 				{
 					Exit(); //Application.Exit();

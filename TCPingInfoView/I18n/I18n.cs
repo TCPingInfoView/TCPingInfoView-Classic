@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using TCPingInfoView.Properties;
 
@@ -22,6 +23,12 @@ namespace TCPingInfoView.I18n
 				if (kv.Length == 2)
 				{
 					var val = Regex.Replace(kv[1], "\\\\n", "\r\n");
+#if DEBUG
+					if (Strings.ContainsKey(kv[0]))
+					{
+						throw new Exception(@"翻译文本出错");
+					}
+#endif
 					Strings[kv[0]] = val;
 				}
 			}

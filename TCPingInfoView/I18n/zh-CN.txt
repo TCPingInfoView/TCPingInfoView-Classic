@@ -6,12 +6,12 @@ If you want to start more instances, make a copy in another directory.=如果想
 # 其他
 Exception when initializing per-monitor DPI: {0}=初始化 DPI 异常：{0}
 
-# 列设置
+# 列设置窗口
 Column Settings=列设置
 OK=确定
 Cancel=取消
 
-# 属性
+# 属性窗口
 Properties=属性
 Host Name:=主机名：
 IP:Port:=IP:端口：
@@ -25,3 +25,50 @@ Average TCPing Latency:=平均用时：
 Max TCPing Latency:=最长用时：
 Min TCPing Latency:=最短用时：
 Order:=列表顺序：
+
+# 主窗口
+Order=列表顺序
+Host Name=主机名
+IP:Port=IP:端口
+% Failed=失败率
+Latency(ms)=延迟(ms)
+Description=说明
+Average TCPing Latency(ms)=平均用时(ms)
+% Succeed=成功率
+Succeed Count=成功次数
+Failed Count=失败次数
+Max TCPing Latency(ms)=最长用时(ms)
+Min TCPing Latency(ms)=最短用时(ms)
+
+Sent On=TCPing 通信时间
+
+TCPingInfoView may not be able to adapt to your high DPI environment properly!=TCPingInfoView 可能无法正常适配你的高 DPI 环境！
+High DPI Environment Check=高 DPI 环境检查
+
+Want to Exit?=是否退出？
+If you click "No", TCPingInfoView will minimize to Notify Tray=「是」退出，「否」最小化
+
+Load=加载
+Test=测试
+Start=开始
+Stop=停止
+Find=查找
+Minimize to Tray=最小化到托盘
+Exit=退出
+
+&File=文件(&F)
+&View=查看(&V)
+&Options=选项(&O)
+&Help=帮助(&H)
+
+Show/Hide=显示/隐藏
+Load Endpoints From File=从文件载入
+Reset=计数重置
+Auto Size Columns Except Headers=自动调整列宽
+Auto Size Columns=自动调整列宽（包括列标题）
+Choose Columns=选择显示的列
+
+Confirm Before Closing the Window=关闭时提示
+Show Log List=显示日期表格
+
+About=关于
