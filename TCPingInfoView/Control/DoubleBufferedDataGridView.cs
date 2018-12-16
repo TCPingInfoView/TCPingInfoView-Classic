@@ -5,9 +5,9 @@ using System.Windows.Forms;
 namespace TCPingInfoView.Control
 {
 	[System.ComponentModel.DesignerCategory(@"Code")]
-	public class DoubleBufferDataGridView : DataGridView
+	public class DoubleBufferedDataGridView : DataGridView
 	{
-		public DoubleBufferDataGridView()
+		public DoubleBufferedDataGridView()
 		{
 			AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 			CellBorderStyle = DataGridViewCellBorderStyle.Single;
