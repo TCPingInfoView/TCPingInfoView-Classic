@@ -139,5 +139,37 @@ namespace TCPingInfoView.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   查找类似 # 主程序
+        ///{0} is already running!={0} 已经在运行！
+        ///Find {0} icon in your notify tray.=请在任务栏里寻找 {0} 图标。
+        ///If you want to start more instances, make a copy in another directory.=如果想启动多份，请另外复制一份到别的目录。
+        ///
+        ///# 其他
+        ///Exception when initializing per-monitor DPI: {0}=初始化 DPI 异常：{0}
+        ///
+        ///# 列设置窗口
+        ///Column Settings=列设置
+        ///OK=确定
+        ///Cancel=取消
+        ///
+        ///# 属性窗口
+        ///Properties=属性
+        ///Host Name:=主机名：
+        ///IP:Port:=IP:端口：
+        ///Succeed Count:=成功次数：
+        ///Failed Count:=失败次数：
+        ///% Succeed:=成功率：
+        ///% Failed:=失败率：
+        ///Description:=说明：
+        ///Last TCPing Latency:=最后一次用时：
+        ///Average TCPing L [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        internal static string zh_CN {
+            get {
+                return ResourceManager.GetString("zh_CN", resourceCulture);
+            }
+        }
     }
 }

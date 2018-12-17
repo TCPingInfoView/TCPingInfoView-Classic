@@ -58,6 +58,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Control\MenuStripEx.cs" />
+    <Compile Include="Control\ToolStripEx.cs" />
+    <Compile Include="I18n\I18n.cs" />
     <Compile Include="Forms\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -68,7 +71,7 @@
     <Compile Include="Collection\ConcurrentList.cs" />
     <Compile Include="Collection\DateTable.cs" />
     <Compile Include="Collection\MainTable.cs" />
-    <Compile Include="Control\DoubleBufferDataGridView.cs" />
+    <Compile Include="Control\DoubleBufferedDataGridView.cs" />
     <Compile Include="Control\TextAndImageColumn.cs" />
     <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\BaseSteamworks.cs" />
     <Compile Include="Facepunch.Steamworks\Facepunch.Steamworks\Callbacks\Index.cs" />
@@ -254,6 +257,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Minimize.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="I18n\zh-CN.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

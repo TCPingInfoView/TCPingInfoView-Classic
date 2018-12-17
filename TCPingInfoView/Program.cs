@@ -1,32 +1,33 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using TCPingInfoView.Forms;
+using TCPingInfoView.I18n;
 using TCPingInfoView.Steamworks;
 
 namespace TCPingInfoView
 {
-	static class Program
+	internal static class Program
 	{
+		private static string ExeName => Assembly.GetExecutingAssembly().GetName().Name;
+
 		/// <summary>
 		/// 应用程序的主入口点。
 		/// </summary>
 		[STAThread]
-		static void Main()
+		private static void Main()
 		{
-			using (var mutex = new Mutex(false, @"Global\TCPingInfoView_" + Application.StartupPath.GetHashCode()))
+			using (var mutex = new Mutex(false, $@"Global\{ExeName}_" + Application.StartupPath.GetHashCode()))
 			{
 				if (!mutex.WaitOne(0, false))
 				{
-					var dr = MessageBox.Show(
-@"TCPingInfoView 已经在运行！" + Environment.NewLine +
-@"请在任务栏里寻找 TCPingInfoView 图标。" + Environment.NewLine +
-@"如果想启动多份，建议另外复制一份到别的目录。" + Environment.NewLine +
-@"你确定一定要再次运行吗？", @"TCPingInfoView 已经在运行", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
-					if (dr != DialogResult.Yes)
-					{
-						return;
-					}
+					MessageBox.Show(
+							string.Format(I18N.GetString(@"{0} is already running!"), ExeName) + Environment.NewLine +
+							string.Format(I18N.GetString(@"Find {0} icon in your notify tray."), ExeName) + Environment.NewLine +
+							I18N.GetString(@"If you want to start more instances, make a copy in another directory."),
+							string.Format(I18N.GetString(@"{0} is already running!"), ExeName), MessageBoxButtons.OK, MessageBoxIcon.Information);
+					return;
 				}
 
 				SteamManager.Init();
