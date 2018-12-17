@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using TCPingInfoView.I18n;
+using TCPingInfoView.Util;
 
 namespace TCPingInfoView.Forms
 {
@@ -48,7 +49,7 @@ namespace TCPingInfoView.Forms
 					max = width;
 				}
 			}
-			return max + 100;
+			return Convert.ToInt32(max + 100 * this.GetDeviceDpi());
 		}
 
 		private void OK_button_Click(object sender, EventArgs e)
