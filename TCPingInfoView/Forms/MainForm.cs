@@ -35,8 +35,8 @@ namespace TCPingInfoView.Forms
 		}
 
 		private static string ExeName => Assembly.GetExecutingAssembly().GetName().Name;
-		private readonly AppConfig Config = new AppConfig($@".\{ExeName}.json");
-		private static string ListPath => $@".\{ExeName}.txt";
+		private readonly AppConfig Config = new AppConfig(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $@"{ExeName}.json"));
+		private static string ListPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $@"{ExeName}.txt");
 
 		#region DPI参数
 
@@ -57,7 +57,9 @@ namespace TCPingInfoView.Forms
 
 		private bool _isNotifyClose;
 		private bool _isShowDateList;
+		private bool _isLoadSetting;
 		private FormWindowState DefaultState = FormWindowState.Normal;
+		private int _mainListMouseLocationX, _mainListMouseLocationY;
 
 		#endregion
 
@@ -255,6 +257,7 @@ namespace TCPingInfoView.Forms
 					}
 				}
 			}
+			_isLoadSetting = true;
 		}
 
 		private void SetMiniSize()
@@ -539,6 +542,7 @@ namespace TCPingInfoView.Forms
 		private void splitter1_SplitterMoved(object sender, SplitterEventArgs e)
 		{
 			ChangedRatio();
+			SaveConfig();
 		}
 
 		private void MainForm_Resize(object sender, EventArgs e)
@@ -551,7 +555,13 @@ namespace TCPingInfoView.Forms
 			else
 			{
 				DefaultState = WindowState;
+				SaveConfig();
 			}
+		}
+
+		private void MainForm_LocationChanged(object sender, EventArgs e)
+		{
+			SaveConfig();
 		}
 
 		#endregion
@@ -592,7 +602,6 @@ namespace TCPingInfoView.Forms
 
 		#region 循环Ping
 
-		//TODO:Button enabled changed event
 		private void Start_Button_Click(object sender, EventArgs e)
 		{
 			TriggerRun();
@@ -713,34 +722,36 @@ namespace TCPingInfoView.Forms
 
 		private void SaveConfig()
 		{
-			if (!Visible)
+			if (_isLoadSetting)
 			{
-				TriggerMainFormDisplay();
-			}
-			//
-			Config.MainFormHeight = Height;
-			Config.MainFormWidth = Width;
-			Config.StartPositionLeft = Location.X;
-			Config.StartPositionTop = Location.Y;
-			Config.DateListHeight = DateList.Height;
-			Config.IsNotifyClose = _isNotifyClose;
-			Config.IsShowDateList = _isShowDateList;
-			for (var i = 0; i < ColumnsCount; ++i)
-			{
-				Config.ColumnsOrder[i] = MainList.Columns[i].DisplayIndex;
-			}
-			for (var i = 0; i < ColumnsCount; ++i)
-			{
-				if (MainList.Columns[i].Visible)
+				if (WindowState == FormWindowState.Normal)
 				{
-					Config.ColumnsWidth[i] = MainList.Columns[i].Width;
+					Config.MainFormHeight = Height;
+					Config.MainFormWidth = Width;
+					Config.StartPositionLeft = Location.X;
+					Config.StartPositionTop = Location.Y;
+					Config.DateListHeight = DateList.Height;
+					for (var i = 0; i < ColumnsCount; ++i)
+					{
+						Config.ColumnsOrder[i] = MainList.Columns[i].DisplayIndex;
+					}
+
+					for (var i = 0; i < ColumnsCount; ++i)
+					{
+						if (MainList.Columns[i].Visible)
+						{
+							Config.ColumnsWidth[i] = MainList.Columns[i].Width;
+						}
+						else
+						{
+							Config.ColumnsWidth[i] = 0;
+						}
+					}
 				}
-				else
-				{
-					Config.ColumnsWidth[i] = 0;
-				}
+				Config.IsNotifyClose = _isNotifyClose;
+				Config.IsShowDateList = _isShowDateList;
+				Config.Save();
 			}
-			Config.Save();
 		}
 
 		private void SaveList()
@@ -751,6 +762,10 @@ namespace TCPingInfoView.Forms
 		private void Exit()
 		{
 			SaveList();
+			if (!Visible)
+			{
+				TriggerMainFormDisplay();
+			}
 			SaveConfig();
 			Dispose();
 			notifyIcon1.Dispose();
@@ -857,7 +872,7 @@ namespace TCPingInfoView.Forms
 
 		#endregion
 
-		#region 鼠标点击事件
+		#region 鼠标事件
 
 		/// <summary>
 		/// 点击空白处清空时间列表
@@ -889,6 +904,15 @@ namespace TCPingInfoView.Forms
 					var log = mainTable[index - 1];
 					new LogForm(log).ShowDialog();
 				}
+			}
+		}
+
+		private void MainList_MouseMove(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Left)
+			{
+				_mainListMouseLocationX = e.X;
+				_mainListMouseLocationY = e.Y;
 			}
 		}
 
@@ -1014,6 +1038,7 @@ namespace TCPingInfoView.Forms
 		private void IsNotifyClose_MenuItem_CheckedChanged(object sender, EventArgs e)
 		{
 			_isNotifyClose = IsNotifyClose_MenuItem.Checked;
+			SaveConfig();
 		}
 
 		private void IsShowDateList_MenuItem_Click(object sender, EventArgs e)
@@ -1024,6 +1049,7 @@ namespace TCPingInfoView.Forms
 		private void IsShowDateList_MenuItem_CheckStateChanged(object sender, EventArgs e)
 		{
 			_isShowDateList = IsShowDateList_MenuItem.Checked;
+			SaveConfig();
 			splitter1.Visible = _isShowDateList;
 			DateList.Visible = _isShowDateList;
 			if (DateList.Visible)
@@ -1044,17 +1070,25 @@ namespace TCPingInfoView.Forms
 
 		private void AutoColumnSize_MenuItem_Click(object sender, EventArgs e)
 		{
+			MainList.ColumnWidthChanged -= MainList_ColumnWidthChanged;
 			Util.Util.AutoColumnSize(MainList, DataGridViewAutoSizeColumnMode.AllCellsExceptHeader);
+			SaveConfig();
+			MainList.ColumnWidthChanged += MainList_ColumnWidthChanged;
 		}
 
 		private void AutoColumnsSizeAndHeader_MenuItem_Click(object sender, EventArgs e)
 		{
+			MainList.ColumnWidthChanged -= MainList_ColumnWidthChanged;
 			Util.Util.AutoColumnSize(MainList, DataGridViewAutoSizeColumnMode.AllCells);
+			SaveConfig();
+			MainList.ColumnWidthChanged += MainList_ColumnWidthChanged;
 		}
 
 		private void DisplayedColumns_MenuItem_Click(object sender, EventArgs e)
 		{
-			new DisplayedColumns(MainList.Columns).ShowDialog();
+			var d = new DisplayedColumns(MainList.Columns);
+			d.AfterColumnsChanged += AfterColumnsChanged;
+			d.ShowDialog();
 		}
 
 		private void ShowLogForm_MenuItem_Click(object sender, EventArgs e)
@@ -1181,5 +1215,30 @@ namespace TCPingInfoView.Forms
 
 		#endregion
 
+		#region 主列表顺序、显示列、列宽改变
+
+		private void MainList_ColumnDisplayIndexChanged(object sender, DataGridViewColumnEventArgs e)
+		{
+			Debug.WriteLine(@"主列表顺序");
+			SaveConfig();
+		}
+
+		private void AfterColumnsChanged(object sender, EventArgs e)
+		{
+			Debug.WriteLine(@"显示列改变");
+			SaveConfig();
+		}
+
+		private void MainList_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e)
+		{
+			var columnIndex = MainList.HitTest(_mainListMouseLocationX, _mainListMouseLocationY).ColumnIndex;
+			if (e.Column.Index == columnIndex)
+			{
+				Debug.WriteLine($@"列宽改变:{columnIndex}");
+				SaveConfig();
+			}
+		}
+
+		#endregion
 	}
 }

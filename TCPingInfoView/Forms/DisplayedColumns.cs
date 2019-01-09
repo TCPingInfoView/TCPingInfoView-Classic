@@ -15,6 +15,13 @@ namespace TCPingInfoView.Forms
 
 		private readonly DataGridViewColumnCollection Columns;
 
+		public event EventHandler AfterColumnsChanged;
+
+		private void OnAfterColumnsChanged()
+		{
+			AfterColumnsChanged?.Invoke(this, null);
+		}
+
 		private void LoadI18N()
 		{
 			Text = I18N.GetString(@"Column Settings");
@@ -58,6 +65,7 @@ namespace TCPingInfoView.Forms
 			{
 				Columns[i].Visible = checkedListBox1.GetItemChecked(i);
 			}
+			OnAfterColumnsChanged();
 			DialogResult = DialogResult.OK;
 			Close();
 		}
