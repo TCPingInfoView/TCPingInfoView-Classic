@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace TCPingInfoView.Collection
+namespace TCPingInfoView.Model
 {
 	public class Data
 	{

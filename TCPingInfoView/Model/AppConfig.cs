@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Runtime.Serialization;
 using TCPingInfoView.Forms;
+using TCPingInfoView.Util;
 
-namespace TCPingInfoView.Util
+namespace TCPingInfoView.Model
 {
 	[DataContract]
 	internal class AppConfig
@@ -38,6 +40,9 @@ namespace TCPingInfoView.Util
 		[DataMember(Name = @"StartPositionTop")]
 		public int StartPositionTop;
 
+		[DataMember(Name = @"TCPingOptions")]
+		public TCPingOptions TCPingOptions;
+
 		#endregion
 
 		[IgnoreDataMember]
@@ -65,6 +70,7 @@ namespace TCPingInfoView.Util
 			IsShowDateList = true;
 			ColumnsOrder = new List<int>(ColumnsCount) { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 			ColumnsWidth = new List<int>(ColumnsCount) { 50, 50, 50, 50, 50, 50, 0, 0, 0, 0, 0, 0 };
+			TCPingOptions = new TCPingOptions();
 		}
 
 		public void Save()
@@ -94,7 +100,7 @@ namespace TCPingInfoView.Util
 
 		public void Load(string jsonStr)
 		{
-			var config = SimpleJson.DeserializeObject<AppConfig>(jsonStr);
+			var config = SimpleJson.DeserializeObject<AppConfig>(jsonStr, new JsonSerializerStrategy());
 			Load(config);
 		}
 
@@ -115,6 +121,26 @@ namespace TCPingInfoView.Util
 			{
 				ColumnsWidth[i] = config.ColumnsWidth[i];
 			}
+			TCPingOptions = config.TCPingOptions;
+		}
+
+		private class JsonSerializerStrategy : PocoJsonSerializerStrategy
+		{
+			public override object DeserializeObject(object value, Type type)
+			{
+				if (type == typeof(Color))
+				{
+					dynamic color = SimpleJson.DeserializeObject(value.ToString());
+					var r = Convert.ToInt32(color["R"]);
+					var g = Convert.ToInt32(color["G"]);
+					var b = Convert.ToInt32(color["B"]);
+					var a = Convert.ToInt32(color["A"]);
+					return Color.FromArgb(a, r, g, b);
+				}
+				return base.DeserializeObject(value, type);
+			}
 		}
 	}
+
+
 }

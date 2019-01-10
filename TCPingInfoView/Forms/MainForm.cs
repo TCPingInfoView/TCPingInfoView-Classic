@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using TCPingInfoView.Collection;
 using TCPingInfoView.Control;
 using TCPingInfoView.I18n;
+using TCPingInfoView.Model;
 using TCPingInfoView.NetUtils;
 using TCPingInfoView.Properties;
 using TCPingInfoView.Util;
@@ -35,14 +36,19 @@ namespace TCPingInfoView.Forms
 		}
 
 		private static string ExeName => Assembly.GetExecutingAssembly().GetName().Name;
-		private readonly AppConfig Config = new AppConfig(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $@"{ExeName}.json"));
+
+		private readonly AppConfig Config =
+				new AppConfig(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $@"{ExeName}.json"));
+
 		private static string ListPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $@"{ExeName}.txt");
 
 		#region DPI参数
 
 		private double Dpi => this.GetDeviceDpi();
 		private static Size DefPicSize => new Size(16, 16);
-		private Size DpiPicSize => new Size(Convert.ToInt32(DefPicSize.Width * Dpi), Convert.ToInt32(DefPicSize.Height * Dpi));
+
+		private Size DpiPicSize =>
+				new Size(Convert.ToInt32(DefPicSize.Width * Dpi), Convert.ToInt32(DefPicSize.Height * Dpi));
 
 		#endregion
 
@@ -60,6 +66,7 @@ namespace TCPingInfoView.Forms
 		private bool _isLoadSetting;
 		private FormWindowState DefaultState = FormWindowState.Normal;
 		private int _mainListMouseLocationX, _mainListMouseLocationY;
+		private string UserTitle;
 
 		#endregion
 
@@ -100,7 +107,7 @@ namespace TCPingInfoView.Forms
 		private Timer TestAllTimer;
 		private const int second = 1000;
 		private const int minute = 60 * second;
-		public int interval = 1 * minute;
+		private int interval = 1 * minute;
 
 		#endregion
 
@@ -134,6 +141,8 @@ namespace TCPingInfoView.Forms
 				Load_Button.Image = Util.Util.ResizeImage(Resources.Load, DpiPicSize);
 				Minimize_Button.ImageScaling = ToolStripItemImageScaling.None;
 				Minimize_Button.Image = Util.Util.ResizeImage(Resources.Minimize, DpiPicSize);
+				List_Button.ImageScaling = ToolStripItemImageScaling.None;
+				List_Button.Image = Util.Util.ResizeImage(Resources.List, DpiPicSize);
 			}
 			else
 			{
@@ -143,6 +152,7 @@ namespace TCPingInfoView.Forms
 				Exit_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
 				Load_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
 				Minimize_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
+				List_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
 			}
 		}
 
@@ -152,6 +162,7 @@ namespace TCPingInfoView.Forms
 
 		private void LoadLanguage()
 		{
+			List_Button.Text = I18N.GetString(@"TCPing Options");
 			Load_Button.Text = I18N.GetString(@"Load");
 			Test_Button.Text = I18N.GetString(@"Test");
 			Start_Button.Text = I18N.GetString(@"Start");
@@ -175,6 +186,7 @@ namespace TCPingInfoView.Forms
 			DisplayedColumns_MenuItem.Text = I18N.GetString(@"Choose Columns");
 			ShowLogForm_MenuItem.Text = I18N.GetString(@"Properties");
 
+			TCPingOptions_MenuItem.Text = I18N.GetString(@"TCPing Options");
 			IsNotifyClose_MenuItem.Text = I18N.GetString(@"Confirm Before Closing the Window");
 			IsShowDateList_MenuItem.Text = I18N.GetString(@"Show Log List");
 
@@ -257,7 +269,26 @@ namespace TCPingInfoView.Forms
 					}
 				}
 			}
+
+			LoadTCPingOptions(Config.TCPingOptions);
+
+			LoadTitle();
+
 			_isLoadSetting = true;
+		}
+
+		private void LoadTCPingOptions(TCPingOptions setting)
+		{
+			UserTitle = setting.Title;
+
+			ReverseDNSTimeout = setting.ReverseDnsTimeout;
+			Timeout = setting.Timeout;
+			HighLatency = setting.HighLatency;
+			interval = setting.TCPingInterval * second; //s->ms
+
+			TimeoutColor = setting.TimeoutColor;
+			HighLatencyColor = setting.HighLatencyColor;
+			LowLatencyColor = setting.LowLatencyColor;
 		}
 
 		private void SetMiniSize()
@@ -276,6 +307,11 @@ namespace TCPingInfoView.Forms
 
 			miniHeight += splitter1.Height;
 			MinimumSize = new Size(0, miniHeight);
+		}
+
+		private void LoadTitle()
+		{
+			Text = string.IsNullOrWhiteSpace(UserTitle) ? ExeName : $@"{ExeName} - {UserTitle}";
 		}
 
 		private void MainForm_Load(object sender, EventArgs e)
@@ -1061,6 +1097,45 @@ namespace TCPingInfoView.Forms
 						LoadLogs(index);
 					}
 				}
+			}
+		}
+
+		private TCPingOptions GetTCPingOptions()
+		{
+			return new TCPingOptions
+			{
+				Title = UserTitle,
+				ReverseDnsTimeout = Convert.ToInt32(ReverseDNSTimeout),
+				Timeout = Convert.ToInt32(Timeout),
+				HighLatency = Convert.ToInt32(HighLatency),
+				TCPingInterval = interval / second,//ms -> s
+				TimeoutColor = TimeoutColor,
+				HighLatencyColor = HighLatencyColor,
+				LowLatencyColor = LowLatencyColor
+			};
+		}
+
+		private void SetTCPingOptions(TCPingOptions setting, string list)
+		{
+			RawString = list;
+
+			LoadTCPingOptions(setting);
+
+			Config.TCPingOptions = setting;
+
+			LoadTitle();
+			rawTable = Read.ReadAddressFromString(RawString);
+			LoadFromList();
+		}
+
+		private void List_Button_Click(object sender, EventArgs e)
+		{
+			var form = new TCPingOptionsForm(GetTCPingOptions(), RawString);
+			if (form.ShowDialog() == DialogResult.OK)
+			{
+				SetTCPingOptions(form.Setting, form.List);
+				Config.TCPingOptions = form.Setting;
+				SaveConfig();
 			}
 		}
 

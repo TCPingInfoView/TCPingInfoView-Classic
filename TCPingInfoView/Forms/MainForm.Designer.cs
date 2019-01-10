@@ -45,6 +45,8 @@ namespace TCPingInfoView.Forms
 			this.Options_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.IsNotifyClose_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.IsShowDateList_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+			this.TCPingOptions_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.Help_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.About_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.NotifyIcon_MenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -79,6 +81,7 @@ namespace TCPingInfoView.Forms
 			this.Start_Button = new System.Windows.Forms.ToolStripButton();
 			this.Exit_Button = new System.Windows.Forms.ToolStripButton();
 			this.toolStrip1 = new TCPingInfoView.Control.ToolStripEx();
+			this.List_Button = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.Search_TextBox = new TCPingInfoView.Control.ToolStripTextBoxWithHintText();
@@ -138,7 +141,9 @@ namespace TCPingInfoView.Forms
 			// 
 			this.Options_MenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.IsNotifyClose_MenuItem,
-            this.IsShowDateList_MenuItem});
+            this.IsShowDateList_MenuItem,
+            this.toolStripSeparator6,
+            this.TCPingOptions_MenuItem});
 			this.Options_MenuItem.Name = "Options_MenuItem";
 			this.Options_MenuItem.Size = new System.Drawing.Size(62, 21);
 			this.Options_MenuItem.Text = "选项(&O)";
@@ -146,7 +151,7 @@ namespace TCPingInfoView.Forms
 			// IsNotifyClose_MenuItem
 			// 
 			this.IsNotifyClose_MenuItem.Name = "IsNotifyClose_MenuItem";
-			this.IsNotifyClose_MenuItem.Size = new System.Drawing.Size(148, 22);
+			this.IsNotifyClose_MenuItem.Size = new System.Drawing.Size(180, 22);
 			this.IsNotifyClose_MenuItem.Text = "关闭时提示";
 			this.IsNotifyClose_MenuItem.CheckedChanged += new System.EventHandler(this.IsNotifyClose_MenuItem_CheckedChanged);
 			this.IsNotifyClose_MenuItem.Click += new System.EventHandler(this.IsNotifyClose_MenuItem_Click);
@@ -156,10 +161,22 @@ namespace TCPingInfoView.Forms
 			this.IsShowDateList_MenuItem.Checked = true;
 			this.IsShowDateList_MenuItem.CheckState = System.Windows.Forms.CheckState.Indeterminate;
 			this.IsShowDateList_MenuItem.Name = "IsShowDateList_MenuItem";
-			this.IsShowDateList_MenuItem.Size = new System.Drawing.Size(148, 22);
+			this.IsShowDateList_MenuItem.Size = new System.Drawing.Size(180, 22);
 			this.IsShowDateList_MenuItem.Text = "显示日期表格";
 			this.IsShowDateList_MenuItem.CheckStateChanged += new System.EventHandler(this.IsShowDateList_MenuItem_CheckStateChanged);
 			this.IsShowDateList_MenuItem.Click += new System.EventHandler(this.IsShowDateList_MenuItem_Click);
+			// 
+			// toolStripSeparator6
+			// 
+			this.toolStripSeparator6.Name = "toolStripSeparator6";
+			this.toolStripSeparator6.Size = new System.Drawing.Size(177, 6);
+			// 
+			// TCPingOptions_MenuItem
+			// 
+			this.TCPingOptions_MenuItem.Name = "TCPingOptions_MenuItem";
+			this.TCPingOptions_MenuItem.Size = new System.Drawing.Size(180, 22);
+			this.TCPingOptions_MenuItem.Text = "TCPing 选项";
+			this.TCPingOptions_MenuItem.Click += new System.EventHandler(this.List_Button_Click);
 			// 
 			// Help_MenuItem
 			// 
@@ -400,6 +417,7 @@ namespace TCPingInfoView.Forms
 			// toolStrip1
 			// 
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.List_Button,
             this.Load_Button,
             this.toolStripSeparator5,
             this.Test_Button,
@@ -415,6 +433,16 @@ namespace TCPingInfoView.Forms
 			this.toolStrip1.TabIndex = 8;
 			this.toolStrip1.TabStop = true;
 			this.toolStrip1.Text = "toolStrip1";
+			// 
+			// List_Button
+			// 
+			this.List_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.List_Button.Image = global::TCPingInfoView.Properties.Resources.List;
+			this.List_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.List_Button.Name = "List_Button";
+			this.List_Button.Size = new System.Drawing.Size(23, 22);
+			this.List_Button.Text = "TCPing 选项";
+			this.List_Button.Click += new System.EventHandler(this.List_Button_Click);
 			// 
 			// toolStripSeparator5
 			// 
@@ -754,6 +782,9 @@ namespace TCPingInfoView.Forms
 		private ToolStripSeparator toolStripSeparator3;
 		private ToolStripTextBoxWithHintText Search_TextBox;
 		private ToolStripButton Minimize_Button;
+		private ToolStripButton List_Button;
+		private ToolStripSeparator toolStripSeparator6;
+		private ToolStripMenuItem TCPingOptions_MenuItem;
 	}
 }
 
