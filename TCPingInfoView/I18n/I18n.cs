@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using TCPingInfoView.Properties;
+using TCPingInfoView.Steamworks;
 
 namespace TCPingInfoView.I18n
 {
@@ -38,8 +39,8 @@ namespace TCPingInfoView.I18n
 		{
 			Strings = new Dictionary<string, string>();
 
-			var name = System.Globalization.CultureInfo.CurrentCulture.Name;
-			if (name == @"zh" || name == @"zh-CN")
+			var name = SteamManager.GetCurrentGameLanguage();
+			if (name == @"schinese")
 			{
 				Init(Resources.zh_CN);
 			}

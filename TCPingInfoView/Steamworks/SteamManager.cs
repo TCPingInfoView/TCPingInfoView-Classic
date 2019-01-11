@@ -92,6 +92,11 @@ namespace TCPingInfoView.Steamworks
 		{
 			SteamWorksClient.User.ClearRichPresence();
 		}
+
+		public static string GetCurrentGameLanguage()
+		{
+			return SteamWorksClient.CurrentLanguage;
+		}
 	}
 
 }
