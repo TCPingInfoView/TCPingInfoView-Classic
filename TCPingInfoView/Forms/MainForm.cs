@@ -655,6 +655,7 @@ namespace TCPingInfoView.Forms
 
 		private void StartCore(object state)
 		{
+			SetRichPresence();
 			PingAll();
 		}
 
@@ -681,8 +682,6 @@ namespace TCPingInfoView.Forms
 			{
 				//Console.WriteLine(@"nb");
 			}
-
-			SetRichPresence();
 		}
 
 		private void StopPing()
@@ -1138,7 +1137,6 @@ namespace TCPingInfoView.Forms
 
 			Config.TCPingOptions = setting;
 
-			LoadTitle();
 			rawTable = Read.ReadAddressFromString(RawString);
 			LoadFromList();
 		}
