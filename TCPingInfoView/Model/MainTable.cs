@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using TCPingInfoView.Collection;
 using TCPingInfoView.Forms;
 
-namespace TCPingInfoView.Collection
+namespace TCPingInfoView.Model
 {
 	public class MainTable : INotifyPropertyChanged
 	{

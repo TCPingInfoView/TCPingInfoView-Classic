@@ -39,12 +39,14 @@ namespace TCPingInfoView.Forms
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-			this.menuStrip1 = new MenuStripEx();
+			this.menuStrip1 = new TCPingInfoView.Control.MenuStripEx();
 			this.File_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.View_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.Options_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.IsNotifyClose_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.IsShowDateList_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+			this.TCPingOptions_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.Help_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.About_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.NotifyIcon_MenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -78,7 +80,8 @@ namespace TCPingInfoView.Forms
 			this.Test_Button = new System.Windows.Forms.ToolStripButton();
 			this.Start_Button = new System.Windows.Forms.ToolStripButton();
 			this.Exit_Button = new System.Windows.Forms.ToolStripButton();
-			this.toolStrip1 = new ToolStripEx();
+			this.toolStrip1 = new TCPingInfoView.Control.ToolStripEx();
+			this.List_Button = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.Search_TextBox = new TCPingInfoView.Control.ToolStripTextBoxWithHintText();
@@ -112,10 +115,10 @@ namespace TCPingInfoView.Forms
 			// menuStrip1
 			// 
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.File_MenuItem,
-			this.View_MenuItem,
-			this.Options_MenuItem,
-			this.Help_MenuItem});
+            this.File_MenuItem,
+            this.View_MenuItem,
+            this.Options_MenuItem,
+            this.Help_MenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(912, 25);
@@ -137,8 +140,10 @@ namespace TCPingInfoView.Forms
 			// Options_MenuItem
 			// 
 			this.Options_MenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.IsNotifyClose_MenuItem,
-			this.IsShowDateList_MenuItem});
+            this.IsNotifyClose_MenuItem,
+            this.IsShowDateList_MenuItem,
+            this.toolStripSeparator6,
+            this.TCPingOptions_MenuItem});
 			this.Options_MenuItem.Name = "Options_MenuItem";
 			this.Options_MenuItem.Size = new System.Drawing.Size(62, 21);
 			this.Options_MenuItem.Text = "选项(&O)";
@@ -146,7 +151,7 @@ namespace TCPingInfoView.Forms
 			// IsNotifyClose_MenuItem
 			// 
 			this.IsNotifyClose_MenuItem.Name = "IsNotifyClose_MenuItem";
-			this.IsNotifyClose_MenuItem.Size = new System.Drawing.Size(148, 22);
+			this.IsNotifyClose_MenuItem.Size = new System.Drawing.Size(180, 22);
 			this.IsNotifyClose_MenuItem.Text = "关闭时提示";
 			this.IsNotifyClose_MenuItem.CheckedChanged += new System.EventHandler(this.IsNotifyClose_MenuItem_CheckedChanged);
 			this.IsNotifyClose_MenuItem.Click += new System.EventHandler(this.IsNotifyClose_MenuItem_Click);
@@ -156,15 +161,27 @@ namespace TCPingInfoView.Forms
 			this.IsShowDateList_MenuItem.Checked = true;
 			this.IsShowDateList_MenuItem.CheckState = System.Windows.Forms.CheckState.Indeterminate;
 			this.IsShowDateList_MenuItem.Name = "IsShowDateList_MenuItem";
-			this.IsShowDateList_MenuItem.Size = new System.Drawing.Size(148, 22);
+			this.IsShowDateList_MenuItem.Size = new System.Drawing.Size(180, 22);
 			this.IsShowDateList_MenuItem.Text = "显示日期表格";
 			this.IsShowDateList_MenuItem.CheckStateChanged += new System.EventHandler(this.IsShowDateList_MenuItem_CheckStateChanged);
 			this.IsShowDateList_MenuItem.Click += new System.EventHandler(this.IsShowDateList_MenuItem_Click);
 			// 
+			// toolStripSeparator6
+			// 
+			this.toolStripSeparator6.Name = "toolStripSeparator6";
+			this.toolStripSeparator6.Size = new System.Drawing.Size(177, 6);
+			// 
+			// TCPingOptions_MenuItem
+			// 
+			this.TCPingOptions_MenuItem.Name = "TCPingOptions_MenuItem";
+			this.TCPingOptions_MenuItem.Size = new System.Drawing.Size(180, 22);
+			this.TCPingOptions_MenuItem.Text = "TCPing 选项";
+			this.TCPingOptions_MenuItem.Click += new System.EventHandler(this.List_Button_Click);
+			// 
 			// Help_MenuItem
 			// 
 			this.Help_MenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.About_MenuItem});
+            this.About_MenuItem});
 			this.Help_MenuItem.Name = "Help_MenuItem";
 			this.Help_MenuItem.Size = new System.Drawing.Size(61, 21);
 			this.Help_MenuItem.Text = "帮助(&H)";
@@ -179,13 +196,13 @@ namespace TCPingInfoView.Forms
 			// NotifyIcon_MenuStrip
 			// 
 			this.NotifyIcon_MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.ShowHide_MenuItem,
-			this.LoadFile_MenuItem,
-			this.toolStripSeparator1,
-			this.StartStop_MenuItem,
-			this.Reset_MenuItem,
-			this.toolStripSeparator2,
-			this.Exit_MenuItem});
+            this.ShowHide_MenuItem,
+            this.LoadFile_MenuItem,
+            this.toolStripSeparator1,
+            this.StartStop_MenuItem,
+            this.Reset_MenuItem,
+            this.toolStripSeparator2,
+            this.Exit_MenuItem});
 			this.NotifyIcon_MenuStrip.Name = "NotifyIcon_MenuStrip";
 			this.NotifyIcon_MenuStrip.Size = new System.Drawing.Size(137, 126);
 			// 
@@ -237,11 +254,11 @@ namespace TCPingInfoView.Forms
 			// MainList_MenuStrip
 			// 
 			this.MainList_MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.AutoColumnsSize_MenuItem,
-			this.AutoColumnsSizeAndHeader_MenuItem,
-			this.toolStripSeparator7,
-			this.DisplayedColumns_MenuItem,
-			this.ShowLogForm_MenuItem});
+            this.AutoColumnsSize_MenuItem,
+            this.AutoColumnsSizeAndHeader_MenuItem,
+            this.toolStripSeparator7,
+            this.DisplayedColumns_MenuItem,
+            this.ShowLogForm_MenuItem});
 			this.MainList_MenuStrip.Name = "MainList_MenuStrip";
 			this.MainList_MenuStrip.Size = new System.Drawing.Size(233, 98);
 			// 
@@ -281,7 +298,7 @@ namespace TCPingInfoView.Forms
 			// statusStrip1
 			// 
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.toolStripStatusLabel1});
+            this.toolStripStatusLabel1});
 			this.statusStrip1.Location = new System.Drawing.Point(0, 656);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.Size = new System.Drawing.Size(912, 22);
@@ -400,21 +417,32 @@ namespace TCPingInfoView.Forms
 			// toolStrip1
 			// 
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.Load_Button,
-			this.toolStripSeparator5,
-			this.Test_Button,
-			this.Start_Button,
-			this.toolStripSeparator4,
-			this.Search_TextBox,
-			this.toolStripSeparator3,
-			this.Minimize_Button,
-			this.Exit_Button});
+            this.List_Button,
+            this.Load_Button,
+            this.toolStripSeparator5,
+            this.Test_Button,
+            this.Start_Button,
+            this.toolStripSeparator4,
+            this.Search_TextBox,
+            this.toolStripSeparator3,
+            this.Minimize_Button,
+            this.Exit_Button});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 25);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.Size = new System.Drawing.Size(912, 25);
 			this.toolStrip1.TabIndex = 8;
 			this.toolStrip1.TabStop = true;
 			this.toolStrip1.Text = "toolStrip1";
+			// 
+			// List_Button
+			// 
+			this.List_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.List_Button.Image = global::TCPingInfoView.Properties.Resources.List;
+			this.List_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.List_Button.Name = "List_Button";
+			this.List_Button.Size = new System.Drawing.Size(23, 22);
+			this.List_Button.Text = "TCPing 选项";
+			this.List_Button.Click += new System.EventHandler(this.List_Button_Click);
 			// 
 			// toolStripSeparator5
 			// 
@@ -470,18 +498,18 @@ namespace TCPingInfoView.Forms
 			this.MainList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
 			this.MainList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.MainList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-			this.Column1,
-			this.Column2,
-			this.Column3,
-			this.Column4,
-			this.Column5,
-			this.Column6,
-			this.Column7,
-			this.Column8,
-			this.Column9,
-			this.Column10,
-			this.Column11,
-			this.Column12});
+            this.Column1,
+            this.Column2,
+            this.Column3,
+            this.Column4,
+            this.Column5,
+            this.Column6,
+            this.Column7,
+            this.Column8,
+            this.Column9,
+            this.Column10,
+            this.Column11,
+            this.Column12});
 			this.MainList.ContextMenuStrip = this.MainList_MenuStrip;
 			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
 			dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
@@ -511,12 +539,15 @@ namespace TCPingInfoView.Forms
 			this.MainList.TabIndex = 4;
 			this.MainList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.MainList_CellDoubleClick);
 			this.MainList.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.MainList_CellFormatting);
+			this.MainList.ColumnDisplayIndexChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.MainList_ColumnDisplayIndexChanged);
+			this.MainList.ColumnWidthChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.MainList_ColumnWidthChanged);
 			this.MainList.SelectionChanged += new System.EventHandler(this.MainList_SelectionChanged);
 			this.MainList.DragDrop += new System.Windows.Forms.DragEventHandler(this.MainList_DragDrop);
 			this.MainList.DragEnter += new System.Windows.Forms.DragEventHandler(this.MainList_DragEnter);
 			this.MainList.Enter += new System.EventHandler(this.MainList_Enter);
 			this.MainList.Leave += new System.EventHandler(this.MainList_Leave);
 			this.MainList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.List_MouseDown);
+			this.MainList.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainList_MouseMove);
 			// 
 			// Column1
 			// 
@@ -614,8 +645,8 @@ namespace TCPingInfoView.Forms
 			this.DateList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
 			this.DateList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.DateList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-			this.dataGridViewTextBoxColumn1,
-			this.textAndImageColumn1});
+            this.dataGridViewTextBoxColumn1,
+            this.textAndImageColumn1});
 			dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
 			dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
 			dataGridViewCellStyle5.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -671,6 +702,7 @@ namespace TCPingInfoView.Forms
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.DpiChanged += new System.Windows.Forms.DpiChangedEventHandler(this.MainForm_DpiChanged);
+			this.LocationChanged += new System.EventHandler(this.MainForm_LocationChanged);
 			this.Resize += new System.EventHandler(this.MainForm_Resize);
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
@@ -750,6 +782,9 @@ namespace TCPingInfoView.Forms
 		private ToolStripSeparator toolStripSeparator3;
 		private ToolStripTextBoxWithHintText Search_TextBox;
 		private ToolStripButton Minimize_Button;
+		private ToolStripButton List_Button;
+		private ToolStripSeparator toolStripSeparator6;
+		private ToolStripMenuItem TCPingOptions_MenuItem;
 	}
 }
 

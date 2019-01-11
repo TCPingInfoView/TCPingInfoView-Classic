@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using TCPingInfoView.Collection;
 using TCPingInfoView.Control;
 using TCPingInfoView.I18n;
+using TCPingInfoView.Model;
 using TCPingInfoView.NetUtils;
 using TCPingInfoView.Properties;
 using TCPingInfoView.Steamworks;
@@ -36,14 +37,19 @@ namespace TCPingInfoView.Forms
 		}
 
 		private static string ExeName => Assembly.GetExecutingAssembly().GetName().Name;
-		private readonly AppConfig Config = new AppConfig($@".\{ExeName}.json");
-		private static string ListPath => $@".\{ExeName}.txt";
+
+		private readonly AppConfig Config =
+				new AppConfig(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $@"{ExeName}.json"));
+
+		private static string ListPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $@"{ExeName}.txt");
 
 		#region DPI参数
 
 		private double Dpi => this.GetDeviceDpi();
 		private static Size DefPicSize => new Size(16, 16);
-		private Size DpiPicSize => new Size(Convert.ToInt32(DefPicSize.Width * Dpi), Convert.ToInt32(DefPicSize.Height * Dpi));
+
+		private Size DpiPicSize =>
+				new Size(Convert.ToInt32(DefPicSize.Width * Dpi), Convert.ToInt32(DefPicSize.Height * Dpi));
 
 		#endregion
 
@@ -58,7 +64,10 @@ namespace TCPingInfoView.Forms
 
 		private bool _isNotifyClose;
 		private bool _isShowDateList;
+		private bool _isLoadSetting;
 		private FormWindowState DefaultState = FormWindowState.Normal;
+		private int _mainListMouseLocationX, _mainListMouseLocationY;
+		private string UserTitle;
 
 		#endregion
 
@@ -99,7 +108,7 @@ namespace TCPingInfoView.Forms
 		private Timer TestAllTimer;
 		private const int second = 1000;
 		private const int minute = 60 * second;
-		public int interval = 1 * minute;
+		private int interval = 1 * minute;
 
 		#endregion
 
@@ -133,6 +142,8 @@ namespace TCPingInfoView.Forms
 				Load_Button.Image = Util.Util.ResizeImage(Resources.Load, DpiPicSize);
 				Minimize_Button.ImageScaling = ToolStripItemImageScaling.None;
 				Minimize_Button.Image = Util.Util.ResizeImage(Resources.Minimize, DpiPicSize);
+				List_Button.ImageScaling = ToolStripItemImageScaling.None;
+				List_Button.Image = Util.Util.ResizeImage(Resources.List, DpiPicSize);
 			}
 			else
 			{
@@ -142,6 +153,7 @@ namespace TCPingInfoView.Forms
 				Exit_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
 				Load_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
 				Minimize_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
+				List_Button.ImageScaling = ToolStripItemImageScaling.SizeToFit;
 			}
 		}
 
@@ -151,6 +163,7 @@ namespace TCPingInfoView.Forms
 
 		private void LoadLanguage()
 		{
+			List_Button.Text = I18N.GetString(@"TCPing Options");
 			Load_Button.Text = I18N.GetString(@"Load");
 			Test_Button.Text = I18N.GetString(@"Test");
 			Start_Button.Text = I18N.GetString(@"Start");
@@ -174,6 +187,7 @@ namespace TCPingInfoView.Forms
 			DisplayedColumns_MenuItem.Text = I18N.GetString(@"Choose Columns");
 			ShowLogForm_MenuItem.Text = I18N.GetString(@"Properties");
 
+			TCPingOptions_MenuItem.Text = I18N.GetString(@"TCPing Options");
 			IsNotifyClose_MenuItem.Text = I18N.GetString(@"Confirm Before Closing the Window");
 			IsShowDateList_MenuItem.Text = I18N.GetString(@"Show Log List");
 
@@ -256,6 +270,26 @@ namespace TCPingInfoView.Forms
 					}
 				}
 			}
+
+			LoadTCPingOptions(Config.TCPingOptions);
+
+			LoadTitle();
+
+			_isLoadSetting = true;
+		}
+
+		private void LoadTCPingOptions(TCPingOptions setting)
+		{
+			UserTitle = setting.Title;
+
+			ReverseDNSTimeout = setting.ReverseDnsTimeout;
+			Timeout = setting.Timeout;
+			HighLatency = setting.HighLatency;
+			interval = setting.TCPingInterval * second; //s->ms
+
+			TimeoutColor = setting.TimeoutColor;
+			HighLatencyColor = setting.HighLatencyColor;
+			LowLatencyColor = setting.LowLatencyColor;
 		}
 
 		private void SetMiniSize()
@@ -276,7 +310,7 @@ namespace TCPingInfoView.Forms
 			MinimumSize = new Size(0, miniHeight);
 		}
 
-		private void LoadSteam()
+		private void LoadTitle()
 		{
 			if (SteamManager.IsLoaded)
 			{
@@ -294,8 +328,6 @@ namespace TCPingInfoView.Forms
 			}
 
 			LoadSetting();
-
-			LoadSteam();
 
 			SetMiniSize();
 
@@ -383,8 +415,6 @@ namespace TCPingInfoView.Forms
 			{
 				MainList.Rows[0].Selected = true;
 			}
-
-			SteamManager.SetStatus(mainTable.Count);
 
 			FirstPing();
 		}
@@ -553,6 +583,7 @@ namespace TCPingInfoView.Forms
 		private void splitter1_SplitterMoved(object sender, SplitterEventArgs e)
 		{
 			ChangedRatio();
+			SaveConfig();
 		}
 
 		private void MainForm_Resize(object sender, EventArgs e)
@@ -565,7 +596,13 @@ namespace TCPingInfoView.Forms
 			else
 			{
 				DefaultState = WindowState;
+				SaveConfig();
 			}
+		}
+
+		private void MainForm_LocationChanged(object sender, EventArgs e)
+		{
+			SaveConfig();
 		}
 
 		#endregion
@@ -606,7 +643,6 @@ namespace TCPingInfoView.Forms
 
 		#region 循环Ping
 
-		//TODO:Button enabled changed event
 		private void Start_Button_Click(object sender, EventArgs e)
 		{
 			TriggerRun();
@@ -645,6 +681,8 @@ namespace TCPingInfoView.Forms
 			{
 				//Console.WriteLine(@"nb");
 			}
+
+			SetRichPresence();
 		}
 
 		private void StopPing()
@@ -664,6 +702,8 @@ namespace TCPingInfoView.Forms
 			}
 
 			StartStop_MenuItem.Text = I18N.GetString(@"Start");
+
+			ClearRichPresence();
 		}
 
 		private void TriggerRun()
@@ -732,34 +772,36 @@ namespace TCPingInfoView.Forms
 
 		private void SaveConfig()
 		{
-			if (!Visible)
+			if (_isLoadSetting)
 			{
-				TriggerMainFormDisplay();
-			}
-			//
-			Config.MainFormHeight = Height;
-			Config.MainFormWidth = Width;
-			Config.StartPositionLeft = Location.X;
-			Config.StartPositionTop = Location.Y;
-			Config.DateListHeight = DateList.Height;
-			Config.IsNotifyClose = _isNotifyClose;
-			Config.IsShowDateList = _isShowDateList;
-			for (var i = 0; i < ColumnsCount; ++i)
-			{
-				Config.ColumnsOrder[i] = MainList.Columns[i].DisplayIndex;
-			}
-			for (var i = 0; i < ColumnsCount; ++i)
-			{
-				if (MainList.Columns[i].Visible)
+				if (WindowState == FormWindowState.Normal)
 				{
-					Config.ColumnsWidth[i] = MainList.Columns[i].Width;
+					Config.MainFormHeight = Height;
+					Config.MainFormWidth = Width;
+					Config.StartPositionLeft = Location.X;
+					Config.StartPositionTop = Location.Y;
+					Config.DateListHeight = DateList.Height;
+					for (var i = 0; i < ColumnsCount; ++i)
+					{
+						Config.ColumnsOrder[i] = MainList.Columns[i].DisplayIndex;
+					}
+
+					for (var i = 0; i < ColumnsCount; ++i)
+					{
+						if (MainList.Columns[i].Visible)
+						{
+							Config.ColumnsWidth[i] = MainList.Columns[i].Width;
+						}
+						else
+						{
+							Config.ColumnsWidth[i] = 0;
+						}
+					}
 				}
-				else
-				{
-					Config.ColumnsWidth[i] = 0;
-				}
+				Config.IsNotifyClose = _isNotifyClose;
+				Config.IsShowDateList = _isShowDateList;
+				Config.Save();
 			}
-			Config.Save();
 		}
 
 		private void SaveList()
@@ -770,6 +812,10 @@ namespace TCPingInfoView.Forms
 		private void Exit()
 		{
 			SaveList();
+			if (!Visible)
+			{
+				TriggerMainFormDisplay();
+			}
 			SaveConfig();
 			Dispose();
 			notifyIcon1.Dispose();
@@ -877,7 +923,7 @@ namespace TCPingInfoView.Forms
 
 		#endregion
 
-		#region 鼠标点击事件
+		#region 鼠标事件
 
 		/// <summary>
 		/// 点击空白处清空时间列表
@@ -909,6 +955,15 @@ namespace TCPingInfoView.Forms
 					var log = mainTable[index - 1];
 					new LogForm(log).ShowDialog();
 				}
+			}
+		}
+
+		private void MainList_MouseMove(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Left)
+			{
+				_mainListMouseLocationX = e.X;
+				_mainListMouseLocationY = e.Y;
 			}
 		}
 
@@ -1034,6 +1089,7 @@ namespace TCPingInfoView.Forms
 		private void IsNotifyClose_MenuItem_CheckedChanged(object sender, EventArgs e)
 		{
 			_isNotifyClose = IsNotifyClose_MenuItem.Checked;
+			SaveConfig();
 		}
 
 		private void IsShowDateList_MenuItem_Click(object sender, EventArgs e)
@@ -1044,6 +1100,7 @@ namespace TCPingInfoView.Forms
 		private void IsShowDateList_MenuItem_CheckStateChanged(object sender, EventArgs e)
 		{
 			_isShowDateList = IsShowDateList_MenuItem.Checked;
+			SaveConfig();
 			splitter1.Visible = _isShowDateList;
 			DateList.Visible = _isShowDateList;
 			if (DateList.Visible)
@@ -1058,23 +1115,70 @@ namespace TCPingInfoView.Forms
 			}
 		}
 
+		private TCPingOptions GetTCPingOptions()
+		{
+			return new TCPingOptions
+			{
+				Title = UserTitle,
+				ReverseDnsTimeout = Convert.ToInt32(ReverseDNSTimeout),
+				Timeout = Convert.ToInt32(Timeout),
+				HighLatency = Convert.ToInt32(HighLatency),
+				TCPingInterval = interval / second,//ms -> s
+				TimeoutColor = TimeoutColor,
+				HighLatencyColor = HighLatencyColor,
+				LowLatencyColor = LowLatencyColor
+			};
+		}
+
+		private void SetTCPingOptions(TCPingOptions setting, string list)
+		{
+			RawString = list;
+
+			LoadTCPingOptions(setting);
+
+			Config.TCPingOptions = setting;
+
+			LoadTitle();
+			rawTable = Read.ReadAddressFromString(RawString);
+			LoadFromList();
+		}
+
+		private void List_Button_Click(object sender, EventArgs e)
+		{
+			var form = new TCPingOptionsForm(GetTCPingOptions(), RawString);
+			if (form.ShowDialog() == DialogResult.OK)
+			{
+				SetTCPingOptions(form.Setting, form.List);
+				Config.TCPingOptions = form.Setting;
+				SaveConfig();
+			}
+		}
+
 		#endregion
 
 		#region 查看
 
 		private void AutoColumnSize_MenuItem_Click(object sender, EventArgs e)
 		{
+			MainList.ColumnWidthChanged -= MainList_ColumnWidthChanged;
 			Util.Util.AutoColumnSize(MainList, DataGridViewAutoSizeColumnMode.AllCellsExceptHeader);
+			SaveConfig();
+			MainList.ColumnWidthChanged += MainList_ColumnWidthChanged;
 		}
 
 		private void AutoColumnsSizeAndHeader_MenuItem_Click(object sender, EventArgs e)
 		{
+			MainList.ColumnWidthChanged -= MainList_ColumnWidthChanged;
 			Util.Util.AutoColumnSize(MainList, DataGridViewAutoSizeColumnMode.AllCells);
+			SaveConfig();
+			MainList.ColumnWidthChanged += MainList_ColumnWidthChanged;
 		}
 
 		private void DisplayedColumns_MenuItem_Click(object sender, EventArgs e)
 		{
-			new DisplayedColumns(MainList.Columns).ShowDialog();
+			var d = new DisplayedColumns(MainList.Columns);
+			d.AfterColumnsChanged += AfterColumnsChanged;
+			d.ShowDialog();
 		}
 
 		private void ShowLogForm_MenuItem_Click(object sender, EventArgs e)
@@ -1201,5 +1305,51 @@ namespace TCPingInfoView.Forms
 
 		#endregion
 
+		#region 主列表顺序、显示列、列宽改变
+
+		private void MainList_ColumnDisplayIndexChanged(object sender, DataGridViewColumnEventArgs e)
+		{
+			Debug.WriteLine(@"主列表顺序");
+			SaveConfig();
+		}
+
+		private void AfterColumnsChanged(object sender, EventArgs e)
+		{
+			Debug.WriteLine(@"显示列改变");
+			SaveConfig();
+		}
+
+		private void MainList_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e)
+		{
+			var columnIndex = MainList.HitTest(_mainListMouseLocationX, _mainListMouseLocationY).ColumnIndex;
+			if (e.Column.Index == columnIndex)
+			{
+				Debug.WriteLine($@"列宽改变:{columnIndex}");
+				SaveConfig();
+			}
+		}
+
+		#endregion
+
+		#region Steam RichPresence
+
+		private void SetRichPresence()
+		{
+			if (string.IsNullOrWhiteSpace(UserTitle))
+			{
+				SteamManager.SetStatus(mainTable.Count);
+			}
+			else
+			{
+				SteamManager.SetCustomString(mainTable.Count, UserTitle);
+			}
+		}
+
+		private void ClearRichPresence()
+		{
+			SteamManager.ClearRichPresence();
+		}
+
+		#endregion
 	}
 }

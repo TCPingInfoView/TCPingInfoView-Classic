@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace TCPingInfoView.Collection
+namespace TCPingInfoView.Model
 {
 	public class DateTable : INotifyPropertyChanged
 	{

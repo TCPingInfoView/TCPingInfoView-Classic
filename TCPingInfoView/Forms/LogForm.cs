@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using TCPingInfoView.Collection;
 using TCPingInfoView.I18n;
+using TCPingInfoView.Model;
 using TCPingInfoView.Util;
 
 namespace TCPingInfoView.Forms

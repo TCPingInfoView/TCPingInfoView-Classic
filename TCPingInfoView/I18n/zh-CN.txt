@@ -48,6 +48,7 @@ High DPI Environment Check=高 DPI 环境检查
 Want to Exit?=是否退出？
 If you click "No", TCPingInfoView will minimize to Notify Tray=「是」退出，「否」最小化
 
+TCPing Options=TCPing 选项
 Load=加载
 Test=测试
 Start=开始
@@ -72,3 +73,14 @@ Confirm Before Closing the Window=关闭时提示
 Show Log List=显示日期表格
 
 About=关于
+
+# TCPing 选项窗口
+Endpoints List:=节点列表：
+Reverse DNS Timeout(ms):=反向 DNS 解析延迟(ms)：
+TCPing Timeout(ms):=超时延迟(ms)：
+High Latency(ms):=高延迟(ms)：
+TCPing Interval(seconds):=TCPing 间隔(秒)：
+Color of Timeout=超时颜色
+Color of High Latency=高延迟颜色
+Color of Low Latency=低延迟颜色
+Customize Rich Presence=自定义丰富状态
