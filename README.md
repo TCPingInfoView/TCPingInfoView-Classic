@@ -12,7 +12,7 @@
 
 **建议运行环境**
 * Windows 10 1703 或以上
-* Microsoft.NET Framework 4.7.1 或以上
+* Microsoft.NET Framework 4.7.2 或以上
 
 可能兼容 Microsoft.NET Framework 4（未测试）
 
