@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -37,8 +38,7 @@ namespace TCPingInfoView.Forms
 
 		private static string ExeName => Assembly.GetExecutingAssembly().GetName().Name;
 
-		private readonly AppConfig Config =
-				new AppConfig(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $@"{ExeName}.json"));
+		private readonly AppConfig Config = new AppConfig(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $@"{ExeName}.json"));
 
 		private static string ListPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $@"{ExeName}.txt");
 
@@ -430,7 +430,7 @@ namespace TCPingInfoView.Forms
 						return;
 					}
 
-					if (IPFormatter.IsIPv4Address(mainTable[i].HostsName)) //反查DNS
+					if (IPFormatter.IsIPAddress(mainTable[i].HostsName)) //反查DNS
 					{
 						PingOne(i);
 
@@ -454,7 +454,7 @@ namespace TCPingInfoView.Forms
 
 						if (ip != null)
 						{
-							mainTable[i].Endpoint = $@"{ip}:{rawTable[i].Port}";
+							mainTable[i].Endpoint = ip.AddressFamily == AddressFamily.InterNetwork ? $@"{ip}:{rawTable[i].Port}" : $@"[{ip}]:{rawTable[i].Port}";
 						}
 						PingOne(i);
 					}
@@ -478,7 +478,7 @@ namespace TCPingInfoView.Forms
 
 				if (ip != null)
 				{
-					mainTable[index].Endpoint = $@"{ip}:{rawTable[index].Port}";
+					mainTable[index].Endpoint = ip.AddressFamily == AddressFamily.InterNetwork ? $@"{ip}:{rawTable[index].Port}" : $@"[{ip}]:{rawTable[index].Port}";
 				}
 				else
 				{
@@ -486,7 +486,7 @@ namespace TCPingInfoView.Forms
 				}
 			}
 
-			var ipe = IPFormatter.ToIPEndPoint(mainTable[index].Endpoint, 443);
+			var ipe = IPFormatter.ToIPEndPoint(mainTable[index].Endpoint);
 			double? latency = null;
 			var res = Timeout;
 			var time = DateTime.Now;

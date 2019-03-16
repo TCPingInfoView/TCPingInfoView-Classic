@@ -106,22 +106,13 @@ namespace TCPingInfoView.Util
 			}
 		}
 
-		[Obsolete]
-		public static void SetDPIAwareOld()
-		{
-			if (Environment.OSVersion.Version.Major >= 6)
-			{
-				SetProcessDPIAware();
-			}
-		}
-
 		#region CheckEnvironment
 
 		private static bool HasHighDpiScreen()
 		{
 			foreach (var screen in Screen.AllScreens)
 			{
-				screen.GetScreenDpi(DpiType.Effective, out var x, out var y);
+				screen.GetScreenDpi(DpiType.Effective, out var x, out _);
 				if (x > 96)
 				{
 					return true;
