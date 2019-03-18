@@ -14,8 +14,6 @@
 * Windows 10 1703 或以上
 * Microsoft.NET Framework 4.7.2 或以上
 
-可能兼容 Microsoft.NET Framework 4（未测试）
-
 # [Steam 上购买](https://store.steampowered.com/app/828090)
 
 ## 这是做什么的
@@ -28,14 +26,21 @@
 
 ## TXT列表格式举例
 ```
-www.youtube.com:80 YouTube 80端口 注释可包括空格
+# Google
+[2607:f8b0:4007:801::2004]:443 IPv6 地址
+172.217.14.68:80
 www.google.com 谷歌，默认443端口
+
+# Youtube
+[2607:f8b0:4007:80e::200e] IPv6 地址
+172.217.14.78 IPv4 地址
+www.youtube.com:80 80端口 注释可包括空格
 ```
 
 ## 应该支持
 * 高 DPI
 * 兼容 Win7
-
+* IPv6
 
 ## 待完成
 * 超时提示
