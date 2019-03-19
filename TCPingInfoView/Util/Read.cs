@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using TCPingInfoView.Collection;
@@ -14,16 +14,8 @@ namespace TCPingInfoView.Util
 
 		public static ConcurrentList<Data> ReadAddressFromString(string s)
 		{
-			var sl = new List<string>();
-
 			var lines = s.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
-			foreach (var line in lines)
-			{
-				if (!string.IsNullOrWhiteSpace(line))
-				{
-					sl.Add(line);
-				}
-			}
+			var sl = lines.Where(line => !string.IsNullOrWhiteSpace(line) && line[0] != '#');
 
 			return Util.ToData(sl);
 		}

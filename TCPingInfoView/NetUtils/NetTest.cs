@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace TCPingInfoView.NetUtils
 {
-	internal static class NetTest
+	public static class NetTest
 	{
 		public class PingStatus
 		{
@@ -100,7 +100,7 @@ namespace TCPingInfoView.NetUtils
 			{
 				return null;
 			}
-			using (var client = new TcpClient())
+			using (var client = new TcpClient(ip.AddressFamily))
 			{
 				var stopwatch = new Stopwatch();
 				stopwatch.Start();
@@ -109,10 +109,10 @@ namespace TCPingInfoView.NetUtils
 				var t = stopwatch.Elapsed.TotalMilliseconds;
 				if (client.Connected == false)
 				{
-					Debug.WriteLine($@"TCPing {ip}:{port}:超时({t}ms > {timeout}ms)");
+					Debug.WriteLine($@"TCPing [{ip}]:{port}:超时({t}ms > {timeout}ms)");
 					return null;
 				}
-				Debug.WriteLine($@"TCPing {ip}:{port}:{t:0.00}ms");
+				Debug.WriteLine($@"TCPing [{ip}]:{port}:{t:0.00}ms");
 				return t;
 			}
 		}
@@ -124,7 +124,7 @@ namespace TCPingInfoView.NetUtils
 				return null;
 			}
 
-			using (var client = new TcpClient())
+			using (var client = new TcpClient(ip.AddressFamily))
 			{
 				var stopwatch = new Stopwatch();
 				stopwatch.Start();
@@ -133,11 +133,11 @@ namespace TCPingInfoView.NetUtils
 				var t = stopwatch.Elapsed.TotalMilliseconds;
 				if (client.Connected == false)
 				{
-					Debug.WriteLine($@"TCPing {ip}:{port}:超时({t}ms > {timeout}ms)");
+					Debug.WriteLine($@"TCPing [{ip}]:{port}:超时({t}ms > {timeout}ms)");
 					return null;
 				}
 
-				Debug.WriteLine($@"TCPing {ip}:{port}:{t:0.00}ms");
+				Debug.WriteLine($@"TCPing [{ip}]:{port}:{t:0.00}ms");
 				return t;
 			}
 		}

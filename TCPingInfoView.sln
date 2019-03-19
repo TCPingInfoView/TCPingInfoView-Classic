@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TCPingInfoView", "TCPingInfoView\TCPingInfoView.csproj", "{9CC24A76-98CD-4824-942F-C617373F8428}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TCPingInfoViewTests", "TCPingInfoViewTests\TCPingInfoViewTests.csproj", "{CFD67279-1B90-4F03-9BDB-5C4C86722D63}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{9CC24A76-98CD-4824-942F-C617373F8428}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CC24A76-98CD-4824-942F-C617373F8428}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CC24A76-98CD-4824-942F-C617373F8428}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFD67279-1B90-4F03-9BDB-5C4C86722D63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFD67279-1B90-4F03-9BDB-5C4C86722D63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFD67279-1B90-4F03-9BDB-5C4C86722D63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFD67279-1B90-4F03-9BDB-5C4C86722D63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

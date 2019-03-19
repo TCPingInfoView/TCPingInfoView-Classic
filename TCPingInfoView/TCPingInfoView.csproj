@@ -175,7 +175,6 @@
     </Compile>
     <Compile Include="Model\TCPingOptions.cs" />
     <Compile Include="NetUtils\IPFormatter.cs" />
-    <Compile Include="NetUtils\IPv4Subnet.cs" />
     <Compile Include="Steamworks\SteamManager.cs" />
     <Compile Include="Model\AppConfig.cs" />
     <Compile Include="Util\DpiUtils.cs" />

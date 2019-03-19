@@ -5,6 +5,8 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TCPingInfoView.Collection;
@@ -24,29 +26,16 @@ namespace TCPingInfoView.Util
 			}
 
 			string hostname;
-			IPAddress ip = null;
+			IPAddress ip;
 			var port = 443;
 
-			var sp = s[0].Split(':');
-			if (sp.Length == 1 || sp.Length == 2)
+			var sp = IPFormatter.EndPointRegexStr.Match(s[0]).Groups;
+			if (sp.Count == 5)
 			{
-				hostname = sp[0];
-				if (IPFormatter.IsIPv4Address(hostname))
-				{
-					ip = IPAddress.Parse(hostname);
-				}
-			}
-			else
-			{
-				return null;
-			}
-			if (sp.Length == 2)
-			{
-				try
-				{
-					port = Convert.ToInt32(sp[1]);
-				}
-				catch
+				hostname = string.IsNullOrWhiteSpace(sp[1].Value) ? sp[3].Value : sp[1].Value;
+				IPAddress.TryParse(hostname, out ip);
+
+				if (!int.TryParse(string.IsNullOrWhiteSpace(sp[2].Value) ? sp[4].Value : sp[2].Value, out port))
 				{
 					return null;
 				}
@@ -56,7 +45,24 @@ namespace TCPingInfoView.Util
 					return null;
 				}
 			}
-
+			else if (sp.Count == 1)
+			{
+				var groups = Regex.Match(s[0], @"^\[(.*)\]$").Groups;
+				if (groups.Count == 2)
+				{
+					hostname = groups[1].Value;
+					IPAddress.TryParse(hostname, out ip);
+				}
+				else
+				{
+					hostname = s[0];
+					IPAddress.TryParse(hostname, out ip);
+				}
+			}
+			else
+			{
+				return null;
+			}
 
 			var res = new Data
 			{
@@ -107,7 +113,7 @@ namespace TCPingInfoView.Util
 				}
 				else
 				{
-					r.Endpoint = $@"{data[i].Ip}:{data[i].Port}";
+					r.Endpoint = data[i].Ip.AddressFamily == AddressFamily.InterNetwork ? $@"{data[i].Ip}:{data[i].Port}" : $@"[{data[i].Ip}]:{data[i].Port}";
 				}
 				res.Add(r);
 			}

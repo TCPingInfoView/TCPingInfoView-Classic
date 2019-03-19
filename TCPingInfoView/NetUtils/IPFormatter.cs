@@ -1,29 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
+﻿using System.Net;
 using System.Text.RegularExpressions;
 
 namespace TCPingInfoView.NetUtils
 {
 	public static class IPFormatter
 	{
-		private static readonly Regex Ipv4Pattern = new Regex("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){1}(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){2}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$");
+		public static readonly Regex EndPointRegexStr = new Regex(@"^\[(.*)\]:(\d{1,5})|(.*):(\d{1,5})$");
 
-		public static bool IsIPv4Address(string input)
+		public static bool IsIPAddress(string input)
 		{
-			return Ipv4Pattern.IsMatch(input);
-		}
-
-		public static bool IsIPv4Address(IPAddress ipAddress)
-		{
-			return ipAddress.AddressFamily == AddressFamily.InterNetwork;
-		}
-
-		public static bool IsIPv6Address(IPAddress ipAddress)
-		{
-			return ipAddress.AddressFamily == AddressFamily.InterNetworkV6;
+			return IPAddress.TryParse(input, out _);
 		}
 
 		public static bool IsPort(int port)
@@ -36,70 +22,48 @@ namespace TCPingInfoView.NetUtils
 			return false;
 		}
 
-		public static IPEndPoint ToIPEndPoint(string str, int defaultport)
+		public static IPEndPoint ToIPEndPoint(string str, int defaultPort = 443)
 		{
-			if (string.IsNullOrWhiteSpace(str) || !IsPort(defaultport))
+			if (string.IsNullOrWhiteSpace(str) || !IsPort(defaultPort))
 			{
 				return null;
 			}
 
-			var s = str.Split(':');
-			if (s.Length == 1 || s.Length == 2)
+			var sp = EndPointRegexStr.Match(str).Groups;
+			if (sp.Count == 5)
 			{
-				if (!IsIPv4Address(s[0]))
+				var hostname = string.IsNullOrWhiteSpace(sp[1].Value) ? sp[3].Value : sp[1].Value;
+				if (IPAddress.TryParse(hostname, out var ip))
 				{
-					return null;
-				}
-
-				var ip = IPAddress.Parse(s[0]);
-				if (s.Length == 2)
-				{
-					var port = Convert.ToInt32(s[1]);
-					if (IsPort(port))
+					if (int.TryParse(string.IsNullOrWhiteSpace(sp[2].Value) ? sp[4].Value : sp[2].Value, out var port))
 					{
-						return ToIPEndPoint(ip, port);
+						if (IsPort(port))
+						{
+							return new IPEndPoint(ip, port);
+						}
+					}
+				}
+			}
+			else if (sp.Count == 1)
+			{
+				var groups = Regex.Match(str, @"^\[(.*)\]$").Groups;
+				if (groups.Count == 2)
+				{
+					if (IPAddress.TryParse(groups[1].Value, out var ip))
+					{
+						return new IPEndPoint(ip, defaultPort);
 					}
 				}
 				else
 				{
-					return ToIPEndPoint(ip, defaultport);
+					if (IPAddress.TryParse(str, out var ip))
+					{
+						return new IPEndPoint(ip, defaultPort);
+					}
 				}
 			}
 
 			return null;
-		}
-
-		public static IPEndPoint ToIPEndPoint(IPAddress ip, int port)
-		{
-			return new IPEndPoint(ip, port);
-		}
-
-		public static IEnumerable<IPEndPoint> ToIPEndPoints(string str, int defaultport, char[] separator)
-		{
-			var s = str.Split(separator, StringSplitOptions.RemoveEmptyEntries);
-			return s.Select(ipEndPointsStr => ToIPEndPoint(ipEndPointsStr, defaultport)).Where(ipend => ipend != null);
-		}
-
-		public static IEnumerable<IPEndPoint> ToIPEndPoints(IEnumerable<IPAddress> ips, int port)
-		{
-			return ips.Select(ip => ToIPEndPoint(ip, port));
-		}
-
-		public static IPAddress PTRName2IP(string str)
-		{
-			var s = str.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
-			return IPAddress.Parse($@"{s[3]}.{s[2]}.{s[1]}.{s[0]}");
-		}
-
-		public static string IPStr2PTRName(string str)
-		{
-			if (!IsIPv4Address(str))
-			{
-				return string.Empty;
-			}
-
-			var s = str.Split('.');
-			return $@"{s[3]}.{s[2]}.{s[1]}.{s[0]}.in-addr.arpa";
 		}
 	}
 }
