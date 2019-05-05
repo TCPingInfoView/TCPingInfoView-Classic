@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Runtime.Serialization;
 using TCPingInfoView.Forms;
@@ -46,7 +46,7 @@ namespace TCPingInfoView.Model
 		#endregion
 
 		[IgnoreDataMember]
-		public string JsonStr => SimpleJson.SerializeObject(this);
+		public string JsonStr => JsonConvert.SerializeObject(this, Formatting.Indented);
 
 		[IgnoreDataMember]
 		public readonly string Filepath;
@@ -100,7 +100,7 @@ namespace TCPingInfoView.Model
 
 		public void Load(string jsonStr)
 		{
-			var config = SimpleJson.DeserializeObject<AppConfig>(jsonStr, new JsonSerializerStrategy());
+			var config = JsonConvert.DeserializeObject<AppConfig>(jsonStr);
 			Load(config);
 		}
 
@@ -123,24 +123,5 @@ namespace TCPingInfoView.Model
 			}
 			TCPingOptions = config.TCPingOptions;
 		}
-
-		private class JsonSerializerStrategy : PocoJsonSerializerStrategy
-		{
-			public override object DeserializeObject(object value, Type type)
-			{
-				if (type == typeof(Color))
-				{
-					dynamic color = SimpleJson.DeserializeObject(value.ToString());
-					var r = Convert.ToInt32(color["R"]);
-					var g = Convert.ToInt32(color["G"]);
-					var b = Convert.ToInt32(color["B"]);
-					var a = Convert.ToInt32(color["A"]);
-					return Color.FromArgb(a, r, g, b);
-				}
-				return base.DeserializeObject(value, type);
-			}
-		}
 	}
-
-
 }
