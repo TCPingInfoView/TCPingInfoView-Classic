@@ -1,0 +1,31 @@
+﻿<Window x:Class="TCPingInfoView.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TCPingInfoView.View"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+	<Grid>
+		<DockPanel>
+			<Menu DockPanel.Dock="Top" Background="White">
+				<MenuItem Header="_File">
+					<MenuItem Header="_Open"/>
+					<MenuItem Header="_Save"/>
+					<Separator />
+					<MenuItem Header="_Close"/>
+				</MenuItem>
+			</Menu>
+			<ToolBar DockPanel.Dock="Top">
+				<Button>Load</Button>
+				<Button>Open</Button>
+			</ToolBar>
+			<StatusBar DockPanel.Dock="Bottom">
+				<StatusBarItem>
+					<TextBlock Text="Status" />
+				</StatusBarItem>
+			</StatusBar>
+			<DataGrid />
+		</DockPanel>
+	</Grid>
+</Window>
