@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
@@ -11,63 +12,50 @@ namespace TCPingInfoView.NetUtils
 {
 	public static class NetTest
 	{
-		public static async Task<double?> TCPingAsync(IPAddress ip, int port = 80, int timeout = 1000)
+		public static async Task<TCPingStatus> TCPingAsync(IPAddress ip, int port = 80, int timeout = 1000)
 		{
 			return await TCPingAsync(ip, new CancellationTokenSource(), port, timeout);
 		}
 
-		public static async Task<double?> TCPingAsync(IPAddress ip, CancellationTokenSource cts, int port = 80, int timeout = 1000)
+		public static async Task<TCPingStatus> TCPingAsync(IPAddress ip, CancellationTokenSource cts, int port = 80, int timeout = 1000)
 		{
 			if (ip == null)
 			{
-				return null;
+				return new TCPingStatus { Status = IPStatus.BadDestination };
 			}
 
 			using var client = new TcpClient(ip.AddressFamily);
+			var task = client.ConnectAsync(ip, port);
 
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
 
-			await Task.WhenAny(Task.Delay(timeout, cts.Token), client.ConnectAsync(ip, port));
+			var resTask = await Task.WhenAny(Task.Delay(timeout, cts.Token), task);
 
 			stopwatch.Stop();
-			var t = stopwatch.Elapsed.TotalMilliseconds;
-
-			if (client.Connected == false)
+			if (resTask == task)
 			{
-				Debug.WriteLine($@"TCPing [{ip}]:{port}:超时({t}ms > {timeout}ms)");
-				return null;
+				if (client.Connected)
+				{
+					var t = Convert.ToInt64(stopwatch.Elapsed.TotalMilliseconds);
+					Debug.WriteLine($@"TCPing [{ip}]:{port}:{t}ms");
+					return new TCPingStatus { Status = IPStatus.Success, RTT = t };
+				}
+				return new TCPingStatus { Status = IPStatus.BadDestination };
 			}
-
-			Debug.WriteLine($@"TCPing [{ip}]:{port}:{t:0.00}ms");
-			return t;
-		}
-
-		public static double? TCPing(IPAddress ip, int port = 80, int timeout = 1000)
-		{
-			if (ip == null)
+			else
 			{
-				return null;
+				if (cts.IsCancellationRequested)
+				{
+					Debug.WriteLine($@"TCPing [{ip}]:{port} Task was cancelled");
+					return null;
+				}
+				else
+				{
+					Debug.WriteLine($@"TCPing [{ip}]:{port}:超时 > {timeout}ms");
+					return new TCPingStatus { Status = IPStatus.TimedOut };
+				}
 			}
-
-			using var client = new TcpClient(ip.AddressFamily);
-
-			var stopwatch = new Stopwatch();
-			stopwatch.Start();
-
-			client.ConnectAsync(ip, port).Wait(timeout);
-
-			stopwatch.Stop();
-			var t = stopwatch.Elapsed.TotalMilliseconds;
-
-			if (client.Connected == false)
-			{
-				Debug.WriteLine($@"TCPing [{ip}]:{port}:超时({t}ms > {timeout}ms)");
-				return null;
-			}
-
-			Debug.WriteLine($@"TCPing [{ip}]:{port}:{t:0.00}ms");
-			return t;
 		}
 
 		public static async Task<ICMPingStatus> ICMPingAsync(IPAddress ip, int timeout = 1000)
@@ -80,7 +68,7 @@ namespace TCPingInfoView.NetUtils
 			var res = new ICMPingStatus();
 			if (ip == null)
 			{
-				return null;
+				return new ICMPingStatus { Status = IPStatus.BadDestination };
 			}
 
 			var p1 = new Ping();
@@ -115,7 +103,7 @@ namespace TCPingInfoView.NetUtils
 				}
 				else
 				{
-					Debug.WriteLine($@"ICMPing {ip} 失败");
+					Debug.WriteLine($@"ICMPing {ip} failed");
 					res.Status = IPStatus.Unknown;
 				}
 				return res;
