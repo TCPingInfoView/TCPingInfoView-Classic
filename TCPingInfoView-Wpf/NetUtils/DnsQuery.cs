@@ -37,36 +37,30 @@ namespace TCPingInfoView.NetUtils
 			}
 		}
 
-		private delegate IPHostEntry GetHostEntryHandler(string ip);
+		public static async Task<string> GetHostNameAsync(IPAddress ip, int timeout = 10000)
+		{
+			return await GetHostNameAsync(ip, new CancellationTokenSource(), timeout);
+		}
 
-		public static string GetHostName(IPAddress ip, int timeout)
+		public static async Task<string> GetHostNameAsync(IPAddress ip, CancellationTokenSource cts, int timeout = 10000)
 		{
 			try
 			{
-				var callback = new GetHostEntryHandler(Dns.GetHostEntry);
-				var result = callback.BeginInvoke(ip.ToString(), null, null);
-				if (result.AsyncWaitHandle.WaitOne(timeout, false))
+				var task = Dns.GetHostEntryAsync(ip);
+				if (await Task.WhenAny(task, Task.Delay(timeout, cts.Token)) == task)
 				{
-					return callback.EndInvoke(result).HostName;
+					var res = await task;
+					Debug.WriteLine($@"DNS query {ip} answer {res.HostName}");
+					return res.HostName;
 				}
-				else
-				{
-					return ip.ToString();
-				}
+				Debug.WriteLine($@"DNS query {ip} failed");
+				return null;
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
-				return ip.ToString();
+				Debug.WriteLine($@"ERROR:{ex.Message}");
+				return null;
 			}
 		}
-
-		[Obsolete]
-		public static async Task<string> GetHostNameAsync(IPAddress ip)
-		{
-			var res = ip.ToString();
-			await Task.Run(() => { res = Dns.Resolve(ip.ToString()).HostName; });
-			return res;
-		}
-
 	}
 }
