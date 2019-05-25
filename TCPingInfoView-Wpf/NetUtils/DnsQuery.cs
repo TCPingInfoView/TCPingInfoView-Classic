@@ -18,7 +18,7 @@ namespace TCPingInfoView.NetUtils
 			try
 			{
 				var task = Dns.GetHostAddressesAsync(host);
-				if (await Task.WhenAny(task, Task.Delay(timeout, cts.Token)) == task)
+				if (await Task.WhenAny(Task.Delay(timeout, cts.Token), task) == task)
 				{
 					var ips = await task;
 					foreach (var res in ips)
@@ -47,7 +47,7 @@ namespace TCPingInfoView.NetUtils
 			try
 			{
 				var task = Dns.GetHostEntryAsync(ip);
-				if (await Task.WhenAny(task, Task.Delay(timeout, cts.Token)) == task)
+				if (await Task.WhenAny(Task.Delay(timeout, cts.Token), task) == task)
 				{
 					var res = await task;
 					Debug.WriteLine($@"DNS query {ip} answer {res.HostName}");
