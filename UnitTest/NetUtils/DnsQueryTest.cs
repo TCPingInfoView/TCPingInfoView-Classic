@@ -27,8 +27,8 @@ namespace UnitTest.NetUtils
 			var ip2 = IPAddress.Parse(@"8.8.8.8");
 			var ip3 = IPAddress.Parse(@"9.9.9.9");
 			Assert.AreEqual(DnsQuery.GetHostNameAsync(ip1).Result, @"one.one.one.one");
-			Assert.AreEqual(DnsQuery.GetHostNameAsync(ip2).Result, @"google-public-dns-a.google.com");
-			Assert.AreEqual(DnsQuery.GetHostNameAsync(ip3).Result, @"dns.quad9.net");
+			Assert.AreEqual(DnsQuery.GetHostNameAsync(ip2).Result, @"dns.google");
+			Assert.AreEqual(DnsQuery.GetHostNameAsync(ip3).Result, @"dns9.quad9.net");
 		}
 	}
 }
