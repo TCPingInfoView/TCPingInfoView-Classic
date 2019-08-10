@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace TCPingInfoView.Model
+namespace TCPingInfoViewLib.Model
 {
 	public class EndPointInfo
 	{

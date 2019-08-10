@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Net;
 using System.Text.RegularExpressions;
-using TCPingInfoView.Model;
-using TCPingInfoView.NetUtils;
+using TCPingInfoViewLib.Model;
+using TCPingInfoViewLib.NetUtils;
 
-namespace TCPingInfoView.Utils
+namespace TCPingInfoViewLib.Utils
 {
 	public static class Util
 	{

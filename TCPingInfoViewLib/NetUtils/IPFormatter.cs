@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Text.RegularExpressions;
 
-namespace TCPingInfoView.NetUtils
+namespace TCPingInfoViewLib.NetUtils
 {
 	public static class IPFormatter
 	{

@@ -4,7 +4,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TCPingInfoView.NetUtils
+namespace TCPingInfoViewLib.NetUtils
 {
 	public static class DnsQuery
 	{

@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
-using TCPingInfoView.Model;
+using TCPingInfoViewLib.Model;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace UnitTest.Model

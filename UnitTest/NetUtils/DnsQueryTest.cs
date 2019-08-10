@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net;
-using TCPingInfoView.NetUtils;
+using TCPingInfoViewLib.NetUtils;
 
 namespace UnitTest.NetUtils
 {

@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading;
-using TCPingInfoView.NetUtils;
+using TCPingInfoViewLib.NetUtils;
 
 namespace UnitTest.NetUtils
 {

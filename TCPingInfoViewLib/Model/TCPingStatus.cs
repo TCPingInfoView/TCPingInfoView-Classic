@@ -1,6 +1,6 @@
 ﻿using System.Net.NetworkInformation;
 
-namespace TCPingInfoView.Model
+namespace TCPingInfoViewLib.Model
 {
 	public class TCPingStatus
 	{

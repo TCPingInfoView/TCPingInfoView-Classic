@@ -6,9 +6,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using TCPingInfoView.Model;
+using TCPingInfoViewLib.Model;
 
-namespace TCPingInfoView.NetUtils
+namespace TCPingInfoViewLib.NetUtils
 {
 	public static class NetTest
 	{
@@ -24,36 +24,38 @@ namespace TCPingInfoView.NetUtils
 				return new TCPingStatus { Status = IPStatus.BadDestination };
 			}
 
-			using var client = new TcpClient(ip.AddressFamily);
-			var task = client.ConnectAsync(ip, port);
-
-			var stopwatch = new Stopwatch();
-			stopwatch.Start();
-
-			var resTask = await Task.WhenAny(Task.Delay(timeout, cts.Token), task);
-
-			stopwatch.Stop();
-			if (resTask == task)
+			using (var client = new TcpClient(ip.AddressFamily))
 			{
-				if (client.Connected)
+				var task = client.ConnectAsync(ip, port);
+
+				var stopwatch = new Stopwatch();
+				stopwatch.Start();
+
+				var resTask = await Task.WhenAny(Task.Delay(timeout, cts.Token), task);
+
+				stopwatch.Stop();
+				if (resTask == task)
 				{
-					var t = Convert.ToInt64(stopwatch.Elapsed.TotalMilliseconds);
-					Debug.WriteLine($@"TCPing [{ip}]:{port}:{t}ms");
-					return new TCPingStatus { Status = IPStatus.Success, RTT = t };
-				}
-				return new TCPingStatus { Status = IPStatus.BadDestination };
-			}
-			else
-			{
-				if (cts.IsCancellationRequested)
-				{
-					Debug.WriteLine($@"TCPing [{ip}]:{port} Task was cancelled");
-					return null;
+					if (client.Connected)
+					{
+						var t = Convert.ToInt64(stopwatch.Elapsed.TotalMilliseconds);
+						Debug.WriteLine($@"TCPing [{ip}]:{port}:{t}ms");
+						return new TCPingStatus { Status = IPStatus.Success, RTT = t };
+					}
+					return new TCPingStatus { Status = IPStatus.BadDestination };
 				}
 				else
 				{
-					Debug.WriteLine($@"TCPing [{ip}]:{port}:超时 > {timeout}ms");
-					return new TCPingStatus { Status = IPStatus.TimedOut };
+					if (cts.IsCancellationRequested)
+					{
+						Debug.WriteLine($@"TCPing [{ip}]:{port} Task was cancelled");
+						return null;
+					}
+					else
+					{
+						Debug.WriteLine($@"TCPing [{ip}]:{port}:超时 > {timeout}ms");
+						return new TCPingStatus { Status = IPStatus.TimedOut };
+					}
 				}
 			}
 		}
