@@ -17,41 +17,48 @@ namespace UnitTest.Util
 			var s6 = @"www.youtube.com";
 			var s7 = @"2409:8a55:260:1a60:a183:ee9e:98c3:df85:2080";
 
-			var r1 = TCPingInfoViewLib.Utils.Util.StringLine2Data(s1);
-			var r2 = TCPingInfoViewLib.Utils.Util.StringLine2Data(s2);
-			var r3 = TCPingInfoViewLib.Utils.Util.StringLine2Data(s3);
-			var r4 = TCPingInfoViewLib.Utils.Util.StringLine2Data(s4);
-			var r5 = TCPingInfoViewLib.Utils.Util.StringLine2Data(s5);
-			var r6 = TCPingInfoViewLib.Utils.Util.StringLine2Data(s6);
-			var r7 = TCPingInfoViewLib.Utils.Util.StringLine2Data(s7);
+			var r1 = TCPingInfoView.Utils.Util.StringLine2Data(s1, 1);
+			var r2 = TCPingInfoView.Utils.Util.StringLine2Data(s2, 2);
+			var r3 = TCPingInfoView.Utils.Util.StringLine2Data(s3, 3);
+			var r4 = TCPingInfoView.Utils.Util.StringLine2Data(s4, 4);
+			var r5 = TCPingInfoView.Utils.Util.StringLine2Data(s5, 5);
+			var r6 = TCPingInfoView.Utils.Util.StringLine2Data(s6, 6);
+			var r7 = TCPingInfoView.Utils.Util.StringLine2Data(s7, 7);
 
 			Assert.AreEqual(r1.Ip, IPAddress.Parse(@"2607:f8b0:4007:801::2004"));
-			Assert.AreEqual(r1.HostsName, @"2607:f8b0:4007:801::2004");
+			Assert.AreEqual(r1.Hostname, @"2607:f8b0:4007:801::2004");
 			Assert.AreEqual(r1.Port, 4154);
+			Assert.AreEqual(r1.Index, 1);
 
 			Assert.AreEqual(r2.Ip, IPAddress.Parse(@"172.217.14.68"));
-			Assert.AreEqual(r2.HostsName, @"172.217.14.68");
+			Assert.AreEqual(r2.Hostname, @"172.217.14.68");
 			Assert.AreEqual(r2.Port, 1513);
+			Assert.AreEqual(r2.Index, 2);
 
 			Assert.AreEqual(r3.Ip, null);
-			Assert.AreEqual(r3.HostsName, @"www.google.com");
+			Assert.AreEqual(r3.Hostname, @"www.google.com");
 			Assert.AreEqual(r3.Port, 12313);
+			Assert.AreEqual(r3.Index, 3);
 
 			Assert.AreEqual(r4.Ip, IPAddress.Parse(@"2607:f8b0:4007:80e::200e"));
-			Assert.AreEqual(r4.HostsName, @"2607:f8b0:4007:80e::200e");
+			Assert.AreEqual(r4.Hostname, @"2607:f8b0:4007:80e::200e");
 			Assert.AreEqual(r4.Port, 443);
+			Assert.AreEqual(r4.Index, 4);
 
 			Assert.AreEqual(r5.Ip, IPAddress.Parse(@"172.217.14.78"));
-			Assert.AreEqual(r5.HostsName, @"172.217.14.78");
+			Assert.AreEqual(r5.Hostname, @"172.217.14.78");
 			Assert.AreEqual(r5.Port, 443);
+			Assert.AreEqual(r5.Index, 5);
 
 			Assert.AreEqual(r6.Ip, null);
-			Assert.AreEqual(r6.HostsName, @"www.youtube.com");
+			Assert.AreEqual(r6.Hostname, @"www.youtube.com");
 			Assert.AreEqual(r6.Port, 443);
+			Assert.AreEqual(r6.Index, 6);
 
 			Assert.AreEqual(r7.Ip, IPAddress.Parse(@"2409:8a55:260:1a60:a183:ee9e:98c3:df85"));
-			Assert.AreEqual(r7.HostsName, @"2409:8a55:260:1a60:a183:ee9e:98c3:df85");
+			Assert.AreEqual(r7.Hostname, @"2409:8a55:260:1a60:a183:ee9e:98c3:df85");
 			Assert.AreEqual(r7.Port, 2080);
+			Assert.AreEqual(r7.Index, 7);
 		}
 	}
 }

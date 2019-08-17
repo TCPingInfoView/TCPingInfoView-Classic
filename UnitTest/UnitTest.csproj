@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TCPingInfoViewLib\TCPingInfoViewLib.csproj" />
+    <ProjectReference Include="..\TCPingInfoView-Wpf\TCPingInfoView-Wpf.csproj" />
   </ItemGroup>
 
 </Project>

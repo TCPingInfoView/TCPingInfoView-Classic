@@ -3,29 +3,59 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TCPingInfoView.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        x:Name="Mw"
+        Title="MainWindow" Height="450" Width="800"
+        DataContext="{Binding MainWindowViewModel, ElementName=Mw}"
+        Loaded="MainWindow_OnLoaded">
 	<Grid>
 		<DockPanel>
 			<Menu DockPanel.Dock="Top" Background="White">
 				<MenuItem Header="_File">
-					<MenuItem Header="_Open"/>
-					<MenuItem Header="_Save"/>
+					<MenuItem Header="_Open" />
+					<MenuItem Header="_Save" />
 					<Separator />
-					<MenuItem Header="_Close"/>
+					<MenuItem Header="_Close" />
 				</MenuItem>
 			</Menu>
 			<ToolBar DockPanel.Dock="Top">
 				<Button>Load</Button>
 				<Button>Open</Button>
+				<Button Click="TestButton_Click">Test</Button>
 			</ToolBar>
 			<StatusBar DockPanel.Dock="Bottom">
 				<StatusBarItem>
 					<TextBlock Text="Status" />
 				</StatusBarItem>
 			</StatusBar>
-			<DataGrid />
+			<DataGrid x:Name="EndPointDataGrid"
+			          GridLinesVisibility="All"
+			          HorizontalGridLinesBrush="LightGray"
+			          VerticalGridLinesBrush="LightGray"
+
+			          Background="Transparent"
+
+			          HeadersVisibility="Column"
+			          AutoGenerateColumns="False"
+			          SelectionUnit="FullRow" SelectionMode="Single"
+			          CanUserAddRows="false" CanUserResizeRows="False"
+			          ItemsSource="{Binding EndPointsCollection}">
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="ID" Binding="{Binding Index}" IsReadOnly="True" />
+					<DataGridTextColumn Header="Hostname" Binding="{Binding Hostname}" IsReadOnly="True" />
+					<DataGridTextColumn Header="Ip" Binding="{Binding Ip}" IsReadOnly="True" />
+					<DataGridTextColumn Header="Port" Binding="{Binding Port}" IsReadOnly="True" />
+					<DataGridTextColumn Header="Description" Binding="{Binding Description}" IsReadOnly="True" />
+					<DataGridTextColumn Header="LastPing" Binding="{Binding LastPing}" IsReadOnly="True" />
+					<DataGridTextColumn Header="MaxPing" Binding="{Binding MaxPing}" IsReadOnly="True" />
+					<DataGridTextColumn Header="MinPing" Binding="{Binding MinPing}" IsReadOnly="True" />
+					<DataGridTextColumn Header="AveragePing" Binding="{Binding AveragePing}" IsReadOnly="True" />
+					<DataGridTextColumn Header="LastTCPing" Binding="{Binding LastTCPing}" IsReadOnly="True" />
+					<DataGridTextColumn Header="MaxTCPing" Binding="{Binding MaxTCPing}" IsReadOnly="True" />
+					<DataGridTextColumn Header="MinTCPing" Binding="{Binding MinTCPing}" IsReadOnly="True" />
+					<DataGridTextColumn Header="AverageTCPing" Binding="{Binding AverageTCPing}" IsReadOnly="True" />
+				</DataGrid.Columns>
+			</DataGrid>
 		</DockPanel>
 	</Grid>
 </Window>

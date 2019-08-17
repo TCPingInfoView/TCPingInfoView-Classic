@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Steamworks;
+using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
-using Steamworks;
 
 namespace TCPingInfoViewLib.Utils
 {
