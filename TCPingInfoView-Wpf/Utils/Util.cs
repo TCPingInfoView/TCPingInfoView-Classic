@@ -50,13 +50,19 @@ namespace TCPingInfoView.Utils
 				var groups = Regex.Match(s[0], @"^\[(.*)\]$").Groups;
 				if (groups.Count == 2)
 				{
-					hostname = groups[1].Value;
-					IPAddress.TryParse(hostname, out ip);
+					var temp = groups[1].Value;
+					if (!IPAddress.TryParse(temp, out ip))
+					{
+						hostname = temp;
+					}
 				}
 				else
 				{
-					hostname = s[0];
-					IPAddress.TryParse(hostname, out ip);
+					var temp = s[0];
+					if (!IPAddress.TryParse(temp, out ip))
+					{
+						hostname = temp;
+					}
 				}
 			}
 			else

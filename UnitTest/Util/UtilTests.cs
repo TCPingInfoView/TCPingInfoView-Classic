@@ -26,12 +26,12 @@ namespace UnitTest.Util
 			var r7 = TCPingInfoView.Utils.Util.StringLine2Data(s7, 7);
 
 			Assert.AreEqual(r1.Ip, IPAddress.Parse(@"2607:f8b0:4007:801::2004"));
-			Assert.AreEqual(r1.Hostname, @"2607:f8b0:4007:801::2004");
+			Assert.AreEqual(r1.Hostname, null);
 			Assert.AreEqual(r1.Port, 4154);
 			Assert.AreEqual(r1.Index, 1);
 
 			Assert.AreEqual(r2.Ip, IPAddress.Parse(@"172.217.14.68"));
-			Assert.AreEqual(r2.Hostname, @"172.217.14.68");
+			Assert.AreEqual(r2.Hostname, null);
 			Assert.AreEqual(r2.Port, 1513);
 			Assert.AreEqual(r2.Index, 2);
 
@@ -41,12 +41,12 @@ namespace UnitTest.Util
 			Assert.AreEqual(r3.Index, 3);
 
 			Assert.AreEqual(r4.Ip, IPAddress.Parse(@"2607:f8b0:4007:80e::200e"));
-			Assert.AreEqual(r4.Hostname, @"2607:f8b0:4007:80e::200e");
+			Assert.AreEqual(r4.Hostname, null);
 			Assert.AreEqual(r4.Port, 443);
 			Assert.AreEqual(r4.Index, 4);
 
 			Assert.AreEqual(r5.Ip, IPAddress.Parse(@"172.217.14.78"));
-			Assert.AreEqual(r5.Hostname, @"172.217.14.78");
+			Assert.AreEqual(r5.Hostname, null);
 			Assert.AreEqual(r5.Port, 443);
 			Assert.AreEqual(r5.Index, 5);
 
@@ -56,7 +56,7 @@ namespace UnitTest.Util
 			Assert.AreEqual(r6.Index, 6);
 
 			Assert.AreEqual(r7.Ip, IPAddress.Parse(@"2409:8a55:260:1a60:a183:ee9e:98c3:df85"));
-			Assert.AreEqual(r7.Hostname, @"2409:8a55:260:1a60:a183:ee9e:98c3:df85");
+			Assert.AreEqual(r7.Hostname, null);
 			Assert.AreEqual(r7.Port, 2080);
 			Assert.AreEqual(r7.Index, 7);
 		}
