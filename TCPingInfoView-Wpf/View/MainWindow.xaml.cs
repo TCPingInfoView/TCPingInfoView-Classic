@@ -1,4 +1,4 @@
-﻿using System.Net;
+﻿using System.Threading;
 using System.Windows;
 using TCPingInfoView.Utils;
 using TCPingInfoView.ViewModel;
@@ -13,23 +13,11 @@ namespace TCPingInfoView.View
 		}
 
 		public MainWindowViewModel MainWindowViewModel { get; set; } = new MainWindowViewModel();
+		private CancellationTokenSource _ctsPingTask = new CancellationTokenSource();
 
 		private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
 		{
-			var e1 = new EndPointInfo(1)
-			{
-				Ip = IPAddress.Loopback,
-				Port = 3389,
-				Description = @"Windows RDP"
-			};
-			var e2 = new EndPointInfo(2)
-			{
-				Hostname = @"bing.com",
-				Port = 443,
-				Description = @"Bing"
-			};
-			MainWindowViewModel.EndPointsCollection.Add(e1);
-			MainWindowViewModel.EndPointsCollection.Add(e2);
+
 		}
 
 		private void TestButton_Click(object sender, RoutedEventArgs e)
@@ -40,10 +28,30 @@ namespace TCPingInfoView.View
 			}
 		}
 
-		private static async void PingOne(EndPointInfo info)
+		private async void PingOne(EndPointInfo info)
 		{
-			var res = await Util.PingEndPoint(info);
+			var res = await Util.PingEndPoint(info, _ctsPingTask);
 			info.AddLog(res);
+		}
+
+		private void LoadButton_OnClick(object sender, RoutedEventArgs e)
+		{
+			_ctsPingTask.Cancel();
+			//TODO
+			//cts_PingTask.Dispose();
+			_ctsPingTask = new CancellationTokenSource();
+			MainWindowViewModel.EndPointsCollection.Clear();
+
+			var path = Read.GetFilePath();
+			if (!string.IsNullOrWhiteSpace(path))
+			{
+				var rawString = Read.ReadTextFromFile(path);
+				var list = Read.ReadEndPointFromString(rawString);
+				foreach (var info in list)
+				{
+					MainWindowViewModel.EndPointsCollection.Add(info);
+				}
+			}
 		}
 	}
 }

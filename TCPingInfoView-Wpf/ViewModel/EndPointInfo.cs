@@ -281,6 +281,11 @@ namespace TCPingInfoView.ViewModel
 
 		public void AddLog(TestResult tRes)
 		{
+			if (tRes == null)
+			{
+				return;
+			}
+
 			if (tRes.PingResult == null && tRes.TCPingResult == null)
 			{
 				return;

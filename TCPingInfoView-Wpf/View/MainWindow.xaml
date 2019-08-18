@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         x:Name="Mw"
-        Title="MainWindow" Height="450" Width="800"
+        Title="TCPingInfoView" Height="618" Width="1000"
         DataContext="{Binding MainWindowViewModel, ElementName=Mw}"
         Loaded="MainWindow_OnLoaded">
 	<Grid>
@@ -19,9 +19,19 @@
 				</MenuItem>
 			</Menu>
 			<ToolBar DockPanel.Dock="Top">
-				<Button>Load</Button>
-				<Button>Open</Button>
-				<Button Click="TestButton_Click">Test</Button>
+				<Button Click="LoadButton_OnClick">
+					<StackPanel>
+						<Image Source="../Resources/Load.png" Height="32"
+								RenderOptions.BitmapScalingMode="HighQuality" />
+					</StackPanel>
+				</Button>
+				<Separator />
+				<Button Click="TestButton_Click">
+					<StackPanel>
+						<Image Source="../Resources/Test.png" Height="32"
+								RenderOptions.BitmapScalingMode="HighQuality" />
+					</StackPanel>
+				</Button>
 			</ToolBar>
 			<StatusBar DockPanel.Dock="Bottom">
 				<StatusBarItem>

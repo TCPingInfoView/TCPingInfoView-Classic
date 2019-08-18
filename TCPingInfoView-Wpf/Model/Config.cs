@@ -1,4 +1,4 @@
-﻿namespace TCPingInfoViewLib.Model
+﻿namespace TCPingInfoView.Model
 {
 	public class Config
 	{

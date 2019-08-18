@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
-using TCPingInfoViewLib.Model;
+using TCPingInfoView.Model;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace UnitTest.Model
@@ -26,7 +26,7 @@ namespace UnitTest.Model
 		[TestMethod]
 		public void PerformanceTest()
 		{
-			const int times = 10000000;
+			const int times = 1000000;
 			var config = new Config();
 			var stopWatch = new Stopwatch();
 			stopWatch.Start();

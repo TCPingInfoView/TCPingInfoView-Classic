@@ -6,19 +6,22 @@
     <RootNamespace>TCPingInfoView</RootNamespace>
     <UseWPF>true</UseWPF>
     <AssemblyName>TCPingInfoView</AssemblyName>
+    <ApplicationIcon>Resources\TCPing.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Load.png" />
+    <None Remove="Resources\Test.png" />
     <None Remove="View\MainWindow.xaml" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Model\" />
-    <Folder Include="Utils\" />
+    <ProjectReference Include="..\TCPingInfoViewLib\TCPingInfoViewLib.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TCPingInfoViewLib\TCPingInfoViewLib.csproj" />
+    <Resource Include="Resources\Load.png" />
+    <Resource Include="Resources\Test.png" />
   </ItemGroup>
 
 </Project>
