@@ -2,11 +2,19 @@
 using System.Collections.ObjectModel;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Text.Json.Serialization;
+using System.Threading;
+using System.Threading.Tasks;
+using TCPingInfoView.JsonConverters;
+using TCPingInfoViewLib.NetUtils;
 
 namespace TCPingInfoView.ViewModel
 {
-	public class EndPointInfo : ViewModelBase
+	[Serializable]
+	public class EndPointInfo : ViewModelBase, ICloneable
 	{
+		private EndPointInfo() : this(0) { }
+
 		public EndPointInfo(int i)
 		{
 			Index = i;
@@ -15,6 +23,8 @@ namespace TCPingInfoView.ViewModel
 			_port = 443;
 			_description = string.Empty;
 			_testResults = new ObservableCollection<TestResult>();
+			AllowICMP = true;
+			AllowTCP = true;
 			Reset();
 		}
 
@@ -27,6 +37,19 @@ namespace TCPingInfoView.ViewModel
 			LastPing = null;
 			MaxPing = null;
 			MinPing = null;
+		}
+
+		public object Clone()
+		{
+			return new EndPointInfo(Index)
+			{
+				Hostname = Hostname,
+				Ip = Ip,
+				Port = Port,
+				Description = Description,
+				AllowTCP = AllowTCP,
+				AllowICMP = AllowICMP
+			};
 		}
 
 		private string _hostname;
@@ -49,7 +72,7 @@ namespace TCPingInfoView.ViewModel
 		private long? _maxTCPing;
 		private long? _minTCPing;
 
-		public int Index { get; }
+		public int Index { get; set; }
 
 		public string Hostname
 		{
@@ -64,6 +87,7 @@ namespace TCPingInfoView.ViewModel
 			}
 		}
 
+		[JsonConverter(typeof(IPAddressConverter))]
 		public IPAddress Ip
 		{
 			get => _ip;
@@ -103,6 +127,7 @@ namespace TCPingInfoView.ViewModel
 			}
 		}
 
+		[JsonIgnore]
 		public ObservableCollection<TestResult> TestResults
 		{
 			get => _testResults;
@@ -118,6 +143,9 @@ namespace TCPingInfoView.ViewModel
 
 		#region ICMPing
 
+		public bool AllowICMP { get; set; }
+
+		[JsonIgnore]
 		public long SucceedPingCount
 		{
 			get => _succeedPingCount;
@@ -131,6 +159,7 @@ namespace TCPingInfoView.ViewModel
 			}
 		}
 
+		[JsonIgnore]
 		public long FailedPingCount
 		{
 			get => _failedPingCount;
@@ -144,6 +173,7 @@ namespace TCPingInfoView.ViewModel
 			}
 		}
 
+		[JsonIgnore]
 		public long? LastPing
 		{
 			get => _lastPing;
@@ -157,6 +187,7 @@ namespace TCPingInfoView.ViewModel
 			}
 		}
 
+		[JsonIgnore]
 		public long? MaxPing
 		{
 			get => _maxPing;
@@ -170,6 +201,7 @@ namespace TCPingInfoView.ViewModel
 			}
 		}
 
+		[JsonIgnore]
 		public long? MinPing
 		{
 			get => _minPing;
@@ -183,6 +215,7 @@ namespace TCPingInfoView.ViewModel
 			}
 		}
 
+		[JsonIgnore]
 		public long? AveragePing
 		{
 			get
@@ -199,6 +232,9 @@ namespace TCPingInfoView.ViewModel
 
 		#region TCPing
 
+		public bool AllowTCP { get; set; }
+
+		[JsonIgnore]
 		public long SucceedTCPingCount
 		{
 			get => _succeedTCPingCount;
@@ -212,6 +248,7 @@ namespace TCPingInfoView.ViewModel
 			}
 		}
 
+		[JsonIgnore]
 		public long FailedTCPingCount
 		{
 			get => _failedTCPingCount;
@@ -225,6 +262,7 @@ namespace TCPingInfoView.ViewModel
 			}
 		}
 
+		[JsonIgnore]
 		public long? LastTCPing
 		{
 			get => _lastTCPing;
@@ -238,6 +276,7 @@ namespace TCPingInfoView.ViewModel
 			}
 		}
 
+		[JsonIgnore]
 		public long? MaxTCPing
 		{
 			get => _maxTCPing;
@@ -251,6 +290,7 @@ namespace TCPingInfoView.ViewModel
 			}
 		}
 
+		[JsonIgnore]
 		public long? MinTCPing
 		{
 			get => _minTCPing;
@@ -264,6 +304,7 @@ namespace TCPingInfoView.ViewModel
 			}
 		}
 
+		[JsonIgnore]
 		public long? AverageTCPing
 		{
 			get
@@ -279,7 +320,7 @@ namespace TCPingInfoView.ViewModel
 
 		#endregion
 
-		public void AddLog(TestResult tRes)
+		private void AddLog(TestResult tRes)
 		{
 			if (tRes == null)
 			{
@@ -343,6 +384,54 @@ namespace TCPingInfoView.ViewModel
 					++FailedTCPingCount;
 					LastTCPing = null;
 				}
+			}
+		}
+
+		private async Task<TestResult> PingEndPoint(CancellationToken ct)
+		{
+			if (Hostname == null && Ip != null)
+			{
+				var hostname = await DnsQuery.GetHostNameAsync(Ip, ct, 3000);
+				Hostname = hostname ?? Ip.ToString();
+			}
+			else if (Hostname != null && Ip == null)
+			{
+				Ip = await DnsQuery.GetIpAsync(Hostname, ct, 3000);
+			}
+			else if (Hostname == null && Ip == null)
+			{
+				return null;
+			}
+
+			if (Ip == null)
+			{
+				return null;
+			}
+
+			var res = new TestResult
+			{
+				Time = DateTime.Now
+			};
+
+			if (AllowICMP)
+			{
+				res.PingResult = await NetTest.ICMPingAsync(Ip, 3000, ct);
+			}
+
+			if (AllowTCP)
+			{
+				res.TCPingResult = await NetTest.TCPingAsync(Ip, Port, 3000, ct);
+			}
+
+			return res;
+		}
+
+		public async void PingOne(CancellationToken ct)
+		{
+			var res = await PingEndPoint(ct);
+			if (!ct.IsCancellationRequested)
+			{
+				AddLog(res);
 			}
 		}
 	}

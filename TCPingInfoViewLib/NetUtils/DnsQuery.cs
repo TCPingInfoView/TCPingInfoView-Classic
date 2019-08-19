@@ -8,17 +8,12 @@ namespace TCPingInfoViewLib.NetUtils
 {
 	public static class DnsQuery
 	{
-		public static async Task<IPAddress> GetIpAsync(string host, int timeout = 10000)
-		{
-			return await GetIpAsync(host, new CancellationTokenSource(), timeout);
-		}
-
-		public static async Task<IPAddress> GetIpAsync(string host, CancellationTokenSource cts, int timeout = 10000)
+		public static async Task<IPAddress> GetIpAsync(string host, CancellationToken ct = default, int timeout = 10000)
 		{
 			try
 			{
 				var task = Dns.GetHostAddressesAsync(host);
-				if (await Task.WhenAny(Task.Delay(timeout, cts.Token), task) == task)
+				if (await Task.WhenAny(Task.Delay(timeout, ct), task) == task)
 				{
 					var ips = await task;
 					foreach (var res in ips)
@@ -37,17 +32,12 @@ namespace TCPingInfoViewLib.NetUtils
 			}
 		}
 
-		public static async Task<string> GetHostNameAsync(IPAddress ip, int timeout = 10000)
-		{
-			return await GetHostNameAsync(ip, new CancellationTokenSource(), timeout);
-		}
-
-		public static async Task<string> GetHostNameAsync(IPAddress ip, CancellationTokenSource cts, int timeout = 10000)
+		public static async Task<string> GetHostNameAsync(IPAddress ip, CancellationToken ct = default, int timeout = 10000)
 		{
 			try
 			{
 				var task = Dns.GetHostEntryAsync(ip);
-				if (await Task.WhenAny(Task.Delay(timeout, cts.Token), task) == task)
+				if (await Task.WhenAny(Task.Delay(timeout, ct), task) == task)
 				{
 					var res = await task;
 					Debug.WriteLine($@"DNS query {ip} answer {res.HostName}");

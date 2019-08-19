@@ -24,7 +24,7 @@ namespace UnitTest.NetUtils
 			var res2 = await NetTest.TCPingAsync(ipv4, 80, 10000);
 			var res3 = await NetTest.TCPingAsync(ipv4, 3389);
 			var res4 = await NetTest.TCPingAsync(ipv6, 3389);
-			var res5 = await NetTest.TCPingAsync(ipv6, cts, 3389);
+			var res5 = await NetTest.TCPingAsync(ipv6, 3389, 10000, cts.Token);
 
 			Assert.AreEqual(res0.Status, IPStatus.BadDestination);
 			Assert.AreEqual(res1.Status, IPStatus.TimedOut);
@@ -48,7 +48,7 @@ namespace UnitTest.NetUtils
 			var res1 = await NetTest.ICMPingAsync(ipv6, 300);
 			var res2 = await NetTest.ICMPingAsync(ip1, 300);
 			var res3 = await NetTest.ICMPingAsync(null);
-			var res4 = await NetTest.ICMPingAsync(ip1, cts, 300);
+			var res4 = await NetTest.ICMPingAsync(ip1, 300, cts.Token);
 
 			Assert.AreEqual(res0.Status, IPStatus.Success);
 			Assert.AreEqual(res1.Status, IPStatus.Success);

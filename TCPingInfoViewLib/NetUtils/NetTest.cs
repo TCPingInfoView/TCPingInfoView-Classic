@@ -12,12 +12,7 @@ namespace TCPingInfoViewLib.NetUtils
 {
 	public static class NetTest
 	{
-		public static async Task<TCPingStatus> TCPingAsync(IPAddress ip, int port = 80, int timeout = 1000)
-		{
-			return await TCPingAsync(ip, new CancellationTokenSource(), port, timeout);
-		}
-
-		public static async Task<TCPingStatus> TCPingAsync(IPAddress ip, CancellationTokenSource cts, int port = 80, int timeout = 1000)
+		public static async Task<TCPingStatus> TCPingAsync(IPAddress ip, int port = 80, int timeout = 1000, CancellationToken ct = default)
 		{
 			if (ip == null)
 			{
@@ -31,7 +26,7 @@ namespace TCPingInfoViewLib.NetUtils
 				var stopwatch = new Stopwatch();
 				stopwatch.Start();
 
-				var resTask = await Task.WhenAny(Task.Delay(timeout, cts.Token), task);
+				var resTask = await Task.WhenAny(Task.Delay(timeout, ct), task);
 
 				stopwatch.Stop();
 				if (resTask == task)
@@ -46,7 +41,7 @@ namespace TCPingInfoViewLib.NetUtils
 				}
 				else
 				{
-					if (cts.IsCancellationRequested)
+					if (ct.IsCancellationRequested)
 					{
 						Debug.WriteLine($@"TCPing [{ip}]:{port} Task was cancelled");
 						return null;
@@ -60,12 +55,7 @@ namespace TCPingInfoViewLib.NetUtils
 			}
 		}
 
-		public static async Task<ICMPingStatus> ICMPingAsync(IPAddress ip, int timeout = 1000)
-		{
-			return await ICMPingAsync(ip, new CancellationTokenSource(), timeout);
-		}
-
-		public static async Task<ICMPingStatus> ICMPingAsync(IPAddress ip, CancellationTokenSource cts, int timeout = 1000)
+		public static async Task<ICMPingStatus> ICMPingAsync(IPAddress ip, int timeout = 1000, CancellationToken ct = default)
 		{
 			var res = new ICMPingStatus();
 			if (ip == null)
@@ -77,7 +67,7 @@ namespace TCPingInfoViewLib.NetUtils
 
 			var task = p1.SendPingAsync(ip, timeout);
 
-			if (await Task.WhenAny(Task.Delay(int.MaxValue, cts.Token), task) == task)
+			if (await Task.WhenAny(Task.Delay(int.MaxValue, ct), task) == task)
 			{
 				var reply = await task;
 				if (reply != null && reply.Status == IPStatus.Success)

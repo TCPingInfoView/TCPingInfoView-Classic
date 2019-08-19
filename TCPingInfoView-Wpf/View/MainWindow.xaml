@@ -7,7 +7,7 @@
         x:Name="Mw"
         Title="TCPingInfoView" Height="618" Width="1000"
         DataContext="{Binding MainWindowViewModel, ElementName=Mw}"
-        Loaded="MainWindow_OnLoaded">
+        Loaded="MainWindow_OnLoaded" Closed="MainWindow_OnClosed">
 	<Grid>
 		<DockPanel>
 			<Menu DockPanel.Dock="Top" Background="White">
@@ -18,7 +18,7 @@
 					<MenuItem Header="_Close" />
 				</MenuItem>
 			</Menu>
-			<ToolBar DockPanel.Dock="Top">
+			<ToolBar DockPanel.Dock="Top" Background="Transparent" Loaded="ToolBar_Loaded">
 				<Button Click="LoadButton_OnClick">
 					<StackPanel>
 						<Image Source="../Resources/Load.png" Height="32"

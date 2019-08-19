@@ -4,9 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using TCPingInfoView.ViewModel;
 using TCPingInfoViewLib.NetUtils;
 
@@ -14,6 +13,16 @@ namespace TCPingInfoView.Utils
 {
 	public static class Util
 	{
+		#region Data
+
+		public static readonly UTF8Encoding Utf8WithoutBom = new UTF8Encoding(false);
+
+		public const string ConfigFileName = @"TCPingInfoView.json";
+
+		public static string CurrentDirectory = Path.GetDirectoryName(GetExecutablePath());
+
+		#endregion
+
 		public static EndPointInfo StringLine2Data(string line, int index)
 		{
 			var s = line.Split(new[] { ' ' }, 2, StringSplitOptions.RemoveEmptyEntries);
@@ -36,11 +45,6 @@ namespace TCPingInfoView.Utils
 				}
 
 				if (!ushort.TryParse(string.IsNullOrWhiteSpace(sp[2].Value) ? sp[4].Value : sp[2].Value, out port))
-				{
-					return null;
-				}
-
-				if (!IPFormatter.IsPort(port))
 				{
 					return null;
 				}
@@ -86,7 +90,7 @@ namespace TCPingInfoView.Utils
 			return res;
 		}
 
-		public static List<EndPointInfo> ToEndPoints(IEnumerable<string> sl)
+		public static IEnumerable<EndPointInfo> ToEndPoints(IEnumerable<string> sl)
 		{
 			var i = 0;
 			var res = new List<EndPointInfo>();
@@ -95,46 +99,6 @@ namespace TCPingInfoView.Utils
 				++i;
 				res.Add(StringLine2Data(line, i));
 			}
-
-			return res;
-		}
-
-		public static async Task<TestResult> PingEndPoint(EndPointInfo info, CancellationTokenSource cts, bool icmping = true, bool tcping = true)
-		{
-			if (info.Hostname == null && info.Ip != null)
-			{
-				var hostname = await DnsQuery.GetHostNameAsync(info.Ip, cts, 3000);
-				info.Hostname = hostname ?? info.Ip.ToString();
-			}
-			else if (info.Hostname != null && info.Ip == null)
-			{
-				info.Ip = await DnsQuery.GetIpAsync(info.Hostname, cts, 3000);
-			}
-			else if (info.Hostname == null && info.Ip == null)
-			{
-				return null;
-			}
-
-			if (info.Ip == null)
-			{
-				return null;
-			}
-
-			var res = new TestResult
-			{
-				Time = DateTime.Now
-			};
-
-			if (icmping)
-			{
-				res.PingResult = await NetTest.ICMPingAsync(info.Ip, cts, 3000);
-			}
-
-			if (tcping)
-			{
-				res.TCPingResult = await NetTest.TCPingAsync(info.Ip, cts, info.Port, 3000);
-			}
-
 			return res;
 		}
 

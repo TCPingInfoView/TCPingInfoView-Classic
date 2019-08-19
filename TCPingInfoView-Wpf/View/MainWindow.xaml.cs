@@ -1,5 +1,10 @@
-﻿using System.Threading;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
+using TCPingInfoView.Model;
 using TCPingInfoView.Utils;
 using TCPingInfoView.ViewModel;
 
@@ -10,48 +15,114 @@ namespace TCPingInfoView.View
 		public MainWindow()
 		{
 			InitializeComponent();
+			LoadConfig();
 		}
 
 		public MainWindowViewModel MainWindowViewModel { get; set; } = new MainWindowViewModel();
 		private CancellationTokenSource _ctsPingTask = new CancellationTokenSource();
+		private Config _config = new Config();
+		private IEnumerable<EndPointInfo> _rawEndPointInfo;
 
 		private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
 		{
 
 		}
 
+		private void MainWindow_OnClosed(object sender, EventArgs e)
+		{
+			SaveConfig();
+		}
+
 		private void TestButton_Click(object sender, RoutedEventArgs e)
 		{
 			foreach (var endPointInfo in MainWindowViewModel.EndPointsCollection)
 			{
-				PingOne(endPointInfo);
+				if (_ctsPingTask.IsCancellationRequested)
+				{
+					break;
+				}
+				endPointInfo.PingOne(_ctsPingTask.Token);
 			}
-		}
-
-		private async void PingOne(EndPointInfo info)
-		{
-			var res = await Util.PingEndPoint(info, _ctsPingTask);
-			info.AddLog(res);
 		}
 
 		private void LoadButton_OnClick(object sender, RoutedEventArgs e)
 		{
-			_ctsPingTask.Cancel();
-			//TODO
-			//cts_PingTask.Dispose();
-			_ctsPingTask = new CancellationTokenSource();
-			MainWindowViewModel.EndPointsCollection.Clear();
+			LoadListFromFile();
+		}
 
+		private void ToolBar_Loaded(object sender, RoutedEventArgs e)
+		{
+			if (sender is ToolBar toolBar)
+			{
+				// Hide grip
+				if (toolBar.Template.FindName(@"OverflowGrid", toolBar) is FrameworkElement overflowGrid)
+				{
+					overflowGrid.Visibility = Visibility.Collapsed;
+				}
+				if (toolBar.Template.FindName(@"MainPanelBorder", toolBar) is FrameworkElement mainPanelBorder)
+				{
+					mainPanelBorder.Margin = new Thickness();
+				}
+			}
+		}
+
+		private void LoadFormRawList()
+		{
+			MainWindowViewModel.EndPointsCollection.Clear();
+			var list = _rawEndPointInfo.Select(info => (EndPointInfo)info.Clone()).ToList();
+			foreach (var info in list)
+			{
+				MainWindowViewModel.EndPointsCollection.Add(info);
+			}
+		}
+
+		private void LoadListFromFile()
+		{
 			var path = Read.GetFilePath();
 			if (!string.IsNullOrWhiteSpace(path))
 			{
 				var rawString = Read.ReadTextFromFile(path);
-				var list = Read.ReadEndPointFromString(rawString);
-				foreach (var info in list)
-				{
-					MainWindowViewModel.EndPointsCollection.Add(info);
-				}
+				_rawEndPointInfo = Read.ReadEndPointFromString(rawString);
+				StopPingTask();
+				LoadFormRawList();
 			}
+		}
+
+		private void StopPingTask()
+		{
+			_ctsPingTask.Cancel();
+			_ctsPingTask = new CancellationTokenSource();
+		}
+
+		private void LoadConfig()
+		{
+			_config = Read.LoadConfig();
+			if (_config != null)
+			{
+				Top = _config.StartTop;
+				Left = _config.StartLeft;
+			}
+			else
+			{
+				_config = new Config();
+				WindowStartupLocation = WindowStartupLocation.CenterScreen;
+			}
+
+			Height = _config.StartHeight;
+			Width = _config.StartWidth;
+
+			_rawEndPointInfo = _config.EndPointInfo;
+			LoadFormRawList();
+		}
+
+		private void SaveConfig()
+		{
+			_config.StartTop = Top;
+			_config.StartLeft = Left;
+			_config.StartHeight = Height;
+			_config.StartWidth = Width;
+			_config.EndPointInfo = _rawEndPointInfo;
+			Write.SaveConfig(_config);
 		}
 	}
 }

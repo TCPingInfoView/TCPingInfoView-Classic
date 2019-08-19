@@ -24,4 +24,8 @@
     <Resource Include="Resources\Test.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="JsonConverters\" />
+  </ItemGroup>
+
 </Project>
