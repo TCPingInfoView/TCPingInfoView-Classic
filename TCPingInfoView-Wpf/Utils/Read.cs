@@ -30,9 +30,8 @@ namespace TCPingInfoView.Utils
 			var openFileDialog = new OpenFileDialog
 			{
 				Multiselect = false,
-				//TODO
-				Title = @"请选择包含地址的文件",
-				Filter = @"文本文件 (*.txt)|*.txt"
+				Title = I18NUtil.GetAppStringValue(@"SelectAddressFileTitle"),
+				Filter = I18NUtil.GetAppStringValue(@"SelectAddressFileFilter")
 			};
 			var result = openFileDialog.ShowDialog();
 			if (result == true)

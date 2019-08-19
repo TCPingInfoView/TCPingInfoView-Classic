@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using TCPingInfoView.Utils;
 using TCPingInfoView.View;
 
 namespace TCPingInfoView
@@ -10,6 +11,7 @@ namespace TCPingInfoView
 		private static void Main()
 		{
 			var app = new Application();
+			SetLanguage();
 
 			var win = new MainWindow();
 			app.MainWindow = win;
@@ -17,7 +19,23 @@ namespace TCPingInfoView
 
 			//app.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 			app.Run();
+		}
 
+		public static void SetLanguage(string langName = @"")
+		{
+			if (string.IsNullOrEmpty(langName))
+			{
+				langName = I18NUtil.GetLanguage();
+			}
+
+			if (Application.LoadComponent(new Uri($@"../I18N/App.{langName}.xaml", UriKind.Relative)) is ResourceDictionary langRd)
+			{
+				Application.Current.Resources.MergedDictionaries.Add(langRd);
+				if (Application.Current.Resources.MergedDictionaries.Count > 1)
+				{
+					Application.Current.Resources.MergedDictionaries.RemoveAt(0);
+				}
+			}
 		}
 	}
 }

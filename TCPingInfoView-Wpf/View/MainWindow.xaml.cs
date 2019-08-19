@@ -15,6 +15,8 @@ namespace TCPingInfoView.View
 		public MainWindow()
 		{
 			InitializeComponent();
+			AddLanguageMenu();
+			SetLanguage();
 			LoadConfig();
 		}
 
@@ -22,6 +24,39 @@ namespace TCPingInfoView.View
 		private CancellationTokenSource _ctsPingTask = new CancellationTokenSource();
 		private Config _config = new Config();
 		private IEnumerable<EndPointInfo> _rawEndPointInfo;
+
+		private void AddLanguageMenu()
+		{
+			foreach (var (name, langName) in I18NUtil.SupportLanguage)
+			{
+				var newMenuItem = new MenuItem
+				{
+					Header = name
+				};
+				newMenuItem.Click += (o, args) =>
+				{
+					SetLanguage(langName);
+				};
+				LanguageMenu.Items.Add(newMenuItem);
+			}
+		}
+
+		private void SetLanguage(string langName = @"")
+		{
+			if (string.IsNullOrEmpty(langName))
+			{
+				langName = I18NUtil.GetLanguage();
+			}
+			if (Application.LoadComponent(new Uri($@"../I18N/MainWindow.{langName}.xaml", UriKind.Relative)) is ResourceDictionary langRd)
+			{
+				Resources.MergedDictionaries.Add(langRd);
+				if (Resources.MergedDictionaries.Count > 1)
+				{
+					Resources.MergedDictionaries.RemoveAt(0);
+				}
+			}
+			I18NUtil.SetLanguage(langName);
+		}
 
 		private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
 		{

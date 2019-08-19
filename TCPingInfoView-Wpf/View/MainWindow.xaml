@@ -1,22 +1,31 @@
 ﻿<Window x:Class="TCPingInfoView.View.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d"
-        x:Name="Mw"
-        Title="TCPingInfoView" Height="618" Width="1000"
-        DataContext="{Binding MainWindowViewModel, ElementName=Mw}"
-        Loaded="MainWindow_OnLoaded" Closed="MainWindow_OnClosed">
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		mc:Ignorable="d"
+		x:Name="Mw"
+		Title="TCPingInfoView" Height="618" Width="1000"
+		DataContext="{Binding MainWindowViewModel, ElementName=Mw}"
+		Loaded="MainWindow_OnLoaded" Closed="MainWindow_OnClosed">
+
+		<Window.Resources>
+			<ResourceDictionary>
+				<ResourceDictionary.MergedDictionaries>
+					<ResourceDictionary Source="../I18N/MainWindow.en-US.xaml" />
+				</ResourceDictionary.MergedDictionaries>
+			</ResourceDictionary>
+		</Window.Resources>
+
 	<Grid>
 		<DockPanel>
-			<Menu DockPanel.Dock="Top" Background="White">
-				<MenuItem Header="_File">
-					<MenuItem Header="_Open" />
-					<MenuItem Header="_Save" />
+			<Menu DockPanel.Dock="Top" Background="Transparent">
+				<MenuItem Header="{DynamicResource ResourceKey=File}">
+					<MenuItem Header="{DynamicResource ResourceKey=Load}" />
 					<Separator />
-					<MenuItem Header="_Close" />
+					<MenuItem Header="{DynamicResource ResourceKey=Exit}" />
 				</MenuItem>
+				<MenuItem x:Name="LanguageMenu" Header="{DynamicResource ResourceKey=Language}" />
 			</Menu>
 			<ToolBar DockPanel.Dock="Top" Background="Transparent" Loaded="ToolBar_Loaded">
 				<Button Click="LoadButton_OnClick">
@@ -39,17 +48,17 @@
 				</StatusBarItem>
 			</StatusBar>
 			<DataGrid x:Name="EndPointDataGrid"
-			          GridLinesVisibility="All"
-			          HorizontalGridLinesBrush="LightGray"
-			          VerticalGridLinesBrush="LightGray"
+					GridLinesVisibility="All"
+					HorizontalGridLinesBrush="LightGray"
+					VerticalGridLinesBrush="LightGray"
 
-			          Background="Transparent"
+					Background="Transparent"
 
-			          HeadersVisibility="Column"
-			          AutoGenerateColumns="False"
-			          SelectionUnit="FullRow" SelectionMode="Single"
-			          CanUserAddRows="false" CanUserResizeRows="False"
-			          ItemsSource="{Binding EndPointsCollection}">
+					HeadersVisibility="Column"
+					AutoGenerateColumns="False"
+					SelectionUnit="FullRow" SelectionMode="Single"
+					CanUserAddRows="false" CanUserResizeRows="False"
+					ItemsSource="{Binding EndPointsCollection}">
 				<DataGrid.Columns>
 					<DataGridTextColumn Header="ID" Binding="{Binding Index}" IsReadOnly="True" />
 					<DataGridTextColumn Header="Hostname" Binding="{Binding Hostname}" IsReadOnly="True" />
