@@ -52,6 +52,9 @@
 				<Button Style="{StaticResource PaintButton}" Click="TestButton_Click">
 					<Image Style="{StaticResource ToolbarImage}" Source="../Resources/Test.png" />
 				</Button>
+				<Button Style="{StaticResource PaintButton}" Click="TimerButton_OnClick">
+					<Image Style="{StaticResource ToolbarImage}" Source="{Binding DisplayedTimerImage}" />
+				</Button>
 				<Button Style="{StaticResource PaintButton}" Click="ExitButton_OnClick">
 					<Image Style="{StaticResource ToolbarImage}" Source="../Resources/Exit.png"/>
 				</Button>

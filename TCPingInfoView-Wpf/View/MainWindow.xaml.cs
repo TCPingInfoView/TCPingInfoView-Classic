@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using TCPingInfoView.Model;
@@ -68,16 +69,10 @@ namespace TCPingInfoView.View
 			SaveConfig();
 		}
 
-		private void TestButton_Click(object sender, RoutedEventArgs e)
+		private async void TestButton_Click(object sender, RoutedEventArgs e)
 		{
-			foreach (var endPointInfo in MainWindowViewModel.EndPointsCollection)
-			{
-				if (_ctsPingTask.IsCancellationRequested)
-				{
-					break;
-				}
-				endPointInfo.PingOne(_ctsPingTask.Token);
-			}
+			PingAll();
+			await Task.Delay(0);
 		}
 
 		private void LoadButton_OnClick(object sender, RoutedEventArgs e)
@@ -117,8 +112,37 @@ namespace TCPingInfoView.View
 			{
 				var rawString = Read.ReadTextFromFile(path);
 				_rawEndPointInfo = Read.ReadEndPointFromString(rawString);
+				SaveConfig();
 				StopPingTask();
 				LoadFormRawList();
+			}
+		}
+
+		private void PingAll()
+		{
+			foreach (var endPointInfo in MainWindowViewModel.EndPointsCollection)
+			{
+				if (_ctsPingTask.IsCancellationRequested)
+				{
+					break;
+				}
+				endPointInfo.PingOne(_ctsPingTask.Token);
+			}
+		}
+
+		private async void StartPingTask(CancellationToken ct)
+		{
+			while (!ct.IsCancellationRequested)
+			{
+				PingAll();
+				try
+				{
+					await Task.Delay(_config.Interval * 1000, ct);
+				}
+				catch (TaskCanceledException)
+				{
+					// ignored
+				}
 			}
 		}
 
@@ -126,6 +150,7 @@ namespace TCPingInfoView.View
 		{
 			_ctsPingTask.Cancel();
 			_ctsPingTask = new CancellationTokenSource();
+			MainWindowViewModel.IsTaskStart = false;
 		}
 
 		private void LoadConfig()
@@ -188,6 +213,19 @@ namespace TCPingInfoView.View
 			}
 			SizeToContent = SizeToContent.Width;
 			SizeToContent = SizeToContent.Manual;
+		}
+
+		private void TimerButton_OnClick(object sender, RoutedEventArgs e)
+		{
+			if (MainWindowViewModel.IsTaskStart)
+			{
+				StopPingTask();
+			}
+			else
+			{
+				StartPingTask(_ctsPingTask.Token);
+				MainWindowViewModel.IsTaskStart = true;
+			}
 		}
 	}
 }

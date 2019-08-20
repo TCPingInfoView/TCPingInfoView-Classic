@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Net;
 using System.Numerics;
 using TCPingInfoViewLib.NetUtils;
