@@ -159,5 +159,10 @@ namespace TCPingInfoView.View
 			_config.EndPointInfo = _rawEndPointInfo;
 			Write.SaveConfig(_config);
 		}
+
+		private void ExitButton_OnClick(object sender, RoutedEventArgs e)
+		{
+			Close();
+		}
 	}
 }

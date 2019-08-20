@@ -14,6 +14,16 @@
 				<ResourceDictionary.MergedDictionaries>
 					<ResourceDictionary Source="../I18N/MainWindow.en-US.xaml" />
 				</ResourceDictionary.MergedDictionaries>
+
+				<Style x:Key="PaintButton" TargetType="Button">
+					<Setter Property="Height" Value="38"/>
+					<Setter Property="BorderThickness" Value="1"/>
+				</Style>
+				<Style x:Key="ToolbarImage" TargetType="Image">
+					<Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"></Setter>
+				</Style>
+
+
 			</ResourceDictionary>
 		</Window.Resources>
 
@@ -21,30 +31,27 @@
 		<DockPanel>
 			<Menu DockPanel.Dock="Top" Background="Transparent">
 				<MenuItem Header="{DynamicResource ResourceKey=File}">
-					<MenuItem Header="{DynamicResource ResourceKey=Load}" />
+					<MenuItem Header="{DynamicResource ResourceKey=Load}" Click="LoadButton_OnClick" />
 					<Separator />
-					<MenuItem Header="{DynamicResource ResourceKey=Exit}" />
+					<MenuItem Header="{DynamicResource ResourceKey=Exit}" Click="ExitButton_OnClick" />
 				</MenuItem>
 				<MenuItem x:Name="LanguageMenu" Header="{DynamicResource ResourceKey=Language}" />
 			</Menu>
 			<ToolBar DockPanel.Dock="Top" Background="Transparent" Loaded="ToolBar_Loaded">
-				<Button Click="LoadButton_OnClick">
-					<StackPanel>
-						<Image Source="../Resources/Load.png" Height="32"
-								RenderOptions.BitmapScalingMode="HighQuality" />
-					</StackPanel>
+				<Button Style="{StaticResource PaintButton}" Click="LoadButton_OnClick">
+					<Image Style="{StaticResource ToolbarImage}" Source="../Resources/Load.png" />
 				</Button>
 				<Separator />
-				<Button Click="TestButton_Click">
-					<StackPanel>
-						<Image Source="../Resources/Test.png" Height="32"
-								RenderOptions.BitmapScalingMode="HighQuality" />
-					</StackPanel>
+				<Button Style="{StaticResource PaintButton}" Click="TestButton_Click">
+					<Image Style="{StaticResource ToolbarImage}" Source="../Resources/Test.png" />
+				</Button>
+				<Button Style="{StaticResource PaintButton}" Click="ExitButton_OnClick">
+					<Image Style="{StaticResource ToolbarImage}" Source="../Resources/Exit.png"/>
 				</Button>
 			</ToolBar>
 			<StatusBar DockPanel.Dock="Bottom">
 				<StatusBarItem>
-					<TextBlock Text="Status" />
+					<TextBlock Text="https://github.com/HMBSbige/TCPingInfoView" />
 				</StatusBarItem>
 			</StatusBar>
 			<DataGrid x:Name="EndPointDataGrid"

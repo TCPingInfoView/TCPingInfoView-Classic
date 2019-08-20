@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Exit.png" />
     <None Remove="Resources\Load.png" />
     <None Remove="Resources\Test.png" />
     <None Remove="View\MainWindow.xaml" />
@@ -20,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Exit.png" />
     <Resource Include="Resources\Load.png" />
     <Resource Include="Resources\Test.png" />
   </ItemGroup>
