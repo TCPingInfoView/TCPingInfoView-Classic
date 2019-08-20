@@ -105,7 +105,6 @@ namespace TCPingInfoView.ViewModel
 
 		public int Index { get; set; }
 
-		[JsonIgnore]
 		public bool IsRememberIp { get; set; }
 
 		public string Hostname

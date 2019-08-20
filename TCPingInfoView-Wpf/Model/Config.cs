@@ -9,6 +9,7 @@ namespace TCPingInfoView.Model
 		public double StartLeft { get; set; }
 		public double StartWidth { get; set; }
 		public double StartHeight { get; set; }
+		public bool Topmost { get; set; }
 		public IEnumerable<EndPointInfo> EndPointInfo { get; set; }
 
 		public Config()
@@ -17,6 +18,7 @@ namespace TCPingInfoView.Model
 			StartLeft = 0;
 			StartWidth = 1000;
 			StartHeight = 618;
+			Topmost = false;
 			EndPointInfo = new List<EndPointInfo>();
 		}
 	}

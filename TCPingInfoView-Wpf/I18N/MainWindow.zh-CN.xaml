@@ -8,5 +8,22 @@
 	<sys:String x:Key="Reset">重置计数(_R)</sys:String>
 	<sys:String x:Key="Exit">退出(_E)</sys:String>
 
+	<sys:String x:Key="View">查看(_V)</sys:String>
+	<sys:String x:Key="AlwaysOnTop">窗口置顶(_T)</sys:String>
+	<sys:String x:Key="AutoSize">自动调整大小(_S)</sys:String>
 	<sys:String x:Key="Language">选择语言</sys:String>
+
+	<sys:String x:Key="Id">序号</sys:String>
+	<sys:String x:Key="Hostname">主机名</sys:String>
+	<sys:String x:Key="Ip">IP 地址</sys:String>
+	<sys:String x:Key="Port">端口</sys:String>
+	<sys:String x:Key="Description">备注</sys:String>
+	<sys:String x:Key="LastPing">延迟(ms)</sys:String>
+	<sys:String x:Key="MaxPing">最大延迟(ms)</sys:String>
+	<sys:String x:Key="MinPing">最小延迟(ms)</sys:String>
+	<sys:String x:Key="AveragePing">平均延迟(ms)</sys:String>
+	<sys:String x:Key="LastTCPing">TCP 延迟(ms)</sys:String>
+	<sys:String x:Key="MaxTCPing">最大 TCP 延迟(ms)</sys:String>
+	<sys:String x:Key="MinTCPing">最小 TCP 延迟(ms)</sys:String>
+	<sys:String x:Key="AverageTCPing">平均 TCP 延迟(ms)</sys:String>
 </ResourceDictionary>

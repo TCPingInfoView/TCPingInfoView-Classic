@@ -144,6 +144,7 @@ namespace TCPingInfoView.View
 
 			Height = _config.StartHeight;
 			Width = _config.StartWidth;
+			Topmost = _config.Topmost;
 
 			_rawEndPointInfo = _config.EndPointInfo;
 			LoadFormRawList();
@@ -155,6 +156,7 @@ namespace TCPingInfoView.View
 			_config.StartLeft = Left;
 			_config.StartHeight = Height;
 			_config.StartWidth = Width;
+			_config.Topmost = Topmost;
 			_config.EndPointInfo = _rawEndPointInfo.Select(info => (EndPointInfo)info.Clone()).ToList();
 			Write.SaveConfig(_config);
 		}
@@ -171,6 +173,21 @@ namespace TCPingInfoView.View
 			{
 				endPointInfo.ResetAsync();
 			}
+		}
+
+		private void AlwaysOnTop_OnClick(object sender, RoutedEventArgs e)
+		{
+			Topmost = !Topmost;
+		}
+
+		private void AutoSize_OnClick(object sender, RoutedEventArgs e)
+		{
+			foreach (var column in EndPointDataGrid.Columns)
+			{
+				column.Width = new DataGridLength(1, DataGridLengthUnitType.Auto);
+			}
+			SizeToContent = SizeToContent.Width;
+			SizeToContent = SizeToContent.Manual;
 		}
 	}
 }

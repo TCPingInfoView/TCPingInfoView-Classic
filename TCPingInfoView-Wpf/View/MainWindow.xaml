@@ -37,8 +37,14 @@
 					<Separator />
 					<MenuItem Header="{DynamicResource ResourceKey=Exit}" Click="ExitButton_OnClick" />
 				</MenuItem>
-				<MenuItem x:Name="LanguageMenu" Header="{DynamicResource ResourceKey=Language}" />
+				<MenuItem Header="{DynamicResource ResourceKey=View}">
+					<MenuItem Header="{DynamicResource ResourceKey=AlwaysOnTop}" IsChecked="{Binding Topmost,ElementName=Mw}" Click="AlwaysOnTop_OnClick"/>
+					<MenuItem Header="{DynamicResource ResourceKey=AutoSize}" Click="AutoSize_OnClick"/>
+					<Separator />
+					<MenuItem x:Name="LanguageMenu" Header="{DynamicResource ResourceKey=Language}" />
+				</MenuItem>
 			</Menu>
+
 			<ToolBar DockPanel.Dock="Top" Background="Transparent" Loaded="ToolBar_Loaded">
 				<Button Style="{StaticResource PaintButton}" Click="LoadButton_OnClick">
 					<Image Style="{StaticResource ToolbarImage}" Source="../Resources/Load.png" />
@@ -51,11 +57,13 @@
 					<Image Style="{StaticResource ToolbarImage}" Source="../Resources/Exit.png"/>
 				</Button>
 			</ToolBar>
+
 			<StatusBar DockPanel.Dock="Bottom">
 				<StatusBarItem>
 					<TextBlock Text="https://github.com/HMBSbige/TCPingInfoView" />
 				</StatusBarItem>
 			</StatusBar>
+
 			<DataGrid x:Name="EndPointDataGrid"
 					GridLinesVisibility="All"
 					HorizontalGridLinesBrush="LightGray"
@@ -69,19 +77,71 @@
 					CanUserAddRows="false" CanUserResizeRows="False"
 					ItemsSource="{Binding EndPointsCollection}">
 				<DataGrid.Columns>
-					<DataGridTextColumn Header="ID" Binding="{Binding Index}" IsReadOnly="True" />
-					<DataGridTextColumn Header="Hostname" Binding="{Binding Hostname}" IsReadOnly="True" />
-					<DataGridTextColumn Header="Ip" Binding="{Binding Ip}" IsReadOnly="True" />
-					<DataGridTextColumn Header="Port" Binding="{Binding Port, Mode=TwoWay}" IsReadOnly="False"/>
-					<DataGridTextColumn Header="Description" Binding="{Binding Description, Mode=TwoWay}" IsReadOnly="False" />
-					<DataGridTextColumn Header="LastPing" Binding="{Binding LastPing}" IsReadOnly="True" />
-					<DataGridTextColumn Header="MaxPing" Binding="{Binding MaxPing}" IsReadOnly="True" />
-					<DataGridTextColumn Header="MinPing" Binding="{Binding MinPing}" IsReadOnly="True" />
-					<DataGridTextColumn Header="AveragePing" Binding="{Binding AveragePing}" IsReadOnly="True" />
-					<DataGridTextColumn Header="LastTCPing" Binding="{Binding LastTCPing}" IsReadOnly="True" />
-					<DataGridTextColumn Header="MaxTCPing" Binding="{Binding MaxTCPing}" IsReadOnly="True" />
-					<DataGridTextColumn Header="MinTCPing" Binding="{Binding MinTCPing}" IsReadOnly="True" />
-					<DataGridTextColumn Header="AverageTCPing" Binding="{Binding AverageTCPing}" IsReadOnly="True" />
+					<DataGridTextColumn  Binding="{Binding Index}" IsReadOnly="True">
+						<DataGridTextColumn.Header>
+							<TextBlock Text="{DynamicResource Id}" />
+						</DataGridTextColumn.Header>
+					</DataGridTextColumn>
+					<DataGridTextColumn  Binding="{Binding Hostname}" IsReadOnly="True">
+						<DataGridTextColumn.Header>
+							<TextBlock Text="{DynamicResource Hostname}" />
+						</DataGridTextColumn.Header>
+					</DataGridTextColumn>
+					<DataGridTextColumn Binding="{Binding Ip}" IsReadOnly="True">
+						<DataGridTextColumn.Header>
+							<TextBlock Text="{DynamicResource Ip}" />
+						</DataGridTextColumn.Header>
+					</DataGridTextColumn>
+					<DataGridTextColumn Binding="{Binding Port, Mode=TwoWay}" IsReadOnly="False">
+						<DataGridTextColumn.Header>
+							<TextBlock Text="{DynamicResource Port}" />
+						</DataGridTextColumn.Header>
+					</DataGridTextColumn>
+					<DataGridTextColumn Binding="{Binding Description, Mode=TwoWay}" IsReadOnly="False">
+						<DataGridTextColumn.Header>
+							<TextBlock Text="{DynamicResource Description}" />
+						</DataGridTextColumn.Header>
+					</DataGridTextColumn>
+					<DataGridTextColumn Binding="{Binding LastPing}" IsReadOnly="True">
+						<DataGridTextColumn.Header>
+							<TextBlock Text="{DynamicResource LastPing}" />
+						</DataGridTextColumn.Header>
+					</DataGridTextColumn>
+					<DataGridTextColumn Binding="{Binding MaxPing}" IsReadOnly="True">
+						<DataGridTextColumn.Header>
+							<TextBlock Text="{DynamicResource MaxPing}" />
+						</DataGridTextColumn.Header>
+					</DataGridTextColumn>
+					<DataGridTextColumn Binding="{Binding MinPing}" IsReadOnly="True">
+						<DataGridTextColumn.Header>
+							<TextBlock Text="{DynamicResource MinPing}" />
+						</DataGridTextColumn.Header>
+					</DataGridTextColumn>
+					<DataGridTextColumn Binding="{Binding AveragePing}" IsReadOnly="True">
+						<DataGridTextColumn.Header>
+							<TextBlock Text="{DynamicResource AveragePing}" />
+						</DataGridTextColumn.Header>
+					</DataGridTextColumn>
+					<DataGridTextColumn Binding="{Binding LastTCPing}" IsReadOnly="True">
+						<DataGridTextColumn.Header>
+							<TextBlock Text="{DynamicResource LastTCPing}" />
+						</DataGridTextColumn.Header>
+					</DataGridTextColumn>
+					<DataGridTextColumn Binding="{Binding MaxTCPing}" IsReadOnly="True">
+						<DataGridTextColumn.Header>
+							<TextBlock Text="{DynamicResource MaxTCPing}" />
+						</DataGridTextColumn.Header>
+					</DataGridTextColumn>
+					<DataGridTextColumn Binding="{Binding MinTCPing}" IsReadOnly="True">
+						<DataGridTextColumn.Header>
+							<TextBlock Text="{DynamicResource MinTCPing}" />
+						</DataGridTextColumn.Header>
+					</DataGridTextColumn>
+					<DataGridTextColumn Binding="{Binding AverageTCPing}" IsReadOnly="True">
+						<DataGridTextColumn.Header>
+							<TextBlock Text="{DynamicResource AverageTCPing}" />
+						</DataGridTextColumn.Header>
+					</DataGridTextColumn>
 				</DataGrid.Columns>
 			</DataGrid>
 		</DockPanel>
