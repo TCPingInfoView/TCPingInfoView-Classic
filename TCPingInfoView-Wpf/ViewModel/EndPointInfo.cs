@@ -25,30 +25,61 @@ namespace TCPingInfoView.ViewModel
 			_testResults = new ObservableCollection<TestResult>();
 			AllowICMP = true;
 			AllowTCP = true;
+			IsRememberIp = true;
 			Reset();
 		}
 
-		public void Reset()
+		private void Reset()
 		{
 			TestResults.Clear();
+
+			_totalPing = 0;
 			SucceedPingCount = 0;
 			FailedPingCount = 0;
-			_totalPing = 0;
 			LastPing = null;
 			MaxPing = null;
 			MinPing = null;
+			OnPropertyChanged(nameof(AveragePing));
+
+			_totalTCPing = 0;
+			SucceedTCPingCount = 0;
+			FailedTCPingCount = 0;
+			LastTCPing = null;
+			MaxTCPing = null;
+			MinTCPing = null;
+			OnPropertyChanged(nameof(AverageTCPing));
+		}
+
+		public async void ResetAsync()
+		{
+			Reset();
+			await Task.Delay(0);
 		}
 
 		public object Clone()
 		{
+			if (IsRememberIp)
+			{
+				return new EndPointInfo(Index)
+				{
+					Hostname = null,
+					Ip = Ip,
+					Port = Port,
+					Description = Description,
+					AllowTCP = AllowTCP,
+					AllowICMP = AllowICMP,
+					IsRememberIp = IsRememberIp
+				};
+			}
 			return new EndPointInfo(Index)
 			{
 				Hostname = Hostname,
-				Ip = Ip,
+				Ip = null,
 				Port = Port,
 				Description = Description,
 				AllowTCP = AllowTCP,
-				AllowICMP = AllowICMP
+				AllowICMP = AllowICMP,
+				IsRememberIp = IsRememberIp
 			};
 		}
 
@@ -73,6 +104,9 @@ namespace TCPingInfoView.ViewModel
 		private long? _minTCPing;
 
 		public int Index { get; set; }
+
+		[JsonIgnore]
+		public bool IsRememberIp { get; set; }
 
 		public string Hostname
 		{

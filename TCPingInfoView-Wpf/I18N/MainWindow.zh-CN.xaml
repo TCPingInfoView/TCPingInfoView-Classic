@@ -5,6 +5,7 @@
 
 	<sys:String x:Key="File">文件(_F)</sys:String>
 	<sys:String x:Key="Load">从文本文件导入(_L)</sys:String>
+	<sys:String x:Key="Reset">重置计数(_R)</sys:String>
 	<sys:String x:Key="Exit">退出(_E)</sys:String>
 
 	<sys:String x:Key="Language">选择语言</sys:String>

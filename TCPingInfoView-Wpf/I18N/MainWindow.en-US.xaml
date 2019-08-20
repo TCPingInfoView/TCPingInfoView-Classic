@@ -5,6 +5,7 @@
 
 	<sys:String x:Key="File">_File</sys:String>
 	<sys:String x:Key="Load">_Load Form TXT</sys:String>
+	<sys:String x:Key="Reset">_Reset</sys:String>
 	<sys:String x:Key="Exit">_Exit</sys:String>
 
 	<sys:String x:Key="Language">Select Language</sys:String>

@@ -79,7 +79,8 @@ namespace TCPingInfoView.Utils
 				Hostname = hostname,
 				Ip = ip,
 				Port = port,
-				Description = string.Empty
+				Description = string.Empty,
+				IsRememberIp = ip != null
 			};
 
 			if (s.Length == 2)

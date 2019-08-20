@@ -104,8 +104,7 @@ namespace TCPingInfoView.View
 		private void LoadFormRawList()
 		{
 			MainWindowViewModel.EndPointsCollection.Clear();
-			var list = _rawEndPointInfo.Select(info => (EndPointInfo)info.Clone()).ToList();
-			foreach (var info in list)
+			foreach (var info in _rawEndPointInfo)
 			{
 				MainWindowViewModel.EndPointsCollection.Add(info);
 			}
@@ -156,13 +155,22 @@ namespace TCPingInfoView.View
 			_config.StartLeft = Left;
 			_config.StartHeight = Height;
 			_config.StartWidth = Width;
-			_config.EndPointInfo = _rawEndPointInfo;
+			_config.EndPointInfo = _rawEndPointInfo.Select(info => (EndPointInfo)info.Clone()).ToList();
 			Write.SaveConfig(_config);
 		}
 
 		private void ExitButton_OnClick(object sender, RoutedEventArgs e)
 		{
 			Close();
+		}
+
+		private void ResetButton_OnClick(object sender, RoutedEventArgs e)
+		{
+			StopPingTask();
+			foreach (var endPointInfo in MainWindowViewModel.EndPointsCollection)
+			{
+				endPointInfo.ResetAsync();
+			}
 		}
 	}
 }
