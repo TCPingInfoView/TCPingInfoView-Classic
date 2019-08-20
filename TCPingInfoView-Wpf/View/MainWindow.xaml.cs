@@ -66,12 +66,13 @@ namespace TCPingInfoView.View
 
 		private void MainWindow_OnClosed(object sender, EventArgs e)
 		{
+			StopPingTask();
 			SaveConfig();
 		}
 
 		private async void TestButton_Click(object sender, RoutedEventArgs e)
 		{
-			PingAll();
+			PingAll(_ctsPingTask.Token);
 			await Task.Delay(0);
 		}
 
@@ -118,15 +119,15 @@ namespace TCPingInfoView.View
 			}
 		}
 
-		private void PingAll()
+		private void PingAll(CancellationToken ct)
 		{
 			foreach (var endPointInfo in MainWindowViewModel.EndPointsCollection)
 			{
-				if (_ctsPingTask.IsCancellationRequested)
+				if (ct.IsCancellationRequested)
 				{
 					break;
 				}
-				endPointInfo.PingOne(_ctsPingTask.Token);
+				endPointInfo.PingOne(ct);
 			}
 		}
 
@@ -134,7 +135,7 @@ namespace TCPingInfoView.View
 		{
 			while (!ct.IsCancellationRequested)
 			{
-				PingAll();
+				PingAll(ct);
 				try
 				{
 					await Task.Delay(_config.Interval * 1000, ct);
