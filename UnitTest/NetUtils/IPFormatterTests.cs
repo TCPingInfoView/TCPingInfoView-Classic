@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Net;
+using System.Numerics;
 using TCPingInfoViewLib.NetUtils;
 
 namespace UnitTest.NetUtils
@@ -40,5 +42,20 @@ namespace UnitTest.NetUtils
 
 			Assert.IsNull(r6);
 		}
+
+		[TestMethod]
+		public void ToIntegerTest()
+		{
+			var s1 = IPAddress.Loopback;
+			var s2 = IPAddress.Parse(@"172.217.14.68");
+			var s3 = IPAddress.IPv6Loopback;
+			var s4 = IPAddress.Parse(@"2607:f8b0:4007:80e::200e");
+
+			Assert.AreEqual(s1.ToInteger(), 2130706433);
+			Assert.AreEqual(s2.ToInteger(), 2899906116);
+			Assert.AreEqual(s3.ToInteger(), BigInteger.One);
+			Assert.AreEqual(s4.ToInteger(), BigInteger.Parse(@"50552053919390396235022603938716196878"));
+		}
+
 	}
 }

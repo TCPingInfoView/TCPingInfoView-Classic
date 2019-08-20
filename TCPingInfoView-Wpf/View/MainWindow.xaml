@@ -22,8 +22,7 @@
 				<Style x:Key="ToolbarImage" TargetType="Image">
 					<Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"></Setter>
 				</Style>
-
-
+				<SolidColorBrush Color="LightGray" x:Key="GridLinesBrush" />
 			</ResourceDictionary>
 		</Window.Resources>
 
@@ -66,8 +65,8 @@
 
 			<DataGrid x:Name="EndPointDataGrid"
 					GridLinesVisibility="All"
-					HorizontalGridLinesBrush="LightGray"
-					VerticalGridLinesBrush="LightGray"
+					HorizontalGridLinesBrush="{StaticResource GridLinesBrush}"
+					VerticalGridLinesBrush="{StaticResource GridLinesBrush}"
 
 					Background="Transparent"
 
@@ -76,6 +75,17 @@
 					SelectionUnit="FullRow" SelectionMode="Single"
 					CanUserAddRows="false" CanUserResizeRows="False"
 					ItemsSource="{Binding EndPointsCollection}">
+				<!--
+				<DataGrid.Resources>
+					<Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+						<Setter Property="Background" Value="Transparent" />
+						<Setter Property="BorderBrush" Value="{StaticResource GridLinesBrush}" />
+						<Setter Property="Margin" Value="0" />
+						<Setter Property="Padding" Value="3,0,3,0" />
+						<Setter Property="BorderThickness" Value="0,0,1,1" />
+					</Style>
+				</DataGrid.Resources>
+				-->
 				<DataGrid.Columns>
 					<DataGridTextColumn  Binding="{Binding Index}" IsReadOnly="True">
 						<DataGridTextColumn.Header>
@@ -87,7 +97,7 @@
 							<TextBlock Text="{DynamicResource Hostname}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding Ip}" IsReadOnly="True">
+					<DataGridTextColumn Binding="{Binding Ip}" IsReadOnly="True" SortMemberPath="IpLong">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource Ip}" />
 						</DataGridTextColumn.Header>

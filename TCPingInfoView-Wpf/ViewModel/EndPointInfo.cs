@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Numerics;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -133,6 +134,9 @@ namespace TCPingInfoView.ViewModel
 				}
 			}
 		}
+
+		[JsonIgnore]
+		public BigInteger IpLong => Ip.ToInteger();
 
 		public ushort Port
 		{

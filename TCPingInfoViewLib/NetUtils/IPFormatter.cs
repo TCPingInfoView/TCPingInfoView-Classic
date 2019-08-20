@@ -1,4 +1,7 @@
-﻿using System.Net;
+﻿using System;
+using System.Linq;
+using System.Net;
+using System.Numerics;
 using System.Text.RegularExpressions;
 
 namespace TCPingInfoViewLib.NetUtils
@@ -64,6 +67,34 @@ namespace TCPingInfoViewLib.NetUtils
 			}
 
 			return null;
+		}
+
+		public static BigInteger ToInteger(this IPAddress ip)
+		{
+			if (ip != null)
+			{
+				var bytes = ip.GetAddressBytes();
+				if (BitConverter.IsLittleEndian)
+				{
+					bytes = bytes.Reverse().ToArray();
+				}
+
+				BigInteger res;
+				if (bytes.Length > 8)
+				{
+					//IPv6
+					res = BitConverter.ToUInt64(bytes, 8);
+					res <<= 64;
+					res += BitConverter.ToUInt64(bytes, 0);
+				}
+				else
+				{
+					//IPv4
+					res = BitConverter.ToUInt32(bytes, 0);
+				}
+				return res;
+			}
+			return 0;
 		}
 	}
 }
