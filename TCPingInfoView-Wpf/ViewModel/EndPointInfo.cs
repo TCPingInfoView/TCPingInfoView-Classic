@@ -26,6 +26,10 @@ namespace TCPingInfoView.ViewModel
 			_testResults = new ObservableCollection<TestResult>();
 			AllowICMP = true;
 			AllowTCP = true;
+			PingTimeout = 3000;
+			TCPingTimeout = 3000;
+			DNSTimeout = 3000;
+			ReverseDNSTimeout = 3000;
 			IsRememberIp = true;
 			Reset();
 		}
@@ -178,9 +182,15 @@ namespace TCPingInfoView.ViewModel
 			}
 		}
 
+		public int DNSTimeout { get; set; }
+
+		public int ReverseDNSTimeout { get; set; }
+
 		#region ICMPing
 
 		public bool AllowICMP { get; set; }
+
+		public int PingTimeout { get; set; }
 
 		[JsonIgnore]
 		public long SucceedPingCount
@@ -270,6 +280,8 @@ namespace TCPingInfoView.ViewModel
 		#region TCPing
 
 		public bool AllowTCP { get; set; }
+
+		public int TCPingTimeout { get; set; }
 
 		[JsonIgnore]
 		public long SucceedTCPingCount
@@ -428,12 +440,12 @@ namespace TCPingInfoView.ViewModel
 		{
 			if (Hostname == null && Ip != null)
 			{
-				var hostname = await DnsQuery.GetHostNameAsync(Ip, ct, 3000);
+				var hostname = await DnsQuery.GetHostNameAsync(Ip, ct, ReverseDNSTimeout);
 				Hostname = hostname ?? Ip.ToString();
 			}
 			else if (Hostname != null && Ip == null)
 			{
-				Ip = await DnsQuery.GetIpAsync(Hostname, ct, 3000);
+				Ip = await DnsQuery.GetIpAsync(Hostname, ct, DNSTimeout);
 			}
 			else if (Hostname == null && Ip == null)
 			{
@@ -452,12 +464,12 @@ namespace TCPingInfoView.ViewModel
 
 			if (AllowICMP)
 			{
-				res.PingResult = await NetTest.ICMPingAsync(Ip, 3000, ct);
+				res.PingResult = await NetTest.ICMPingAsync(Ip, PingTimeout, ct);
 			}
 
 			if (AllowTCP)
 			{
-				res.TCPingResult = await NetTest.TCPingAsync(Ip, Port, 3000, ct);
+				res.TCPingResult = await NetTest.TCPingAsync(Ip, Port, TCPingTimeout, ct);
 			}
 
 			return res;

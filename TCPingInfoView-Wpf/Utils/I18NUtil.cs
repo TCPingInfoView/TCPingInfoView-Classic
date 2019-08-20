@@ -7,6 +7,9 @@ namespace TCPingInfoView.Utils
 	public static class I18NUtil
 	{
 		private const string DefaultLanguage = @"en-US";
+
+		public static string CurrentLanguage = @"en-US";
+
 		public static readonly Dictionary<string, string> SupportLanguage = new Dictionary<string, string>
 		{
 			{@"简体中文", @"zh-CN"},
@@ -22,6 +25,7 @@ namespace TCPingInfoView.Utils
 		public static void SetLanguage(string langName)
 		{
 			App.SetLanguage(langName);
+			CurrentLanguage = langName;
 		}
 
 		public static string GetAppStringValue(string key)
