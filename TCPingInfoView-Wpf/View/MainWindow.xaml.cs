@@ -17,9 +17,9 @@ namespace TCPingInfoView.View
 		{
 			InitializeComponent();
 			MainWindowViewModel.Window = this;
-			AddLanguageMenu();
-			SetLanguage();
 			LoadConfig();
+			AddLanguageMenu();
+			SetLanguage(Config.Language);
 		}
 
 		public MainWindowViewModel MainWindowViewModel { get; set; } = new MainWindowViewModel();
@@ -196,6 +196,7 @@ namespace TCPingInfoView.View
 			Config.StartHeight = Height;
 			Config.StartWidth = Width;
 			Config.Topmost = Topmost;
+			Config.Language = I18NUtil.CurrentLanguage;
 			Config.EndPointInfo = _rawEndPointInfo.Select(info => (EndPointInfo)info.Clone()).ToList();
 			Write.SaveConfig(Config);
 		}

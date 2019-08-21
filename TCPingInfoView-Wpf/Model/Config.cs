@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Media;
+using TCPingInfoView.Utils;
 using TCPingInfoView.ViewModel;
 
 namespace TCPingInfoView.Model
@@ -24,6 +25,8 @@ namespace TCPingInfoView.Model
 		public int DNSTimeout { get; set; }
 		public int ReverseDNSTimeout { get; set; }
 
+		public string Language { get; set; }
+
 		public IEnumerable<EndPointInfo> EndPointInfo { get; set; }
 
 		public Config()
@@ -43,6 +46,7 @@ namespace TCPingInfoView.Model
 			TCPingTimeout = 3000;
 			DNSTimeout = 3000;
 			ReverseDNSTimeout = 3000;
+			Language = I18NUtil.GetLanguage();
 			EndPointInfo = new List<EndPointInfo>();
 		}
 	}

@@ -35,6 +35,7 @@ namespace UnitTest.Model
 			Assert.AreEqual(configCopy.TCPingTimeout, config.TCPingTimeout);
 			Assert.AreEqual(configCopy.DNSTimeout, config.DNSTimeout);
 			Assert.AreEqual(configCopy.ReverseDNSTimeout, config.ReverseDNSTimeout);
+			Assert.AreEqual(configCopy.Language, config.Language);
 		}
 
 		[TestMethod]
