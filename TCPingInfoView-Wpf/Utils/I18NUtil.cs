@@ -8,7 +8,7 @@ namespace TCPingInfoView.Utils
 	{
 		private const string DefaultLanguage = @"en-US";
 
-		public static string CurrentLanguage = @"en-US";
+		public static string CurrentLanguage = @"";
 
 		public static readonly Dictionary<string, string> SupportLanguage = new Dictionary<string, string>
 		{
@@ -34,6 +34,16 @@ namespace TCPingInfoView.Utils
 			{
 				return str;
 			}
+			return null;
+		}
+
+		public static string GetWindowStringValue(Window window, string key)
+		{
+			if (window.Resources.MergedDictionaries[0][key] is string str)
+			{
+				return str;
+			}
+
 			return null;
 		}
 	}

@@ -1,4 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows;
+using TCPingInfoView.Utils;
 
 namespace TCPingInfoView.ViewModel
 {
@@ -9,11 +11,13 @@ namespace TCPingInfoView.ViewModel
 			_endpointsCollection = new ObservableCollection<EndPointInfo>();
 			_displayedTimerImage = TimerStartImageSource;
 			_isTaskStart = false;
+			Window = null;
 		}
 
 		private const string TimerStartImageSource = @"../Resources/Start.png";
 		private const string TimerStopImageSource = @"../Resources/Stop.png";
 
+		public Window Window { private get; set; }
 
 		private ObservableCollection<EndPointInfo> _endpointsCollection;
 		public ObservableCollection<EndPointInfo> EndPointsCollection
@@ -69,6 +73,38 @@ namespace TCPingInfoView.ViewModel
 		private void SetTimerStopImage()
 		{
 			DisplayedTimerImage = TimerStopImageSource;
+		}
+
+		public void HideWindow()
+		{
+			Window.Visibility = Visibility.Collapsed;
+		}
+
+		public void ShowWindow()
+		{
+			Window.Visibility = Visibility.Visible;
+			Win32.UnMinimize(Window);
+			if (!Window.Topmost)
+			{
+				Window.Topmost = true;
+				Window.Topmost = false;
+			}
+		}
+
+		public void TriggerShowHide()
+		{
+			if (Window == null)
+			{
+				return;
+			}
+			if (Window.Visibility == Visibility.Visible)
+			{
+				HideWindow();
+			}
+			else
+			{
+				ShowWindow();
+			}
 		}
 	}
 }

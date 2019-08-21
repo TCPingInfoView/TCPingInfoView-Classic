@@ -16,6 +16,7 @@ namespace TCPingInfoView.View
 		public MainWindow()
 		{
 			InitializeComponent();
+			MainWindowViewModel.Window = this;
 			AddLanguageMenu();
 			SetLanguage();
 			LoadConfig();
@@ -42,6 +43,17 @@ namespace TCPingInfoView.View
 			}
 		}
 
+		private void LoadNotifyIconContextMenu()
+		{
+			NotifyIcon.ContextMenu = new ContextMenu();
+			var exitMenuItem = new MenuItem
+			{
+				Header = I18NUtil.GetWindowStringValue(this, @"Exit")
+			};
+			exitMenuItem.Click += ExitButton_OnClick;
+			NotifyIcon.ContextMenu.Items.Add(exitMenuItem);
+		}
+
 		private void SetLanguage(string langName = @"")
 		{
 			if (string.IsNullOrEmpty(langName))
@@ -57,6 +69,7 @@ namespace TCPingInfoView.View
 				}
 			}
 			I18NUtil.SetLanguage(langName);
+			LoadNotifyIconContextMenu();
 		}
 
 		private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
@@ -227,6 +240,11 @@ namespace TCPingInfoView.View
 				StartPingTask(_ctsPingTask.Token);
 				MainWindowViewModel.IsTaskStart = true;
 			}
+		}
+
+		private void MinimizeButton_OnClick(object sender, RoutedEventArgs e)
+		{
+			MainWindowViewModel.HideWindow();
 		}
 	}
 }

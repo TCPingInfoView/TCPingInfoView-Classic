@@ -19,7 +19,7 @@ namespace TCPingInfoView.Utils
 
 		public const string ConfigFileName = @"TCPingInfoView.json";
 
-		public static string CurrentDirectory = Path.GetDirectoryName(GetExecutablePath());
+		public static readonly string CurrentDirectory = Path.GetDirectoryName(GetExecutablePath());
 
 		#endregion
 
@@ -121,5 +121,6 @@ namespace TCPingInfoView.Utils
 		{
 			return Assembly.GetExecutingAssembly().Location;
 		}
+
 	}
 }

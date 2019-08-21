@@ -3,30 +3,42 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:tb="http://www.hardcodet.net/taskbar"
+		xmlns:local="clr-namespace:TCPingInfoView.Commands"
 		mc:Ignorable="d"
 		x:Name="Mw"
 		Title="TCPingInfoView" Height="618" Width="1000"
 		DataContext="{Binding MainWindowViewModel, ElementName=Mw}"
 		Loaded="MainWindow_OnLoaded" Closed="MainWindow_OnClosed">
 
-		<Window.Resources>
-			<ResourceDictionary>
-				<ResourceDictionary.MergedDictionaries>
-					<ResourceDictionary Source="../I18N/MainWindow.en-US.xaml" />
-				</ResourceDictionary.MergedDictionaries>
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="../I18N/MainWindow.en-US.xaml" />
+			</ResourceDictionary.MergedDictionaries>
 
-				<Style x:Key="PaintButton" TargetType="Button">
-					<Setter Property="Height" Value="38"/>
-					<Setter Property="BorderThickness" Value="1"/>
-				</Style>
-				<Style x:Key="ToolbarImage" TargetType="Image">
-					<Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"></Setter>
-				</Style>
-				<SolidColorBrush Color="LightGray" x:Key="GridLinesBrush" />
-			</ResourceDictionary>
-		</Window.Resources>
+			<Style x:Key="PaintButton" TargetType="Button">
+				<Setter Property="Height" Value="38"/>
+				<Setter Property="BorderThickness" Value="1"/>
+			</Style>
+			<Style x:Key="ToolbarImage" TargetType="Image">
+				<Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"></Setter>
+			</Style>
+			<SolidColorBrush Color="LightGray" x:Key="GridLinesBrush" />
+			<local:ShowWindowCommand x:Key="ShowHideCommand" />
+		</ResourceDictionary>
+	</Window.Resources>
+
 
 	<Grid>
+		<tb:TaskbarIcon x:Name="NotifyIcon"
+						Visibility="Visible"
+						ToolTipText="TCPingInfoView"
+						IconSource="../Resources/TCPing.ico"
+						MenuActivation="RightClick"
+						DoubleClickCommand="{StaticResource ShowHideCommand}"
+						DoubleClickCommandParameter="{Binding}">
+		</tb:TaskbarIcon>
 		<DockPanel>
 			<Menu DockPanel.Dock="Top" Background="Transparent">
 				<MenuItem Header="{DynamicResource ResourceKey=File}">
@@ -54,6 +66,10 @@
 				</Button>
 				<Button Style="{StaticResource PaintButton}" Click="TimerButton_OnClick">
 					<Image Style="{StaticResource ToolbarImage}" Source="{Binding DisplayedTimerImage}" />
+				</Button>
+				<Separator />
+				<Button Style="{StaticResource PaintButton}" Click="MinimizeButton_OnClick">
+					<Image Style="{StaticResource ToolbarImage}" Source="../Resources/Minimize.png" />
 				</Button>
 				<Button Style="{StaticResource PaintButton}" Click="ExitButton_OnClick">
 					<Image Style="{StaticResource ToolbarImage}" Source="../Resources/Exit.png"/>
