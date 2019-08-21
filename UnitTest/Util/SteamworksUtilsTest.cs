@@ -12,7 +12,7 @@ namespace UnitTest.Util
 		[AssemblyInitialize]
 		public static void AssemblyInit(TestContext context)
 		{
-			SteamClient.OnCallbackException = (e) =>
+			SteamClient.OnCallbackException = e =>
 			{
 				Console.Error.WriteLine(e.Message);
 				Console.Error.WriteLine(e.StackTrace);

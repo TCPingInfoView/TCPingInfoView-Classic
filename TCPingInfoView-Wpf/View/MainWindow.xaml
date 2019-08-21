@@ -6,6 +6,7 @@
 		xmlns:tb="http://www.hardcodet.net/taskbar"
 		xmlns:local="clr-namespace:TCPingInfoView.Commands"
 		xmlns:valueConverter="clr-namespace:TCPingInfoView.ValueConverter"
+		xmlns:system="clr-namespace:System;assembly=System.Runtime"
 		mc:Ignorable="d"
 		x:Name="Mw"
 		Title="TCPingInfoView" Height="618" Width="1000"
@@ -79,6 +80,7 @@
 				<Setter Property="Foreground"
 				        Value="{Binding AverageTCPing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource TCPingToForegroundBrushConverter}}" />
 			</Style>
+			<system:String x:Key="ProjectUrl">https://github.com/HMBSbige/TCPingInfoView</system:String>
 		</ResourceDictionary>
 	</Window.Resources>
 
@@ -110,6 +112,12 @@
 					<MenuItem Header="{DynamicResource ResourceKey=Reset}" Click="ResetButton_OnClick" />
 					<MenuItem Header="{DynamicResource ResourceKey=Clear}" Click="ClearButton_OnClick" />
 				</MenuItem>
+				<MenuItem Header="{DynamicResource ResourceKey=Help}">
+					<MenuItem Header="{DynamicResource ResourceKey=Feedback}" Click="FeedbackMenuItem_OnClick"/>
+					<MenuItem Header="{DynamicResource ResourceKey=CheckUpdate}" Click="CheckUpdateMenuItem_OnClick"/>
+					<Separator />
+					<MenuItem Header="{DynamicResource ResourceKey=About}" Click="AboutMenuItem_OnClick"/>
+				</MenuItem>
 			</Menu>
 
 			<ToolBar DockPanel.Dock="Top" Background="Transparent" Loaded="ToolBar_Loaded">
@@ -134,7 +142,7 @@
 
 			<StatusBar DockPanel.Dock="Bottom">
 				<StatusBarItem>
-					<TextBlock Text="https://github.com/HMBSbige/TCPingInfoView" />
+					<TextBlock Text="{StaticResource ProjectUrl}" />
 				</StatusBarItem>
 			</StatusBar>
 

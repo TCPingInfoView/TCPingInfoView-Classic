@@ -116,5 +116,15 @@ namespace TCPingInfoView.Utils
 			return Assembly.GetExecutingAssembly().Location;
 		}
 
+		public static void OpenUrl(string path)
+		{
+			new Process
+			{
+				StartInfo = new ProcessStartInfo(path)
+				{
+					UseShellExecute = true
+				}
+			}.Start();
+		}
 	}
 }

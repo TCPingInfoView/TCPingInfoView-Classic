@@ -17,6 +17,11 @@
 	<sys:String x:Key="Reset">重置计数(_R)</sys:String>
 	<sys:String x:Key="Clear">清空列表(_C)</sys:String>
 
+	<sys:String x:Key="Help">帮助(_H)</sys:String>
+	<sys:String x:Key="About">关于(_A)</sys:String>
+	<sys:String x:Key="CheckUpdate">检查更新(_C)</sys:String>
+	<sys:String x:Key="Feedback">问题反馈(_F)</sys:String>
+
 	<sys:String x:Key="Id">序号</sys:String>
 	<sys:String x:Key="Hostname">主机名</sys:String>
 	<sys:String x:Key="Ip">IP 地址</sys:String>

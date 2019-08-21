@@ -118,7 +118,7 @@ namespace TCPingInfoView.View
 			var i = MainWindowViewModel.EndPointsCollection.Count;
 			foreach (var info in list)
 			{
-				info.Index= ++i;
+				info.Index = ++i;
 				MainWindowViewModel.EndPointsCollection.Add(info);
 			}
 		}
@@ -259,6 +259,24 @@ namespace TCPingInfoView.View
 		private void AddButton_OnClick(object sender, RoutedEventArgs e)
 		{
 			LoadListFromFile(false);
+		}
+
+		private void FeedbackMenuItem_OnClick(object sender, RoutedEventArgs e)
+		{
+			Util.OpenUrl(@"https://github.com/HMBSbige/TCPingInfoView/issues/new");
+		}
+
+		private void CheckUpdateMenuItem_OnClick(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void AboutMenuItem_OnClick(object sender, RoutedEventArgs e)
+		{
+			if (FindResource(@"ProjectUrl") is string url)
+			{
+				Util.OpenUrl(url);
+			}
 		}
 	}
 }

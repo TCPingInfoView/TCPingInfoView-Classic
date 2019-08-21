@@ -17,6 +17,11 @@
 	<sys:String x:Key="Reset">_Reset</sys:String>
 	<sys:String x:Key="Clear">_Clear</sys:String>
 
+	<sys:String x:Key="Help">_Help</sys:String>
+	<sys:String x:Key="About">_About</sys:String>
+	<sys:String x:Key="CheckUpdate">_Check Update</sys:String>
+	<sys:String x:Key="Feedback">_Feedback</sys:String>
+	
 	<sys:String x:Key="Id">ID</sys:String>
 	<sys:String x:Key="Hostname">Hostname</sys:String>
 	<sys:String x:Key="Ip">IP Address</sys:String>

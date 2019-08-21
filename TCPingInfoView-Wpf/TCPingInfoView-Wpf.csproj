@@ -5,8 +5,12 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <RootNamespace>TCPingInfoView</RootNamespace>
     <UseWPF>true</UseWPF>
+    
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AssemblyName>TCPingInfoView</AssemblyName>
     <ApplicationIcon>Resources\TCPing.ico</ApplicationIcon>
+    <StartupObject>TCPingInfoView.App</StartupObject>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>

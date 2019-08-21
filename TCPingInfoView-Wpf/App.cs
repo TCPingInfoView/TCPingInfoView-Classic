@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Windows;
 using TCPingInfoView.Utils;
 using TCPingInfoView.View;
@@ -10,6 +11,8 @@ namespace TCPingInfoView
 		[STAThread]
 		private static void Main()
 		{
+			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13;
+
 			var app = new Application();
 			SetLanguage();
 
