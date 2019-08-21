@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
@@ -23,7 +24,7 @@ namespace TCPingInfoView.Utils
 
 		#endregion
 
-		public static EndPointInfo StringLine2Data(string line, int index)
+		public static EndPointInfo StringLine2EndPointInfo(string line, int index = 0)
 		{
 			var s = line.Split(new[] { ' ' }, 2, StringSplitOptions.RemoveEmptyEntries);
 			if (s.Length < 1)
@@ -93,14 +94,7 @@ namespace TCPingInfoView.Utils
 
 		public static IEnumerable<EndPointInfo> ToEndPoints(IEnumerable<string> sl)
 		{
-			var i = 0;
-			var res = new List<EndPointInfo>();
-			foreach (var line in sl)
-			{
-				++i;
-				res.Add(StringLine2Data(line, i));
-			}
-			return res;
+			return sl.Select(line => StringLine2EndPointInfo(line));
 		}
 
 		public static string GetExecutablePath()

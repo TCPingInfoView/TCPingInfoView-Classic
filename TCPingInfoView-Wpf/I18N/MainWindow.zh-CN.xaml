@@ -5,13 +5,17 @@
 
 	<sys:String x:Key="File">文件(_F)</sys:String>
 	<sys:String x:Key="Load">从文本文件导入(_L)</sys:String>
-	<sys:String x:Key="Reset">重置计数(_R)</sys:String>
 	<sys:String x:Key="Exit">退出(_E)</sys:String>
 
 	<sys:String x:Key="View">查看(_V)</sys:String>
 	<sys:String x:Key="AlwaysOnTop">窗口置顶(_T)</sys:String>
 	<sys:String x:Key="AutoSize">自动调整大小(_S)</sys:String>
 	<sys:String x:Key="Language">选择语言</sys:String>
+
+	<sys:String x:Key="List">列表(_L)</sys:String>
+	<sys:String x:Key="Add">从文本文件添加(_A)</sys:String>
+	<sys:String x:Key="Reset">重置计数(_R)</sys:String>
+	<sys:String x:Key="Clear">清空列表(_C)</sys:String>
 
 	<sys:String x:Key="Id">序号</sys:String>
 	<sys:String x:Key="Hostname">主机名</sys:String>

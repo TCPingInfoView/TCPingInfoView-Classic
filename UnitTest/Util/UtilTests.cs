@@ -17,13 +17,13 @@ namespace UnitTest.Util
 			var s6 = @"www.youtube.com";
 			var s7 = @"2409:8a55:260:1a60:a183:ee9e:98c3:df85:2080";
 
-			var r1 = TCPingInfoView.Utils.Util.StringLine2Data(s1, 1);
-			var r2 = TCPingInfoView.Utils.Util.StringLine2Data(s2, 2);
-			var r3 = TCPingInfoView.Utils.Util.StringLine2Data(s3, 3);
-			var r4 = TCPingInfoView.Utils.Util.StringLine2Data(s4, 4);
-			var r5 = TCPingInfoView.Utils.Util.StringLine2Data(s5, 5);
-			var r6 = TCPingInfoView.Utils.Util.StringLine2Data(s6, 6);
-			var r7 = TCPingInfoView.Utils.Util.StringLine2Data(s7, 7);
+			var r1 = TCPingInfoView.Utils.Util.StringLine2EndPointInfo(s1, 1);
+			var r2 = TCPingInfoView.Utils.Util.StringLine2EndPointInfo(s2, 2);
+			var r3 = TCPingInfoView.Utils.Util.StringLine2EndPointInfo(s3, 3);
+			var r4 = TCPingInfoView.Utils.Util.StringLine2EndPointInfo(s4, 4);
+			var r5 = TCPingInfoView.Utils.Util.StringLine2EndPointInfo(s5, 5);
+			var r6 = TCPingInfoView.Utils.Util.StringLine2EndPointInfo(s6, 6);
+			var r7 = TCPingInfoView.Utils.Util.StringLine2EndPointInfo(s7, 7);
 
 			Assert.AreEqual(r1.Ip, IPAddress.Parse(@"2607:f8b0:4007:801::2004"));
 			Assert.AreEqual(r1.Hostname, null);

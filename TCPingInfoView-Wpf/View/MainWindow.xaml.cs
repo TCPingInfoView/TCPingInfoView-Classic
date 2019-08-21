@@ -25,7 +25,6 @@ namespace TCPingInfoView.View
 		public MainWindowViewModel MainWindowViewModel { get; set; } = new MainWindowViewModel();
 		private CancellationTokenSource _ctsPingTask = new CancellationTokenSource();
 		public Config Config = new Config();
-		private IEnumerable<EndPointInfo> _rawEndPointInfo;
 
 		private void AddLanguageMenu()
 		{
@@ -110,25 +109,30 @@ namespace TCPingInfoView.View
 			}
 		}
 
-		private void LoadFormRawList()
+		private void LoadFormRawList(IEnumerable<EndPointInfo> list, bool isLoad = true)
 		{
-			MainWindowViewModel.EndPointsCollection.Clear();
-			foreach (var info in _rawEndPointInfo)
+			if (isLoad)
 			{
+				MainWindowViewModel.EndPointsCollection.Clear();
+			}
+			var i = MainWindowViewModel.EndPointsCollection.Count;
+			foreach (var info in list)
+			{
+				info.Index= ++i;
 				MainWindowViewModel.EndPointsCollection.Add(info);
 			}
 		}
 
-		private void LoadListFromFile()
+		private void LoadListFromFile(bool isLoad = true)
 		{
 			var path = Read.GetFilePath();
 			if (!string.IsNullOrWhiteSpace(path))
 			{
 				var rawString = Read.ReadTextFromFile(path);
-				_rawEndPointInfo = Read.ReadEndPointFromString(rawString);
+				var list = Read.ReadEndPointFromString(rawString);
 				SaveConfig();
 				StopPingTask();
-				LoadFormRawList();
+				LoadFormRawList(list, isLoad);
 			}
 		}
 
@@ -185,8 +189,7 @@ namespace TCPingInfoView.View
 			Width = Config.StartWidth;
 			Topmost = Config.Topmost;
 
-			_rawEndPointInfo = Config.EndPointInfo;
-			LoadFormRawList();
+			LoadFormRawList(Config.EndPointInfo);
 		}
 
 		private void SaveConfig()
@@ -197,7 +200,7 @@ namespace TCPingInfoView.View
 			Config.StartWidth = Width;
 			Config.Topmost = Topmost;
 			Config.Language = I18NUtil.CurrentLanguage;
-			Config.EndPointInfo = _rawEndPointInfo.Select(info => (EndPointInfo)info.Clone()).ToList();
+			Config.EndPointInfo = MainWindowViewModel.EndPointsCollection.Select(info => (EndPointInfo)info.Clone()).ToList();
 			Write.SaveConfig(Config);
 		}
 
@@ -245,6 +248,17 @@ namespace TCPingInfoView.View
 		private void MinimizeButton_OnClick(object sender, RoutedEventArgs e)
 		{
 			MainWindowViewModel.HideWindow();
+		}
+
+		private void ClearButton_OnClick(object sender, RoutedEventArgs e)
+		{
+			StopPingTask();
+			MainWindowViewModel.EndPointsCollection.Clear();
+		}
+
+		private void AddButton_OnClick(object sender, RoutedEventArgs e)
+		{
+			LoadListFromFile(false);
 		}
 	}
 }

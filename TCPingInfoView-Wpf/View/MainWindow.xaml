@@ -96,8 +96,7 @@
 			<Menu DockPanel.Dock="Top" Background="Transparent">
 				<MenuItem Header="{DynamicResource ResourceKey=File}">
 					<MenuItem Header="{DynamicResource ResourceKey=Load}" Click="LoadButton_OnClick" />
-					<Separator />
-					<MenuItem Header="{DynamicResource ResourceKey=Reset}" Click="ResetButton_OnClick"/>
+					<MenuItem Header="{DynamicResource ResourceKey=Add}" Click="AddButton_OnClick" />
 					<Separator />
 					<MenuItem Header="{DynamicResource ResourceKey=Exit}" Click="ExitButton_OnClick" />
 				</MenuItem>
@@ -106,6 +105,10 @@
 					<MenuItem Header="{DynamicResource ResourceKey=AutoSize}" Click="AutoSize_OnClick"/>
 					<Separator />
 					<MenuItem x:Name="LanguageMenu" Header="{DynamicResource ResourceKey=Language}" />
+				</MenuItem>
+				<MenuItem Header="{DynamicResource ResourceKey=List}">
+					<MenuItem Header="{DynamicResource ResourceKey=Reset}" Click="ResetButton_OnClick" />
+					<MenuItem Header="{DynamicResource ResourceKey=Clear}" Click="ClearButton_OnClick" />
 				</MenuItem>
 			</Menu>
 

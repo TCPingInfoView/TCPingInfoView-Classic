@@ -5,13 +5,17 @@
 
 	<sys:String x:Key="File">_File</sys:String>
 	<sys:String x:Key="Load">_Load Form TXT</sys:String>
-	<sys:String x:Key="Reset">_Reset</sys:String>
 	<sys:String x:Key="Exit">_Exit</sys:String>
 
 	<sys:String x:Key="View">_View</sys:String>
 	<sys:String x:Key="AlwaysOnTop">Always On _Top</sys:String>
 	<sys:String x:Key="AutoSize">Auto _Size</sys:String>
 	<sys:String x:Key="Language">Select Language</sys:String>
+
+	<sys:String x:Key="List">_List</sys:String>
+	<sys:String x:Key="Add">_Add Form TXT</sys:String>
+	<sys:String x:Key="Reset">_Reset</sys:String>
+	<sys:String x:Key="Clear">_Clear</sys:String>
 
 	<sys:String x:Key="Id">ID</sys:String>
 	<sys:String x:Key="Hostname">Hostname</sys:String>
