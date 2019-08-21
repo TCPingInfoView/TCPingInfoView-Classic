@@ -7,6 +7,7 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using TCPingInfoView.JsonConverters;
+using TCPingInfoView.Model;
 using TCPingInfoViewLib.NetUtils;
 
 namespace TCPingInfoView.ViewModel
@@ -26,10 +27,6 @@ namespace TCPingInfoView.ViewModel
 			_testResults = new ObservableCollection<TestResult>();
 			AllowICMP = true;
 			AllowTCP = true;
-			PingTimeout = 3000;
-			TCPingTimeout = 3000;
-			DNSTimeout = 3000;
-			ReverseDNSTimeout = 3000;
 			IsRememberIp = true;
 			Reset();
 		}
@@ -182,15 +179,9 @@ namespace TCPingInfoView.ViewModel
 			}
 		}
 
-		public int DNSTimeout { get; set; }
-
-		public int ReverseDNSTimeout { get; set; }
-
 		#region ICMPing
 
 		public bool AllowICMP { get; set; }
-
-		public int PingTimeout { get; set; }
 
 		[JsonIgnore]
 		public long SucceedPingCount
@@ -280,8 +271,6 @@ namespace TCPingInfoView.ViewModel
 		#region TCPing
 
 		public bool AllowTCP { get; set; }
-
-		public int TCPingTimeout { get; set; }
 
 		[JsonIgnore]
 		public long SucceedTCPingCount
@@ -436,16 +425,16 @@ namespace TCPingInfoView.ViewModel
 			}
 		}
 
-		private async Task<TestResult> PingEndPoint(CancellationToken ct)
+		private async Task<TestResult> PingEndPoint(CancellationToken ct, Config config)
 		{
 			if (Hostname == null && Ip != null)
 			{
-				var hostname = await DnsQuery.GetHostNameAsync(Ip, ct, ReverseDNSTimeout);
+				var hostname = await DnsQuery.GetHostNameAsync(Ip, ct, config.ReverseDNSTimeout);
 				Hostname = hostname ?? Ip.ToString();
 			}
 			else if (Hostname != null && Ip == null)
 			{
-				Ip = await DnsQuery.GetIpAsync(Hostname, ct, DNSTimeout);
+				Ip = await DnsQuery.GetIpAsync(Hostname, ct, config.DNSTimeout);
 			}
 			else if (Hostname == null && Ip == null)
 			{
@@ -464,20 +453,20 @@ namespace TCPingInfoView.ViewModel
 
 			if (AllowICMP)
 			{
-				res.PingResult = await NetTest.ICMPingAsync(Ip, PingTimeout, ct);
+				res.PingResult = await NetTest.ICMPingAsync(Ip, config.PingTimeout, ct);
 			}
 
 			if (AllowTCP)
 			{
-				res.TCPingResult = await NetTest.TCPingAsync(Ip, Port, TCPingTimeout, ct);
+				res.TCPingResult = await NetTest.TCPingAsync(Ip, Port, config.TCPingTimeout, ct);
 			}
 
 			return res;
 		}
 
-		public async void PingOne(CancellationToken ct)
+		public async void PingOne(CancellationToken ct, Config config)
 		{
-			var res = await PingEndPoint(ct);
+			var res = await PingEndPoint(ct, config);
 			if (!ct.IsCancellationRequested)
 			{
 				AddLog(res);

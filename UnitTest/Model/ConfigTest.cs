@@ -24,6 +24,17 @@ namespace UnitTest.Model
 			Assert.AreEqual(configCopy.StartWidth, config.StartWidth);
 			Assert.AreEqual(configCopy.StartLeft, config.StartLeft);
 			Assert.AreEqual(configCopy.StartTop, config.StartTop);
+			Assert.AreEqual(configCopy.Topmost, config.Topmost);
+			Assert.AreEqual(configCopy.Interval, config.Interval);
+			Assert.AreEqual(configCopy.FailedBackgroundColor, config.FailedBackgroundColor);
+			Assert.AreEqual(configCopy.SuccessForegroundColor, config.SuccessForegroundColor);
+			Assert.AreEqual(configCopy.LongPingForegroundColor, config.LongPingForegroundColor);
+			Assert.AreEqual(configCopy.LongPingTimeout, config.LongPingTimeout);
+			Assert.AreEqual(configCopy.PingTimeout, config.PingTimeout);
+			Assert.AreEqual(configCopy.LongTCPingTimeout, config.LongTCPingTimeout);
+			Assert.AreEqual(configCopy.TCPingTimeout, config.TCPingTimeout);
+			Assert.AreEqual(configCopy.DNSTimeout, config.DNSTimeout);
+			Assert.AreEqual(configCopy.ReverseDNSTimeout, config.ReverseDNSTimeout);
 		}
 
 		[TestMethod]

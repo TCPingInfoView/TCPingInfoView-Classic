@@ -5,6 +5,7 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:tb="http://www.hardcodet.net/taskbar"
 		xmlns:local="clr-namespace:TCPingInfoView.Commands"
+		xmlns:valueConverter="clr-namespace:TCPingInfoView.ValueConverter"
 		mc:Ignorable="d"
 		x:Name="Mw"
 		Title="TCPingInfoView" Height="618" Width="1000"
@@ -17,6 +18,10 @@
 				<ResourceDictionary Source="../I18N/MainWindow.en-US.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 
+			<valueConverter:PingToBackgroundBrushConverter x:Key="PingToBackgroundBrushConverter" />
+			<valueConverter:PingToForegroundBrushConverter x:Key="PingToForegroundBrushConverter" />
+			<valueConverter:TCPingToForegroundBrushConverter x:Key="TCPingToForegroundBrushConverter" />
+
 			<Style x:Key="PaintButton" TargetType="Button">
 				<Setter Property="Height" Value="38"/>
 				<Setter Property="BorderThickness" Value="1"/>
@@ -25,7 +30,55 @@
 				<Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"></Setter>
 			</Style>
 			<SolidColorBrush Color="LightGray" x:Key="GridLinesBrush" />
+
 			<local:ShowWindowCommand x:Key="ShowHideCommand" />
+
+			<Style TargetType="DataGridCell" x:Key="DefaultCellStyle">
+				<Setter Property="BorderThickness" Value="0" />
+				<Style.Triggers>
+					<Trigger Property="DataGridCell.IsSelected" Value="True">
+						<Setter Property="Background" Value="#0078d7" />
+					</Trigger>
+				</Style.Triggers>
+			</Style>
+
+			<Style TargetType="DataGridCell" x:Key="LastPingCellStyle" BasedOn="{StaticResource DefaultCellStyle}">
+				<Setter Property="Background"
+						Value="{Binding LastPing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource PingToBackgroundBrushConverter}}" />
+				<Setter Property="Foreground"
+						Value="{Binding LastPing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource PingToForegroundBrushConverter}}" />
+			</Style>
+			<Style TargetType="DataGridCell" x:Key="MaxPingCellStyle" BasedOn="{StaticResource DefaultCellStyle}">
+				<Setter Property="Foreground"
+				        Value="{Binding MaxPing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource PingToForegroundBrushConverter}}" />
+			</Style>
+			<Style TargetType="DataGridCell" x:Key="MinPingCellStyle" BasedOn="{StaticResource DefaultCellStyle}">
+				<Setter Property="Foreground"
+				        Value="{Binding MinPing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource PingToForegroundBrushConverter}}" />
+			</Style>
+			<Style TargetType="DataGridCell" x:Key="AveragePingCellStyle" BasedOn="{StaticResource DefaultCellStyle}">
+				<Setter Property="Foreground"
+				        Value="{Binding AveragePing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource PingToForegroundBrushConverter}}" />
+			</Style>
+
+			<Style TargetType="DataGridCell" x:Key="LastTCPingCellStyle" BasedOn="{StaticResource DefaultCellStyle}">
+				<Setter Property="Background"
+				        Value="{Binding LastTCPing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource PingToBackgroundBrushConverter}}" />
+				<Setter Property="Foreground"
+				        Value="{Binding LastTCPing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource TCPingToForegroundBrushConverter}}" />
+			</Style>
+			<Style TargetType="DataGridCell" x:Key="MaxTCPingCellStyle" BasedOn="{StaticResource DefaultCellStyle}">
+				<Setter Property="Foreground"
+				        Value="{Binding MaxTCPing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource TCPingToForegroundBrushConverter}}" />
+			</Style>
+			<Style TargetType="DataGridCell" x:Key="MinTCPingCellStyle" BasedOn="{StaticResource DefaultCellStyle}">
+				<Setter Property="Foreground"
+				        Value="{Binding MinTCPing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource TCPingToForegroundBrushConverter}}" />
+			</Style>
+			<Style TargetType="DataGridCell" x:Key="AverageTCPingCellStyle" BasedOn="{StaticResource DefaultCellStyle}">
+				<Setter Property="Foreground"
+				        Value="{Binding AverageTCPing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource TCPingToForegroundBrushConverter}}" />
+			</Style>
 		</ResourceDictionary>
 	</Window.Resources>
 
@@ -106,67 +159,67 @@
 				</DataGrid.Resources>
 				-->
 				<DataGrid.Columns>
-					<DataGridTextColumn  Binding="{Binding Index}" IsReadOnly="True">
+					<DataGridTextColumn  Binding="{Binding Index}" IsReadOnly="True" CellStyle="{StaticResource DefaultCellStyle}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource Id}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn  Binding="{Binding Hostname}" IsReadOnly="True">
+					<DataGridTextColumn  Binding="{Binding Hostname}" IsReadOnly="True" CellStyle="{StaticResource DefaultCellStyle}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource Hostname}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding Ip}" IsReadOnly="True" SortMemberPath="IpLong">
+					<DataGridTextColumn Binding="{Binding Ip}" IsReadOnly="True" SortMemberPath="IpLong" CellStyle="{StaticResource DefaultCellStyle}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource Ip}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding Port, Mode=TwoWay}" IsReadOnly="False">
+					<DataGridTextColumn Binding="{Binding Port, Mode=TwoWay}" IsReadOnly="False" CellStyle="{StaticResource DefaultCellStyle}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource Port}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding Description, Mode=TwoWay}" IsReadOnly="False">
+					<DataGridTextColumn Binding="{Binding Description, Mode=TwoWay}" IsReadOnly="False" CellStyle="{StaticResource DefaultCellStyle}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource Description}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding LastPing}" IsReadOnly="True">
+					<DataGridTextColumn Binding="{Binding LastPing}" IsReadOnly="True" CellStyle="{StaticResource LastPingCellStyle}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource LastPing}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding MaxPing}" IsReadOnly="True">
+					<DataGridTextColumn Binding="{Binding MaxPing}" IsReadOnly="True" CellStyle="{StaticResource MaxPingCellStyle}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource MaxPing}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding MinPing}" IsReadOnly="True">
+					<DataGridTextColumn Binding="{Binding MinPing}" IsReadOnly="True" CellStyle="{StaticResource MinPingCellStyle}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource MinPing}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding AveragePing}" IsReadOnly="True">
+					<DataGridTextColumn Binding="{Binding AveragePing}" IsReadOnly="True" CellStyle="{StaticResource AveragePingCellStyle}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource AveragePing}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding LastTCPing}" IsReadOnly="True">
+					<DataGridTextColumn Binding="{Binding LastTCPing}" IsReadOnly="True" CellStyle="{StaticResource LastTCPingCellStyle}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource LastTCPing}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding MaxTCPing}" IsReadOnly="True">
+					<DataGridTextColumn Binding="{Binding MaxTCPing}" IsReadOnly="True" CellStyle="{StaticResource MaxTCPingCellStyle}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource MaxTCPing}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding MinTCPing}" IsReadOnly="True">
+					<DataGridTextColumn Binding="{Binding MinTCPing}" IsReadOnly="True" CellStyle="{StaticResource MinTCPingCellStyle}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource MinTCPing}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding AverageTCPing}" IsReadOnly="True">
+					<DataGridTextColumn Binding="{Binding AverageTCPing}" IsReadOnly="True" CellStyle="{StaticResource AverageTCPingCellStyle}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource AverageTCPing}" />
 						</DataGridTextColumn.Header>

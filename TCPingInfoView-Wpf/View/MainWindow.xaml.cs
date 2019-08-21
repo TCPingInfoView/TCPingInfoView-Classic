@@ -24,7 +24,7 @@ namespace TCPingInfoView.View
 
 		public MainWindowViewModel MainWindowViewModel { get; set; } = new MainWindowViewModel();
 		private CancellationTokenSource _ctsPingTask = new CancellationTokenSource();
-		private Config _config = new Config();
+		public Config Config = new Config();
 		private IEnumerable<EndPointInfo> _rawEndPointInfo;
 
 		private void AddLanguageMenu()
@@ -140,7 +140,7 @@ namespace TCPingInfoView.View
 				{
 					break;
 				}
-				endPointInfo.PingOne(ct);
+				endPointInfo.PingOne(ct, Config);
 			}
 		}
 
@@ -151,7 +151,7 @@ namespace TCPingInfoView.View
 				PingAll(ct);
 				try
 				{
-					await Task.Delay(_config.Interval * 1000, ct);
+					await Task.Delay(Config.Interval * 1000, ct);
 				}
 				catch (TaskCanceledException)
 				{
@@ -169,35 +169,35 @@ namespace TCPingInfoView.View
 
 		private void LoadConfig()
 		{
-			_config = Read.LoadConfig();
-			if (_config != null)
+			Config = Read.LoadConfig();
+			if (Config != null)
 			{
-				Top = _config.StartTop;
-				Left = _config.StartLeft;
+				Top = Config.StartTop;
+				Left = Config.StartLeft;
 			}
 			else
 			{
-				_config = new Config();
+				Config = new Config();
 				WindowStartupLocation = WindowStartupLocation.CenterScreen;
 			}
 
-			Height = _config.StartHeight;
-			Width = _config.StartWidth;
-			Topmost = _config.Topmost;
+			Height = Config.StartHeight;
+			Width = Config.StartWidth;
+			Topmost = Config.Topmost;
 
-			_rawEndPointInfo = _config.EndPointInfo;
+			_rawEndPointInfo = Config.EndPointInfo;
 			LoadFormRawList();
 		}
 
 		private void SaveConfig()
 		{
-			_config.StartTop = Top;
-			_config.StartLeft = Left;
-			_config.StartHeight = Height;
-			_config.StartWidth = Width;
-			_config.Topmost = Topmost;
-			_config.EndPointInfo = _rawEndPointInfo.Select(info => (EndPointInfo)info.Clone()).ToList();
-			Write.SaveConfig(_config);
+			Config.StartTop = Top;
+			Config.StartLeft = Left;
+			Config.StartHeight = Height;
+			Config.StartWidth = Width;
+			Config.Topmost = Topmost;
+			Config.EndPointInfo = _rawEndPointInfo.Select(info => (EndPointInfo)info.Clone()).ToList();
+			Write.SaveConfig(Config);
 		}
 
 		private void ExitButton_OnClick(object sender, RoutedEventArgs e)
@@ -226,7 +226,6 @@ namespace TCPingInfoView.View
 				column.Width = new DataGridLength(1, DataGridLengthUnitType.Auto);
 			}
 			SizeToContent = SizeToContent.Width;
-			SizeToContent = SizeToContent.Manual;
 		}
 
 		private void TimerButton_OnClick(object sender, RoutedEventArgs e)
