@@ -17,7 +17,7 @@ namespace TCPingInfoView.ValueConverter
 				{
 					return DependencyProperty.UnsetValue;
 				}
-				return new SolidColorBrush(window.Config.FailedBackgroundColor);
+				return new SolidColorBrush(window.MainWindowViewModel.Config.FailedBackgroundColor);
 			}
 			return DependencyProperty.UnsetValue;
 		}

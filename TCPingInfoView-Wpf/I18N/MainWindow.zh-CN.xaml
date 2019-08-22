@@ -20,6 +20,7 @@
 	<sys:String x:Key="Help">帮助(_H)</sys:String>
 	<sys:String x:Key="About">关于(_A)</sys:String>
 	<sys:String x:Key="CheckUpdate">检查更新(_C)</sys:String>
+	<sys:String x:Key="AllowPreRelease">包括测试版更新(_I)</sys:String>
 	<sys:String x:Key="Feedback">问题反馈(_F)</sys:String>
 
 	<sys:String x:Key="Id">序号</sys:String>
@@ -35,4 +36,9 @@
 	<sys:String x:Key="MaxTCPing">最大 TCP 延迟(ms)</sys:String>
 	<sys:String x:Key="MinTCPing">最小 TCP 延迟(ms)</sys:String>
 	<sys:String x:Key="AverageTCPing">平均 TCP 延迟(ms)</sys:String>
+
+	<sys:String x:Key="NewVersionFound">发现新版本</sys:String>
+	<sys:String x:Key="AskForUpdates">是否下载新版本？</sys:String>
+	<sys:String x:Key="NewVersionFoundFailed">检查更新失败</sys:String>
+	<sys:String x:Key="NewVersionNotFound">没有更新可用</sys:String>
 </ResourceDictionary>

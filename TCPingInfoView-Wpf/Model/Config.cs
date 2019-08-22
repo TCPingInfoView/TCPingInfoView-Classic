@@ -27,6 +27,8 @@ namespace TCPingInfoView.Model
 
 		public string Language { get; set; }
 
+		public bool AllowPreRelease { get; set; }
+
 		public IEnumerable<EndPointInfo> EndPointInfo { get; set; }
 
 		public Config()
@@ -47,6 +49,7 @@ namespace TCPingInfoView.Model
 			DNSTimeout = 3000;
 			ReverseDNSTimeout = 3000;
 			Language = I18NUtil.GetLanguage();
+			AllowPreRelease = false;
 			EndPointInfo = new List<EndPointInfo>();
 		}
 	}

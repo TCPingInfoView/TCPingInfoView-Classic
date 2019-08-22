@@ -22,14 +22,12 @@ namespace TCPingInfoViewLib.GitHubRelease
 
 		public async Task<string> GetLatestAsync()
 		{
-			var json = await Get(LatestReleaseUrl, true);
-			return json;
+			return await Get(LatestReleaseUrl, true);
 		}
 
 		public async Task<string> GetAllReleaseAsync()
 		{
-			var json = await Get(AllReleaseUrl, true);
-			return json;
+			return await Get(AllReleaseUrl, true);
 		}
 
 		private static async Task<string> Get(string url, bool useProxy = false)

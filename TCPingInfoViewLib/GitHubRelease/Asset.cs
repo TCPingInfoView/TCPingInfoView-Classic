@@ -9,7 +9,7 @@ namespace TCPingInfoViewLib.GitHubRelease
 		public string node_id { get; set; }
 		public string name { get; set; }
 		public object label { get; set; }
-		public Author uploader { get; set; }
+		public GitHubUser uploader { get; set; }
 		public string content_type { get; set; }
 		public string state { get; set; }
 		public int size { get; set; }

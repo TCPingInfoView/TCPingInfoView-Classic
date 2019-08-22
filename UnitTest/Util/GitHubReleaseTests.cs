@@ -36,5 +36,14 @@ namespace UnitTest.Util
 			Console.WriteLine(release.tag_name);
 			Console.WriteLine(release.body);
 		}
+
+		[TestMethod]
+		public async Task GetLatestTest()
+		{
+			var updater = new GitHubRelease(UpdateChecker.Owner, UpdateChecker.Repo);
+			var json = await updater.GetAllReleaseAsync();
+			var releases = JsonSerializer.Deserialize<List<Release>>(json);
+			Console.WriteLine(TCPingInfoViewLib.Utils.VersionUtil.GetLatestRelease(releases, false).tag_name);
+		}
 	}
 }

@@ -20,6 +20,7 @@
 	<sys:String x:Key="Help">_Help</sys:String>
 	<sys:String x:Key="About">_About</sys:String>
 	<sys:String x:Key="CheckUpdate">_Check Update</sys:String>
+	<sys:String x:Key="AllowPreRelease">_Include prerelease version</sys:String>
 	<sys:String x:Key="Feedback">_Feedback</sys:String>
 	
 	<sys:String x:Key="Id">ID</sys:String>
@@ -35,4 +36,9 @@
 	<sys:String x:Key="MaxTCPing">Max TCPing (ms)</sys:String>
 	<sys:String x:Key="MinTCPing">Min TCPing (ms)</sys:String>
 	<sys:String x:Key="AverageTCPing">Average TCPing (ms)</sys:String>
+
+	<sys:String x:Key="NewVersionFound">New version available</sys:String>
+	<sys:String x:Key="AskForUpdates">Would you like to download the new version?</sys:String>
+	<sys:String x:Key="NewVersionFoundFailed">Check for update failure</sys:String>
+	<sys:String x:Key="NewVersionNotFound">No updates are available</sys:String>
 </ResourceDictionary>

@@ -14,7 +14,7 @@ namespace TCPingInfoViewLib.GitHubRelease
 		public string target_commitish { get; set; }
 		public string name { get; set; }
 		public bool draft { get; set; }
-		public Author author { get; set; }
+		public GitHubUser author { get; set; }
 		public bool prerelease { get; set; }
 		public DateTime created_at { get; set; }
 		public DateTime published_at { get; set; }

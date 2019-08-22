@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
+using TCPingInfoView.Model;
 using TCPingInfoView.Utils;
+using TCPingInfoView.View;
 
 namespace TCPingInfoView.ViewModel
 {
@@ -17,7 +19,19 @@ namespace TCPingInfoView.ViewModel
 		private const string TimerStartImageSource = @"../Resources/Start.png";
 		private const string TimerStopImageSource = @"../Resources/Stop.png";
 
-		public Window Window { private get; set; }
+		public MainWindow Window { private get; set; }
+
+		public Config Config = new Config();
+
+		public bool AllowPreRelease
+		{
+			get => Config.AllowPreRelease;
+			set
+			{
+				Config.AllowPreRelease = value;
+				OnPropertyChanged();
+			}
+		}
 
 		private ObservableCollection<EndPointInfo> _endpointsCollection;
 		public ObservableCollection<EndPointInfo> EndPointsCollection

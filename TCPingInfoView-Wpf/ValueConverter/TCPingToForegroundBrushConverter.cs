@@ -15,12 +15,12 @@ namespace TCPingInfoView.ValueConverter
 			{
 				if (value is long tcping)
 				{
-					if (tcping < window.Config.LongTCPingTimeout)
+					if (tcping < window.MainWindowViewModel.Config.LongTCPingTimeout)
 					{
-						return new SolidColorBrush(window.Config.SuccessForegroundColor);
+						return new SolidColorBrush(window.MainWindowViewModel.Config.SuccessForegroundColor);
 					}
 
-					return new SolidColorBrush(window.Config.LongPingForegroundColor);
+					return new SolidColorBrush(window.MainWindowViewModel.Config.LongPingForegroundColor);
 				}
 			}
 

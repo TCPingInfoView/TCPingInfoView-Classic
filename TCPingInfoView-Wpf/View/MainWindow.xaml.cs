@@ -19,12 +19,11 @@ namespace TCPingInfoView.View
 			MainWindowViewModel.Window = this;
 			LoadConfig();
 			AddLanguageMenu();
-			SetLanguage(Config.Language);
+			SetLanguage(MainWindowViewModel.Config.Language);
 		}
 
 		public MainWindowViewModel MainWindowViewModel { get; set; } = new MainWindowViewModel();
 		private CancellationTokenSource _ctsPingTask = new CancellationTokenSource();
-		public Config Config = new Config();
 
 		private void AddLanguageMenu()
 		{
@@ -144,7 +143,7 @@ namespace TCPingInfoView.View
 				{
 					break;
 				}
-				endPointInfo.PingOne(ct, Config);
+				endPointInfo.PingOne(ct, MainWindowViewModel.Config);
 			}
 		}
 
@@ -155,7 +154,7 @@ namespace TCPingInfoView.View
 				PingAll(ct);
 				try
 				{
-					await Task.Delay(Config.Interval * 1000, ct);
+					await Task.Delay(MainWindowViewModel.Config.Interval * 1000, ct);
 				}
 				catch (TaskCanceledException)
 				{
@@ -173,36 +172,42 @@ namespace TCPingInfoView.View
 
 		private void LoadConfig()
 		{
-			Config = Read.LoadConfig();
-			if (Config != null)
+			MainWindowViewModel.Config = Read.LoadConfig();
+			if (MainWindowViewModel.Config != null)
 			{
-				Top = Config.StartTop;
-				Left = Config.StartLeft;
+				Top = MainWindowViewModel.Config.StartTop;
+				Left = MainWindowViewModel.Config.StartLeft;
 			}
 			else
 			{
-				Config = new Config();
+				MainWindowViewModel.Config = new Config();
 				WindowStartupLocation = WindowStartupLocation.CenterScreen;
 			}
 
-			Height = Config.StartHeight;
-			Width = Config.StartWidth;
-			Topmost = Config.Topmost;
+			Height = MainWindowViewModel.Config.StartHeight;
+			Width = MainWindowViewModel.Config.StartWidth;
+			Topmost = MainWindowViewModel.Config.Topmost;
+			MainWindowViewModel.AllowPreRelease = MainWindowViewModel.Config.AllowPreRelease;
 
-			LoadFormRawList(Config.EndPointInfo);
+			LoadFormRawList(MainWindowViewModel.Config.EndPointInfo);
 		}
 
 		private void SaveConfig()
 		{
-			Config.StartTop = Top;
-			Config.StartLeft = Left;
-			Config.StartHeight = Height;
-			Config.StartWidth = Width;
-			Config.Topmost = Topmost;
-			Config.Language = I18NUtil.CurrentLanguage;
-			Config.EndPointInfo = MainWindowViewModel.EndPointsCollection.Select(info => (EndPointInfo)info.Clone()).ToList();
-			Write.SaveConfig(Config);
+			MainWindowViewModel.Config.StartTop = Top;
+			MainWindowViewModel.Config.StartLeft = Left;
+			MainWindowViewModel.Config.StartHeight = Height;
+			MainWindowViewModel.Config.StartWidth = Width;
+			MainWindowViewModel.Config.Topmost = Topmost;
+			MainWindowViewModel.Config.Language = I18NUtil.CurrentLanguage;
+			MainWindowViewModel.Config.EndPointInfo = MainWindowViewModel.EndPointsCollection.Select(info => (EndPointInfo)info.Clone()).ToList();
+			Write.SaveConfig(MainWindowViewModel.Config);
 		}
+
+		//private void ShowBalloonTip(string title, string message)
+		//{
+		//	NotifyIcon.ShowBalloonTip(title, message, NotifyIcon.Icon, true);
+		//}
 
 		private void ExitButton_OnClick(object sender, RoutedEventArgs e)
 		{
@@ -268,7 +273,30 @@ namespace TCPingInfoView.View
 
 		private void CheckUpdateMenuItem_OnClick(object sender, RoutedEventArgs e)
 		{
-
+			var updater = new UpdateChecker();
+			updater.BeforeCheckVersion += (o, _) => { CheckUpdateMenuItem.IsEnabled = false; };
+			updater.AfterCheckVersion += (o, _) => { CheckUpdateMenuItem.IsEnabled = true; };
+			updater.NewVersionFound += (o, _) =>
+			{
+				var res = MessageBox.Show($@"{I18NUtil.GetWindowStringValue(this, @"NewVersionFound")}: {updater.LatestVersionNumber}
+{I18NUtil.GetWindowStringValue(this, @"AskForUpdates")}",
+				UpdateChecker.Name,
+				MessageBoxButton.YesNo,
+				MessageBoxImage.Information, MessageBoxResult.No);
+				if (res == MessageBoxResult.Yes)
+				{
+					Util.OpenUrl(updater.LatestVersionUrl);
+				}
+			};
+			updater.NewVersionNotFound += (o, _) =>
+			{
+				MessageBox.Show(I18NUtil.GetWindowStringValue(this, @"NewVersionNotFound"), UpdateChecker.Name, MessageBoxButton.OK, MessageBoxImage.Information);
+			};
+			updater.NewVersionFoundFailed += (o, _) =>
+			{
+				MessageBox.Show(I18NUtil.GetWindowStringValue(this, @"NewVersionFoundFailed"), UpdateChecker.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+			};
+			updater.Check(MainWindowViewModel.AllowPreRelease);
 		}
 
 		private void AboutMenuItem_OnClick(object sender, RoutedEventArgs e)
@@ -277,6 +305,11 @@ namespace TCPingInfoView.View
 			{
 				Util.OpenUrl(url);
 			}
+		}
+
+		private void AllowPreReleaseMenuItem_OnClick(object sender, RoutedEventArgs e)
+		{
+			MainWindowViewModel.AllowPreRelease = !MainWindowViewModel.AllowPreRelease;
 		}
 	}
 }

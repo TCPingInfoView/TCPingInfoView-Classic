@@ -1,6 +1,6 @@
 ﻿namespace TCPingInfoViewLib.GitHubRelease
 {
-	public class Author
+	public class GitHubUser
 	{
 		public string login { get; set; }
 		public int id { get; set; }

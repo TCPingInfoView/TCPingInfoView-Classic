@@ -113,9 +113,10 @@
 					<MenuItem Header="{DynamicResource ResourceKey=Clear}" Click="ClearButton_OnClick" />
 				</MenuItem>
 				<MenuItem Header="{DynamicResource ResourceKey=Help}">
-					<MenuItem Header="{DynamicResource ResourceKey=Feedback}" Click="FeedbackMenuItem_OnClick"/>
-					<MenuItem Header="{DynamicResource ResourceKey=CheckUpdate}" Click="CheckUpdateMenuItem_OnClick"/>
+					<MenuItem x:Name="CheckUpdateMenuItem" Header="{DynamicResource ResourceKey=CheckUpdate}" Click="CheckUpdateMenuItem_OnClick"/>
+					<MenuItem Header="{DynamicResource ResourceKey=AllowPreRelease}" IsChecked="{Binding AllowPreRelease}" Click="AllowPreReleaseMenuItem_OnClick"/>
 					<Separator />
+					<MenuItem Header="{DynamicResource ResourceKey=Feedback}" Click="FeedbackMenuItem_OnClick" />
 					<MenuItem Header="{DynamicResource ResourceKey=About}" Click="AboutMenuItem_OnClick"/>
 				</MenuItem>
 			</Menu>
