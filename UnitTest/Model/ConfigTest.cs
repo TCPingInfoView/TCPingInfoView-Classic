@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Net;
 using System.Text.Json;
 using TCPingInfoView.Model;
-using TCPingInfoView.ViewModel;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace UnitTest.Model
@@ -66,6 +65,19 @@ namespace UnitTest.Model
 			Assert.AreEqual(endPointInfoCopy.Description, endPointInfo.Description);
 			Assert.AreEqual(endPointInfoCopy.AllowICMP, endPointInfo.AllowICMP);
 			Assert.AreEqual(endPointInfoCopy.AllowTCP, endPointInfo.AllowTCP);
+		}
+
+		[TestMethod]
+		public void ColumnsStatusParseTest()
+		{
+			var columnsStatus = new ColumnsStatus
+			{
+				ShowId = false
+			};
+			var jsonStr = JsonSerializer.Serialize(columnsStatus);
+			Console.WriteLine(jsonStr);
+			var columnsStatusCopy = JsonSerializer.Deserialize<ColumnsStatus>(jsonStr);
+			Assert.AreEqual(columnsStatusCopy.ShowId, columnsStatus.ShowId);
 		}
 
 		[TestMethod]

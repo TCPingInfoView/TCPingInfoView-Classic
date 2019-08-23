@@ -7,10 +7,10 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using TCPingInfoView.JsonConverters;
-using TCPingInfoView.Model;
+using TCPingInfoView.ViewModel;
 using TCPingInfoViewLib.NetUtils;
 
-namespace TCPingInfoView.ViewModel
+namespace TCPingInfoView.Model
 {
 	[Serializable]
 	public class EndPointInfo : ViewModelBase, ICloneable

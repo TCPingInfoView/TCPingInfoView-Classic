@@ -198,6 +198,7 @@ namespace TCPingInfoView.View
 
 			Topmost = MainWindowViewModel.Config.Topmost;
 			MainWindowViewModel.AllowPreRelease = MainWindowViewModel.Config.AllowPreRelease;
+			MainWindowViewModel.ColumnsStatus = MainWindowViewModel.Config.ColumnsStatus;
 
 			LoadFormRawList(MainWindowViewModel.Config.EndPointInfo);
 		}
@@ -329,6 +330,11 @@ namespace TCPingInfoView.View
 			{
 				MainWindowViewModel.EndPointsCollection.Remove(selectedItem);
 			}
+		}
+
+		private void ShowIdMenuItem_OnClick(object sender, RoutedEventArgs e)
+		{
+			MainWindowViewModel.ColumnsStatus.ShowId = !MainWindowViewModel.ColumnsStatus.ShowId;
 		}
 	}
 }

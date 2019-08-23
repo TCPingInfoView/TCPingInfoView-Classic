@@ -1,7 +1,8 @@
 ﻿using System;
+using TCPingInfoView.ViewModel;
 using TCPingInfoViewLib.Model;
 
-namespace TCPingInfoView.ViewModel
+namespace TCPingInfoView.Model
 {
 	public class TestResult : ViewModelBase
 	{

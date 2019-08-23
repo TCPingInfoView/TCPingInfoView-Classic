@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Media;
 using TCPingInfoView.Utils;
-using TCPingInfoView.ViewModel;
 
 namespace TCPingInfoView.Model
 {
@@ -29,6 +28,8 @@ namespace TCPingInfoView.Model
 
 		public bool AllowPreRelease { get; set; }
 
+		public ColumnsStatus ColumnsStatus { get; set; }
+
 		public IEnumerable<EndPointInfo> EndPointInfo { get; set; }
 
 		public Config()
@@ -50,6 +51,7 @@ namespace TCPingInfoView.Model
 			ReverseDNSTimeout = 3000;
 			Language = I18NUtil.GetLanguage();
 			AllowPreRelease = false;
+			ColumnsStatus = new ColumnsStatus();
 			EndPointInfo = new List<EndPointInfo>();
 		}
 	}

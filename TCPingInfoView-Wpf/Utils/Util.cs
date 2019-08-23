@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
-using TCPingInfoView.ViewModel;
+using TCPingInfoView.Model;
 using TCPingInfoViewLib.NetUtils;
 
 namespace TCPingInfoView.Utils

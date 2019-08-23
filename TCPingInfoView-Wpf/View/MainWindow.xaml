@@ -7,6 +7,7 @@
 		xmlns:local="clr-namespace:TCPingInfoView.Commands"
 		xmlns:valueConverter="clr-namespace:TCPingInfoView.ValueConverter"
 		xmlns:system="clr-namespace:System;assembly=System.Runtime"
+		xmlns:bindingProxy="clr-namespace:TCPingInfoView.BindingProxy"
 		mc:Ignorable="d"
 		x:Name="Mw"
 		Title="TCPingInfoView" Height="618" Width="1000"
@@ -22,6 +23,8 @@
 			<valueConverter:PingToBackgroundBrushConverter x:Key="PingToBackgroundBrushConverter" />
 			<valueConverter:PingToForegroundBrushConverter x:Key="PingToForegroundBrushConverter" />
 			<valueConverter:TCPingToForegroundBrushConverter x:Key="TCPingToForegroundBrushConverter" />
+			<BooleanToVisibilityConverter x:Key="Bool2Visibility" />
+			<bindingProxy:BindingProxyColumnsStatus x:Key="BindingProxy" ColumnsStatus="{Binding ColumnsStatus}" />
 
 			<Style x:Key="PaintButton" TargetType="Button">
 				<Setter Property="Height" Value="38"/>
@@ -55,39 +58,38 @@
 			</Style>
 			<Style TargetType="DataGridCell" x:Key="MaxPingCellStyle" BasedOn="{StaticResource DefaultCellStyle}">
 				<Setter Property="Foreground"
-				        Value="{Binding MaxPing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource PingToForegroundBrushConverter}}" />
+						Value="{Binding MaxPing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource PingToForegroundBrushConverter}}" />
 			</Style>
 			<Style TargetType="DataGridCell" x:Key="MinPingCellStyle" BasedOn="{StaticResource DefaultCellStyle}">
 				<Setter Property="Foreground"
-				        Value="{Binding MinPing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource PingToForegroundBrushConverter}}" />
+						Value="{Binding MinPing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource PingToForegroundBrushConverter}}" />
 			</Style>
 			<Style TargetType="DataGridCell" x:Key="AveragePingCellStyle" BasedOn="{StaticResource DefaultCellStyle}">
 				<Setter Property="Foreground"
-				        Value="{Binding AveragePing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource PingToForegroundBrushConverter}}" />
+						Value="{Binding AveragePing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource PingToForegroundBrushConverter}}" />
 			</Style>
 
 			<Style TargetType="DataGridCell" x:Key="LastTCPingCellStyle" BasedOn="{StaticResource DefaultCellStyle}">
 				<Setter Property="Background"
-				        Value="{Binding LastTCPing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource PingToBackgroundBrushConverter}}" />
+						Value="{Binding LastTCPing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource PingToBackgroundBrushConverter}}" />
 				<Setter Property="Foreground"
-				        Value="{Binding LastTCPing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource TCPingToForegroundBrushConverter}}" />
+						Value="{Binding LastTCPing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource TCPingToForegroundBrushConverter}}" />
 			</Style>
 			<Style TargetType="DataGridCell" x:Key="MaxTCPingCellStyle" BasedOn="{StaticResource DefaultCellStyle}">
 				<Setter Property="Foreground"
-				        Value="{Binding MaxTCPing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource TCPingToForegroundBrushConverter}}" />
+						Value="{Binding MaxTCPing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource TCPingToForegroundBrushConverter}}" />
 			</Style>
 			<Style TargetType="DataGridCell" x:Key="MinTCPingCellStyle" BasedOn="{StaticResource DefaultCellStyle}">
 				<Setter Property="Foreground"
-				        Value="{Binding MinTCPing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource TCPingToForegroundBrushConverter}}" />
+						Value="{Binding MinTCPing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource TCPingToForegroundBrushConverter}}" />
 			</Style>
 			<Style TargetType="DataGridCell" x:Key="AverageTCPingCellStyle" BasedOn="{StaticResource DefaultCellStyle}">
 				<Setter Property="Foreground"
-				        Value="{Binding AverageTCPing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource TCPingToForegroundBrushConverter}}" />
+						Value="{Binding AverageTCPing,ConverterParameter={x:Reference Name=Mw},Converter={StaticResource TCPingToForegroundBrushConverter}}" />
 			</Style>
 			<system:String x:Key="ProjectUrl">https://github.com/HMBSbige/TCPingInfoView</system:String>
 		</ResourceDictionary>
 	</Window.Resources>
-
 
 	<Grid>
 		<tb:TaskbarIcon x:Name="NotifyIcon"
@@ -100,30 +102,30 @@
 		</tb:TaskbarIcon>
 		<DockPanel>
 			<Menu DockPanel.Dock="Top" Background="Transparent">
-				<MenuItem Header="{DynamicResource ResourceKey=File}">
-					<MenuItem Header="{DynamicResource ResourceKey=Load}" Click="LoadButton_OnClick" />
-					<MenuItem Header="{DynamicResource ResourceKey=Add}" Click="AddButton_OnClick" />
+				<MenuItem Header="{DynamicResource File}">
+					<MenuItem Header="{DynamicResource Load}" Click="LoadButton_OnClick" />
+					<MenuItem Header="{DynamicResource Add}" Click="AddButton_OnClick" />
 					<Separator />
-					<MenuItem Header="{DynamicResource ResourceKey=Exit}" Click="ExitButton_OnClick" />
+					<MenuItem Header="{DynamicResource Exit}" Click="ExitButton_OnClick" />
 				</MenuItem>
-				<MenuItem Header="{DynamicResource ResourceKey=View}">
-					<MenuItem Header="{DynamicResource ResourceKey=AlwaysOnTop}" IsChecked="{Binding Topmost,ElementName=Mw}" Click="AlwaysOnTop_OnClick"/>
-					<MenuItem Header="{DynamicResource ResourceKey=AutoSize}" Click="AutoSize_OnClick"/>
+				<MenuItem Header="{DynamicResource View}">
+					<MenuItem Header="{DynamicResource AlwaysOnTop}" IsChecked="{Binding Topmost,ElementName=Mw}" Click="AlwaysOnTop_OnClick"/>
+					<MenuItem Header="{DynamicResource AutoSize}" Click="AutoSize_OnClick"/>
 					<Separator />
-					<MenuItem x:Name="LanguageMenu" Header="{DynamicResource ResourceKey=Language}" />
+					<MenuItem x:Name="LanguageMenu" Header="{DynamicResource Language}" />
 				</MenuItem>
-				<MenuItem Header="{DynamicResource ResourceKey=List}">
-					<MenuItem Header="{DynamicResource ResourceKey=Del}" Click="DelButton_OnClick" />
+				<MenuItem Header="{DynamicResource List}">
+					<MenuItem Header="{DynamicResource Del}" Click="DelButton_OnClick" />
 					<Separator />
-					<MenuItem Header="{DynamicResource ResourceKey=Reset}" Click="ResetButton_OnClick" />
-					<MenuItem Header="{DynamicResource ResourceKey=Clear}" Click="ClearButton_OnClick" />
+					<MenuItem Header="{DynamicResource Reset}" Click="ResetButton_OnClick" />
+					<MenuItem Header="{DynamicResource Clear}" Click="ClearButton_OnClick" />
 				</MenuItem>
-				<MenuItem Header="{DynamicResource ResourceKey=Help}">
-					<MenuItem x:Name="CheckUpdateMenuItem" Header="{DynamicResource ResourceKey=CheckUpdate}" Click="CheckUpdateMenuItem_OnClick"/>
-					<MenuItem Header="{DynamicResource ResourceKey=AllowPreRelease}" IsChecked="{Binding AllowPreRelease}" Click="AllowPreReleaseMenuItem_OnClick"/>
+				<MenuItem Header="{DynamicResource Help}">
+					<MenuItem x:Name="CheckUpdateMenuItem" Header="{DynamicResource CheckUpdate}" Click="CheckUpdateMenuItem_OnClick"/>
+					<MenuItem Header="{DynamicResource AllowPreRelease}" IsChecked="{Binding AllowPreRelease}" Click="AllowPreReleaseMenuItem_OnClick"/>
 					<Separator />
-					<MenuItem Header="{DynamicResource ResourceKey=Feedback}" Click="FeedbackMenuItem_OnClick" />
-					<MenuItem Header="{DynamicResource ResourceKey=About}" Click="AboutMenuItem_OnClick"/>
+					<MenuItem Header="{DynamicResource Feedback}" Click="FeedbackMenuItem_OnClick" />
+					<MenuItem Header="{DynamicResource About}" Click="AboutMenuItem_OnClick"/>
 				</MenuItem>
 			</Menu>
 
@@ -167,20 +169,36 @@
 					AutoGenerateColumns="False"
 					SelectionUnit="FullRow" SelectionMode="Extended"
 					CanUserAddRows="False" CanUserResizeRows="False"
+					CanUserDeleteRows="True"
 					ItemsSource="{Binding EndPointsCollection}">
-				<!--
+
 				<DataGrid.Resources>
-					<Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
-						<Setter Property="Background" Value="Transparent" />
-						<Setter Property="BorderBrush" Value="{StaticResource GridLinesBrush}" />
-						<Setter Property="Margin" Value="0" />
-						<Setter Property="Padding" Value="3,0,3,0" />
-						<Setter Property="BorderThickness" Value="0,0,1,1" />
+					<ContextMenu x:Key="DataGridColumnHeaderContextMenu">
+						<MenuItem Header="{DynamicResource Id}"
+									IsChecked="{Binding ColumnsStatus.ShowId,
+									Source={StaticResource BindingProxy}}"
+									Click="ShowIdMenuItem_OnClick" />
+						<MenuItem Header="{DynamicResource Hostname}" />
+						<MenuItem Header="{DynamicResource Port}" />
+						<MenuItem Header="{DynamicResource Description}" />
+						<MenuItem Header="{DynamicResource LastPing}" />
+						<MenuItem Header="{DynamicResource MaxPing}" />
+						<MenuItem Header="{DynamicResource MinPing}" />
+						<MenuItem Header="{DynamicResource AveragePing}" />
+						<MenuItem Header="{DynamicResource LastTCPing}" />
+						<MenuItem Header="{DynamicResource MaxTCPing}" />
+						<MenuItem Header="{DynamicResource MinTCPing}" />
+						<MenuItem Header="{DynamicResource AverageTCPing}" />
+					</ContextMenu>
+					<Style TargetType="{x:Type DataGridColumnHeader}">
+						<Setter Property="ContextMenu" Value="{StaticResource DataGridColumnHeaderContextMenu}" />
 					</Style>
 				</DataGrid.Resources>
-				-->
 				<DataGrid.Columns>
-					<DataGridTextColumn Binding="{Binding Index}" IsReadOnly="True" CellStyle="{StaticResource DefaultCellStyle}">
+					<DataGridTextColumn Binding="{Binding Index}" IsReadOnly="True" 
+					CellStyle="{StaticResource DefaultCellStyle}"
+					Visibility="{Binding ColumnsStatus.ShowId,
+									Source={StaticResource BindingProxy},Converter={StaticResource Bool2Visibility}}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource Id}" />
 						</DataGridTextColumn.Header>

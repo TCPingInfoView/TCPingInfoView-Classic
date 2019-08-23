@@ -33,6 +33,16 @@ namespace TCPingInfoView.ViewModel
 			}
 		}
 
+		public ColumnsStatus ColumnsStatus
+		{
+			get => Config.ColumnsStatus;
+			set
+			{
+				Config.ColumnsStatus = value;
+				OnPropertyChanged();
+			}
+		}
+
 		private ObservableCollection<EndPointInfo> _endpointsCollection;
 		public ObservableCollection<EndPointInfo> EndPointsCollection
 		{
@@ -66,6 +76,7 @@ namespace TCPingInfoView.ViewModel
 		}
 
 		private string _displayedTimerImage;
+
 		public string DisplayedTimerImage
 		{
 			get => _displayedTimerImage;

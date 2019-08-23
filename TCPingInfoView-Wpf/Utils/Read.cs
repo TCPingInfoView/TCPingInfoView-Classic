@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using TCPingInfoView.Model;
-using TCPingInfoView.ViewModel;
 
 namespace TCPingInfoView.Utils
 {
