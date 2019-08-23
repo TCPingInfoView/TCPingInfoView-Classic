@@ -173,11 +173,22 @@ namespace TCPingInfoView.View
 		private void LoadConfig()
 		{
 			MainWindowViewModel.Config = Read.LoadConfig();
+
+			Height = MainWindowViewModel.Config.StartHeight;
+			Width = MainWindowViewModel.Config.StartWidth;
+
 			if (MainWindowViewModel.Config != null)
 			{
 				Top = MainWindowViewModel.Config.StartTop;
 				Left = MainWindowViewModel.Config.StartLeft;
-				//TODO:IsOnScreen
+				if (Util.IsOnScreen(Left, Top) || Util.IsOnScreen(Left + Width, Top + Height))
+				{
+					WindowStartupLocation = WindowStartupLocation.Manual;
+				}
+				else
+				{
+					WindowStartupLocation = WindowStartupLocation.CenterScreen;
+				}
 			}
 			else
 			{
@@ -185,8 +196,6 @@ namespace TCPingInfoView.View
 				WindowStartupLocation = WindowStartupLocation.CenterScreen;
 			}
 
-			Height = MainWindowViewModel.Config.StartHeight;
-			Width = MainWindowViewModel.Config.StartWidth;
 			Topmost = MainWindowViewModel.Config.Topmost;
 			MainWindowViewModel.AllowPreRelease = MainWindowViewModel.Config.AllowPreRelease;
 

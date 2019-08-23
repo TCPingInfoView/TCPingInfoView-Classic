@@ -7,6 +7,7 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows;
 using TCPingInfoView.ViewModel;
 using TCPingInfoViewLib.NetUtils;
 
@@ -125,6 +126,15 @@ namespace TCPingInfoView.Utils
 					UseShellExecute = true
 				}
 			}.Start();
+		}
+
+		public static bool IsOnScreen(double x, double y)
+		{
+			return
+					SystemParameters.VirtualScreenLeft <= x &&
+					SystemParameters.VirtualScreenLeft + SystemParameters.VirtualScreenWidth >= x &&
+					SystemParameters.VirtualScreenTop <= y &&
+					SystemParameters.VirtualScreenTop + SystemParameters.VirtualScreenHeight >= y;
 		}
 	}
 }
