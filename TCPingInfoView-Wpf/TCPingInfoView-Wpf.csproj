@@ -14,6 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Delete.png" />
     <None Remove="Resources\Exit.png" />
     <None Remove="Resources\Failed.png" />
     <None Remove="Resources\Load.png" />
@@ -32,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Delete.png" />
     <Resource Include="Resources\Exit.png" />
     <Resource Include="Resources\Failed.png" />
     <Resource Include="Resources\Load.png" />

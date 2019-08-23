@@ -177,6 +177,7 @@ namespace TCPingInfoView.View
 			{
 				Top = MainWindowViewModel.Config.StartTop;
 				Left = MainWindowViewModel.Config.StartLeft;
+				//TODO:IsOnScreen
 			}
 			else
 			{
@@ -311,6 +312,14 @@ namespace TCPingInfoView.View
 		private void AllowPreReleaseMenuItem_OnClick(object sender, RoutedEventArgs e)
 		{
 			MainWindowViewModel.AllowPreRelease = !MainWindowViewModel.AllowPreRelease;
+		}
+
+		private void DelButton_OnClick(object sender, RoutedEventArgs e)
+		{
+			foreach (var selectedItem in EndPointDataGrid.SelectedItems.Cast<EndPointInfo>().ToArray())
+			{
+				MainWindowViewModel.EndPointsCollection.Remove(selectedItem);
+			}
 		}
 	}
 }

@@ -1,6 +1,6 @@
 ﻿namespace TCPingInfoView.Model
 {
-	enum PingStatus
+	internal enum PingStatus
 	{
 		Unknown,
 		Succeed,

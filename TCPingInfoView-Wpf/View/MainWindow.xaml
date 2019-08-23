@@ -113,6 +113,8 @@
 					<MenuItem x:Name="LanguageMenu" Header="{DynamicResource ResourceKey=Language}" />
 				</MenuItem>
 				<MenuItem Header="{DynamicResource ResourceKey=List}">
+					<MenuItem Header="{DynamicResource ResourceKey=Del}" Click="DelButton_OnClick" />
+					<Separator />
 					<MenuItem Header="{DynamicResource ResourceKey=Reset}" Click="ResetButton_OnClick" />
 					<MenuItem Header="{DynamicResource ResourceKey=Clear}" Click="ClearButton_OnClick" />
 				</MenuItem>
@@ -128,6 +130,9 @@
 			<ToolBar DockPanel.Dock="Top" Background="Transparent" Loaded="ToolBar_Loaded">
 				<Button Style="{StaticResource PaintButton}" Click="LoadButton_OnClick">
 					<Image Style="{StaticResource ToolbarImage}" Source="../Resources/Load.png" />
+				</Button>
+				<Button Style="{StaticResource PaintButton}" Click="DelButton_OnClick">
+					<Image Style="{StaticResource ToolbarImage}" Source="../Resources/Delete.png" />
 				</Button>
 				<Separator />
 				<Button Style="{StaticResource PaintButton}" Click="TestButton_Click">
@@ -160,8 +165,8 @@
 
 					HeadersVisibility="Column"
 					AutoGenerateColumns="False"
-					SelectionUnit="FullRow" SelectionMode="Single"
-					CanUserAddRows="false" CanUserResizeRows="False"
+					SelectionUnit="FullRow" SelectionMode="Extended"
+					CanUserAddRows="False" CanUserResizeRows="False"
 					ItemsSource="{Binding EndPointsCollection}">
 				<!--
 				<DataGrid.Resources>
