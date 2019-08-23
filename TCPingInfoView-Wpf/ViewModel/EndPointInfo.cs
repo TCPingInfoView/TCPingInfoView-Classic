@@ -50,6 +50,8 @@ namespace TCPingInfoView.ViewModel
 			MaxTCPing = null;
 			MinTCPing = null;
 			OnPropertyChanged(nameof(AverageTCPing));
+
+			DisplayedImage = NoneImageSource;
 		}
 
 		public async void ResetAsync()
@@ -104,6 +106,8 @@ namespace TCPingInfoView.ViewModel
 		private long? _lastTCPing;
 		private long? _maxTCPing;
 		private long? _minTCPing;
+
+		private string _displayedImage;
 
 		public int Index { get; set; }
 
@@ -358,6 +362,28 @@ namespace TCPingInfoView.ViewModel
 
 		#endregion
 
+		#region Image
+
+		private const string NoneImageSource = @"../Resources/None.png";
+		private const string SucceedImageSource = @"../Resources/Succeed.png";
+		private const string FailedImageSource = @"../Resources/Failed.png";
+
+		[JsonIgnore]
+		public string DisplayedImage
+		{
+			get => _displayedImage;
+			private set
+			{
+				if (_displayedImage != value)
+				{
+					_displayedImage = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		#endregion
+
 		private void AddLog(TestResult tRes)
 		{
 			if (tRes == null)
@@ -369,6 +395,8 @@ namespace TCPingInfoView.ViewModel
 			{
 				return;
 			}
+
+			var imageStatus = PingStatus.Unknown;
 
 			TestResults.Add(tRes);
 			if (tRes.PingResult != null)
@@ -389,9 +417,11 @@ namespace TCPingInfoView.ViewModel
 						MinPing = LastPing;
 					}
 					OnPropertyChanged(nameof(AveragePing));
+					imageStatus = PingStatus.Succeed;
 				}
 				else
 				{
+					imageStatus = PingStatus.Failed;
 					++FailedPingCount;
 					LastPing = null;
 				}
@@ -416,13 +446,20 @@ namespace TCPingInfoView.ViewModel
 					}
 
 					OnPropertyChanged(nameof(AverageTCPing));
+					if (imageStatus == PingStatus.Unknown)
+					{
+						imageStatus = PingStatus.Succeed;
+					}
 				}
 				else
 				{
+					imageStatus = PingStatus.Failed;
 					++FailedTCPingCount;
 					LastTCPing = null;
 				}
 			}
+
+			SetImageStatus(imageStatus);
 		}
 
 		private async Task<TestResult> PingEndPoint(CancellationToken ct, Config config)
@@ -470,6 +507,22 @@ namespace TCPingInfoView.ViewModel
 			if (!ct.IsCancellationRequested)
 			{
 				AddLog(res);
+			}
+		}
+
+		private void SetImageStatus(PingStatus status)
+		{
+			if (status == PingStatus.Succeed)
+			{
+				DisplayedImage = SucceedImageSource;
+			}
+			else if (status == PingStatus.Failed)
+			{
+				DisplayedImage = FailedImageSource;
+			}
+			else if (status == PingStatus.Unknown)
+			{
+				DisplayedImage = NoneImageSource;
 			}
 		}
 	}

@@ -290,7 +290,8 @@ namespace TCPingInfoView.View
 			};
 			updater.NewVersionNotFound += (o, _) =>
 			{
-				MessageBox.Show(I18NUtil.GetWindowStringValue(this, @"NewVersionNotFound"), UpdateChecker.Name, MessageBoxButton.OK, MessageBoxImage.Information);
+				MessageBox.Show($@"{I18NUtil.GetWindowStringValue(this, @"NewVersionNotFound")}
+{I18NUtil.GetWindowStringValue(this, @"CurrentVersion")}: {UpdateChecker.Version} ≥ {updater.LatestVersionNumber}", UpdateChecker.Name, MessageBoxButton.OK, MessageBoxImage.Information);
 			};
 			updater.NewVersionFoundFailed += (o, _) =>
 			{

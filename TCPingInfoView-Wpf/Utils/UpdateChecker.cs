@@ -43,6 +43,7 @@ namespace TCPingInfoView.Utils
 				}
 				else
 				{
+					LatestVersionNumber = latestRelease.tag_name;
 					NewVersionNotFound?.Invoke(this, new EventArgs());
 				}
 			}

@@ -30,6 +30,10 @@
 			<Style x:Key="ToolbarImage" TargetType="Image">
 				<Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"></Setter>
 			</Style>
+			<Style x:Key="CellImage" TargetType="Image">
+				<Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"></Setter>
+				<Setter Property="Height" Value="16"></Setter>
+			</Style>
 			<SolidColorBrush Color="LightGray" x:Key="GridLinesBrush" />
 
 			<local:ShowWindowCommand x:Key="ShowHideCommand" />
@@ -171,16 +175,26 @@
 				</DataGrid.Resources>
 				-->
 				<DataGrid.Columns>
-					<DataGridTextColumn  Binding="{Binding Index}" IsReadOnly="True" CellStyle="{StaticResource DefaultCellStyle}">
+					<DataGridTextColumn Binding="{Binding Index}" IsReadOnly="True" CellStyle="{StaticResource DefaultCellStyle}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource Id}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn  Binding="{Binding Hostname}" IsReadOnly="True" CellStyle="{StaticResource DefaultCellStyle}">
-						<DataGridTextColumn.Header>
-							<TextBlock Text="{DynamicResource Hostname}" />
-						</DataGridTextColumn.Header>
-					</DataGridTextColumn>
+					<DataGridTemplateColumn CellStyle="{StaticResource DefaultCellStyle}">
+						<DataGridTemplateColumn.HeaderTemplate>
+							<DataTemplate>
+								<TextBlock Text="{DynamicResource Hostname}" />
+							</DataTemplate>
+						</DataGridTemplateColumn.HeaderTemplate>
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<StackPanel Orientation="Horizontal">
+									<Image Style="{StaticResource CellImage}" Source="{Binding DisplayedImage}"/>
+									<TextBlock Text="{Binding Hostname}" />
+								</StackPanel>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
 					<DataGridTextColumn Binding="{Binding Ip}" IsReadOnly="True" SortMemberPath="IpLong" CellStyle="{StaticResource DefaultCellStyle}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource Ip}" />

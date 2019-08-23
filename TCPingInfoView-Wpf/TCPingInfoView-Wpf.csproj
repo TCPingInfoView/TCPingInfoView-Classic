@@ -15,10 +15,13 @@
 
   <ItemGroup>
     <None Remove="Resources\Exit.png" />
+    <None Remove="Resources\Failed.png" />
     <None Remove="Resources\Load.png" />
     <None Remove="Resources\Minimize.png" />
+    <None Remove="Resources\None.png" />
     <None Remove="Resources\Start.png" />
     <None Remove="Resources\Stop.png" />
+    <None Remove="Resources\Succeed.png" />
     <None Remove="Resources\TCPing.ico" />
     <None Remove="Resources\Test.png" />
     <None Remove="View\MainWindow.xaml" />
@@ -30,10 +33,13 @@
 
   <ItemGroup>
     <Resource Include="Resources\Exit.png" />
+    <Resource Include="Resources\Failed.png" />
     <Resource Include="Resources\Load.png" />
     <Resource Include="Resources\Minimize.png" />
+    <Resource Include="Resources\None.png" />
     <Resource Include="Resources\Start.png" />
     <Resource Include="Resources\Stop.png" />
+    <Resource Include="Resources\Succeed.png" />
     <Resource Include="Resources\TCPing.ico" />
     <Resource Include="Resources\Test.png" />
   </ItemGroup>

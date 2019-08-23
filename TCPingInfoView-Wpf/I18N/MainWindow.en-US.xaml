@@ -41,4 +41,5 @@
 	<sys:String x:Key="AskForUpdates">Would you like to download the new version?</sys:String>
 	<sys:String x:Key="NewVersionFoundFailed">Check for update failure</sys:String>
 	<sys:String x:Key="NewVersionNotFound">No updates are available</sys:String>
+	<sys:String x:Key="CurrentVersion">Current version</sys:String>
 </ResourceDictionary>

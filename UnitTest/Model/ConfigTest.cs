@@ -71,7 +71,7 @@ namespace UnitTest.Model
 		[TestMethod]
 		public void PerformanceTest()
 		{
-			const int times = 1000000;
+			const int times = 100000;
 			var config = new Config();
 			var stopWatch = new Stopwatch();
 			stopWatch.Start();
