@@ -102,12 +102,15 @@ namespace TCPingInfoView.ViewModel
 
 		public void HideWindow()
 		{
-			Window.Visibility = Visibility.Collapsed;
+			Window.Visibility = Visibility.Hidden;
 		}
 
-		public void ShowWindow()
+		public void ShowWindow(bool isClosing = true)
 		{
-			Window.Visibility = Visibility.Visible;
+			if (isClosing)
+			{
+				Window.Visibility = Visibility.Visible;
+			}
 			Win32.UnMinimize(Window);
 			if (!Window.Topmost)
 			{

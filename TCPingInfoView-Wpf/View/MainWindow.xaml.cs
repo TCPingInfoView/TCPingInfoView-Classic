@@ -80,6 +80,7 @@ namespace TCPingInfoView.View
 		private void MainWindow_OnClosed(object sender, EventArgs e)
 		{
 			StopPingTask();
+			MainWindowViewModel.ShowWindow(false);
 			SaveConfig();
 		}
 
