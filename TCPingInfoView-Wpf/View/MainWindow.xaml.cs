@@ -5,6 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 using TCPingInfoView.Model;
 using TCPingInfoView.Utils;
 using TCPingInfoView.ViewModel;
@@ -181,7 +183,7 @@ namespace TCPingInfoView.View
 			{
 				Top = MainWindowViewModel.Config.StartTop;
 				Left = MainWindowViewModel.Config.StartLeft;
-				if (Util.IsOnScreen(Left, Top) || Util.IsOnScreen(Left + Width, Top + Height))
+				if (ViewUtil.IsOnScreen(Left, Top) || ViewUtil.IsOnScreen(Left + Width, Top + Height))
 				{
 					WindowStartupLocation = WindowStartupLocation.Manual;
 				}
@@ -332,9 +334,79 @@ namespace TCPingInfoView.View
 			}
 		}
 
-		private void ShowIdMenuItem_OnClick(object sender, RoutedEventArgs e)
+		#region DisplayColumns
+
+		private void DisplayIdMenuItem_OnClick(object sender, RoutedEventArgs e)
 		{
-			MainWindowViewModel.ColumnsStatus.ShowId = !MainWindowViewModel.ColumnsStatus.ShowId;
+			MainWindowViewModel.ColumnsStatus.DisplayId = !MainWindowViewModel.ColumnsStatus.DisplayId;
+		}
+
+		private void DisplayHostnameMenuItem_OnClick(object sender, RoutedEventArgs e)
+		{
+			MainWindowViewModel.ColumnsStatus.DisplayHostname = !MainWindowViewModel.ColumnsStatus.DisplayHostname;
+		}
+
+		private void DisplayPortMenuItem_OnClick(object sender, RoutedEventArgs e)
+		{
+			MainWindowViewModel.ColumnsStatus.DisplayPort = !MainWindowViewModel.ColumnsStatus.DisplayPort;
+		}
+
+		private void DisplayDescriptionMenuItem_OnClick(object sender, RoutedEventArgs e)
+		{
+			MainWindowViewModel.ColumnsStatus.DisplayDescription = !MainWindowViewModel.ColumnsStatus.DisplayDescription;
+		}
+
+		private void DisplayLastPingMenuItem_OnClick(object sender, RoutedEventArgs e)
+		{
+			MainWindowViewModel.ColumnsStatus.DisplayLastPing = !MainWindowViewModel.ColumnsStatus.DisplayLastPing;
+		}
+
+		private void DisplayMaxPingMenuItem_OnClick(object sender, RoutedEventArgs e)
+		{
+			MainWindowViewModel.ColumnsStatus.DisplayMaxPing = !MainWindowViewModel.ColumnsStatus.DisplayMaxPing;
+		}
+
+		private void DisplayMinPingMenuItem_OnClick(object sender, RoutedEventArgs e)
+		{
+			MainWindowViewModel.ColumnsStatus.DisplayMinPing = !MainWindowViewModel.ColumnsStatus.DisplayMinPing;
+		}
+
+		private void DisplayAveragePingMenuItem_OnClick(object sender, RoutedEventArgs e)
+		{
+			MainWindowViewModel.ColumnsStatus.DisplayAveragePing = !MainWindowViewModel.ColumnsStatus.DisplayAveragePing;
+		}
+
+		private void DisplayLastTCPingMenuItem_OnClick(object sender, RoutedEventArgs e)
+		{
+			MainWindowViewModel.ColumnsStatus.DisplayLastTCPing = !MainWindowViewModel.ColumnsStatus.DisplayLastTCPing;
+		}
+
+		private void DisplayMaxTCPingMenuItem_OnClick(object sender, RoutedEventArgs e)
+		{
+			MainWindowViewModel.ColumnsStatus.DisplayMaxTCPing = !MainWindowViewModel.ColumnsStatus.DisplayMaxTCPing;
+		}
+
+		private void DisplayMinTCPingMenuItem_OnClick(object sender, RoutedEventArgs e)
+		{
+			MainWindowViewModel.ColumnsStatus.DisplayMinTCPing = !MainWindowViewModel.ColumnsStatus.DisplayMinTCPing;
+		}
+
+		private void DisplayAverageTCPingMenuItem_OnClick(object sender, RoutedEventArgs e)
+		{
+			MainWindowViewModel.ColumnsStatus.DisplayAverageTCPing = !MainWindowViewModel.ColumnsStatus.DisplayAverageTCPing;
+		}
+
+		#endregion
+
+		private void EndPointDataGrid_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+		{
+			// remove selection by clicking on a blank spot
+			var r = VisualTreeHelper.HitTest(this, e.GetPosition(this));
+			var type = r.VisualHit.GetParentOfType<Control>().GetType();
+			if (type == typeof(DataGridRow) || type == typeof(DataGrid))
+			{
+				EndPointDataGrid.UnselectAll();
+			}
 		}
 	}
 }

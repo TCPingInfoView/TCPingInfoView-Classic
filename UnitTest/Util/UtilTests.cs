@@ -79,14 +79,14 @@ namespace UnitTest.Util
 		[TestMethod]
 		public void IsOnScreenTest()
 		{
-			Assert.IsTrue(TCPingInfoView.Utils.Util.IsOnScreen(0, 0));
-			Assert.IsTrue(TCPingInfoView.Utils.Util.IsOnScreen(1920, 1080));
-			Assert.IsTrue(TCPingInfoView.Utils.Util.IsOnScreen(1920 * 2, 1080));
-			Assert.IsFalse(TCPingInfoView.Utils.Util.IsOnScreen(1920 * 2, 1080 * 2));
-			Assert.IsFalse(TCPingInfoView.Utils.Util.IsOnScreen(1920, 1080 * 2));
-			Assert.IsFalse(TCPingInfoView.Utils.Util.IsOnScreen(1920 * 2 + 1, 1080));
-			Assert.IsFalse(TCPingInfoView.Utils.Util.IsOnScreen(1920 * 2, 1080 + 1));
-			Assert.IsFalse(TCPingInfoView.Utils.Util.IsOnScreen(-1, 10));
+			Assert.IsTrue(TCPingInfoView.Utils.ViewUtil.IsOnScreen(0, 0));
+			Assert.IsTrue(TCPingInfoView.Utils.ViewUtil.IsOnScreen(1920, 1080));
+			Assert.IsTrue(TCPingInfoView.Utils.ViewUtil.IsOnScreen(1920 * 2, 1080));
+			Assert.IsFalse(TCPingInfoView.Utils.ViewUtil.IsOnScreen(1920 * 2, 1080 * 2));
+			Assert.IsFalse(TCPingInfoView.Utils.ViewUtil.IsOnScreen(1920, 1080 * 2));
+			Assert.IsFalse(TCPingInfoView.Utils.ViewUtil.IsOnScreen(1920 * 2 + 1, 1080));
+			Assert.IsFalse(TCPingInfoView.Utils.ViewUtil.IsOnScreen(1920 * 2, 1080 + 1));
+			Assert.IsFalse(TCPingInfoView.Utils.ViewUtil.IsOnScreen(-1, 10));
 		}
 	}
 }

@@ -170,40 +170,75 @@
 					SelectionUnit="FullRow" SelectionMode="Extended"
 					CanUserAddRows="False" CanUserResizeRows="False"
 					CanUserDeleteRows="True"
-					ItemsSource="{Binding EndPointsCollection}">
+					ItemsSource="{Binding EndPointsCollection}"
+					MouseLeftButtonUp="EndPointDataGrid_OnMouseLeftButtonUp">
 
 				<DataGrid.Resources>
-					<ContextMenu x:Key="DataGridColumnHeaderContextMenu">
+					<ContextMenu x:Key="DataGridColumnHeaderContextMenu" >
 						<MenuItem Header="{DynamicResource Id}"
-									IsChecked="{Binding ColumnsStatus.ShowId,
+									IsChecked="{Binding ColumnsStatus.DisplayId,
 									Source={StaticResource BindingProxy}}"
-									Click="ShowIdMenuItem_OnClick" />
-						<MenuItem Header="{DynamicResource Hostname}" />
-						<MenuItem Header="{DynamicResource Port}" />
-						<MenuItem Header="{DynamicResource Description}" />
-						<MenuItem Header="{DynamicResource LastPing}" />
-						<MenuItem Header="{DynamicResource MaxPing}" />
-						<MenuItem Header="{DynamicResource MinPing}" />
-						<MenuItem Header="{DynamicResource AveragePing}" />
-						<MenuItem Header="{DynamicResource LastTCPing}" />
-						<MenuItem Header="{DynamicResource MaxTCPing}" />
-						<MenuItem Header="{DynamicResource MinTCPing}" />
-						<MenuItem Header="{DynamicResource AverageTCPing}" />
+									Click="DisplayIdMenuItem_OnClick" />
+						<MenuItem Header="{DynamicResource Hostname}"
+								  IsChecked="{Binding ColumnsStatus.DisplayHostname,
+									Source={StaticResource BindingProxy}}" 
+									Click="DisplayHostnameMenuItem_OnClick"/>
+						<MenuItem Header="{DynamicResource Port}"
+								  IsChecked="{Binding ColumnsStatus.DisplayPort,
+									Source={StaticResource BindingProxy}}" 
+									Click="DisplayPortMenuItem_OnClick"/>
+						<MenuItem Header="{DynamicResource Description}"
+								  IsChecked="{Binding ColumnsStatus.DisplayDescription,
+									Source={StaticResource BindingProxy}}" 
+									Click="DisplayDescriptionMenuItem_OnClick"/>
+						<MenuItem Header="{DynamicResource LastPing}"
+								  IsChecked="{Binding ColumnsStatus.DisplayLastPing,
+									Source={StaticResource BindingProxy}}" 
+									Click="DisplayLastPingMenuItem_OnClick"/>
+						<MenuItem Header="{DynamicResource MaxPing}"
+								  IsChecked="{Binding ColumnsStatus.DisplayMaxPing,
+									Source={StaticResource BindingProxy}}" 
+									Click="DisplayMaxPingMenuItem_OnClick"/>
+						<MenuItem Header="{DynamicResource MinPing}"
+								  IsChecked="{Binding ColumnsStatus.DisplayMinPing,
+									Source={StaticResource BindingProxy}}" 
+									Click="DisplayMinPingMenuItem_OnClick"/>
+						<MenuItem Header="{DynamicResource AveragePing}"
+								  IsChecked="{Binding ColumnsStatus.DisplayAveragePing,
+									Source={StaticResource BindingProxy}}" 
+									Click="DisplayAveragePingMenuItem_OnClick"/>
+						<MenuItem Header="{DynamicResource LastTCPing}"
+								  IsChecked="{Binding ColumnsStatus.DisplayLastTCPing,
+									Source={StaticResource BindingProxy}}" 
+									Click="DisplayLastTCPingMenuItem_OnClick"/>
+						<MenuItem Header="{DynamicResource MaxTCPing}"
+								  IsChecked="{Binding ColumnsStatus.DisplayMaxTCPing,
+									Source={StaticResource BindingProxy}}" 
+									Click="DisplayMaxTCPingMenuItem_OnClick"/>
+						<MenuItem Header="{DynamicResource MinTCPing}"
+								  IsChecked="{Binding ColumnsStatus.DisplayMinTCPing,
+									Source={StaticResource BindingProxy}}" 
+									Click="DisplayMinTCPingMenuItem_OnClick"/>
+						<MenuItem Header="{DynamicResource AverageTCPing}"
+								  IsChecked="{Binding ColumnsStatus.DisplayAverageTCPing,
+									Source={StaticResource BindingProxy}}" 
+									Click="DisplayAverageTCPingMenuItem_OnClick"/>
 					</ContextMenu>
 					<Style TargetType="{x:Type DataGridColumnHeader}">
 						<Setter Property="ContextMenu" Value="{StaticResource DataGridColumnHeaderContextMenu}" />
 					</Style>
 				</DataGrid.Resources>
 				<DataGrid.Columns>
-					<DataGridTextColumn Binding="{Binding Index}" IsReadOnly="True" 
+					<DataGridTextColumn Binding="{Binding Index}" IsReadOnly="True"
 					CellStyle="{StaticResource DefaultCellStyle}"
-					Visibility="{Binding ColumnsStatus.ShowId,
-									Source={StaticResource BindingProxy},Converter={StaticResource Bool2Visibility}}">
+					Visibility="{Binding ColumnsStatus.DisplayId,Source={StaticResource BindingProxy},Converter={StaticResource Bool2Visibility}}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource Id}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTemplateColumn CellStyle="{StaticResource DefaultCellStyle}">
+					<DataGridTemplateColumn CellStyle="{StaticResource DefaultCellStyle}"
+					Visibility="{Binding ColumnsStatus.DisplayHostname,Source={StaticResource BindingProxy},Converter={StaticResource Bool2Visibility}}"
+						>
 						<DataGridTemplateColumn.HeaderTemplate>
 							<DataTemplate>
 								<TextBlock Text="{DynamicResource Hostname}" />
@@ -218,57 +253,79 @@
 							</DataTemplate>
 						</DataGridTemplateColumn.CellTemplate>
 					</DataGridTemplateColumn>
-					<DataGridTextColumn Binding="{Binding Ip}" IsReadOnly="True" SortMemberPath="IpLong" CellStyle="{StaticResource DefaultCellStyle}">
+					<DataGridTextColumn Binding="{Binding Ip}" IsReadOnly="True" SortMemberPath="IpLong" 
+					CellStyle="{StaticResource DefaultCellStyle}"
+					Visibility="{Binding ColumnsStatus.DisplayIp,Source={StaticResource BindingProxy},Converter={StaticResource Bool2Visibility}}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource Ip}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding Port, Mode=TwoWay}" IsReadOnly="False" CellStyle="{StaticResource DefaultCellStyle}">
+					<DataGridTextColumn Binding="{Binding Port, Mode=TwoWay}" IsReadOnly="False"
+					CellStyle="{StaticResource DefaultCellStyle}"
+					Visibility="{Binding ColumnsStatus.DisplayPort,Source={StaticResource BindingProxy},Converter={StaticResource Bool2Visibility}}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource Port}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding Description, Mode=TwoWay}" IsReadOnly="False" CellStyle="{StaticResource DefaultCellStyle}">
+					<DataGridTextColumn Binding="{Binding Description, Mode=TwoWay}" IsReadOnly="False"
+					CellStyle="{StaticResource DefaultCellStyle}"
+					Visibility="{Binding ColumnsStatus.DisplayDescription,Source={StaticResource BindingProxy},Converter={StaticResource Bool2Visibility}}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource Description}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding LastPing}" IsReadOnly="True" CellStyle="{StaticResource LastPingCellStyle}">
+					<DataGridTextColumn Binding="{Binding LastPing}" IsReadOnly="True"
+					CellStyle="{StaticResource LastPingCellStyle}"
+					Visibility="{Binding ColumnsStatus.DisplayLastPing,Source={StaticResource BindingProxy},Converter={StaticResource Bool2Visibility}}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource LastPing}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding MaxPing}" IsReadOnly="True" CellStyle="{StaticResource MaxPingCellStyle}">
+					<DataGridTextColumn Binding="{Binding MaxPing}" IsReadOnly="True"
+					CellStyle="{StaticResource MaxPingCellStyle}"
+					Visibility="{Binding ColumnsStatus.DisplayMaxPing,Source={StaticResource BindingProxy},Converter={StaticResource Bool2Visibility}}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource MaxPing}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding MinPing}" IsReadOnly="True" CellStyle="{StaticResource MinPingCellStyle}">
+					<DataGridTextColumn Binding="{Binding MinPing}" IsReadOnly="True"
+					CellStyle="{StaticResource MinPingCellStyle}"
+					Visibility="{Binding ColumnsStatus.DisplayMinPing,Source={StaticResource BindingProxy},Converter={StaticResource Bool2Visibility}}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource MinPing}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding AveragePing}" IsReadOnly="True" CellStyle="{StaticResource AveragePingCellStyle}">
+					<DataGridTextColumn Binding="{Binding AveragePing}" IsReadOnly="True"
+					CellStyle="{StaticResource AveragePingCellStyle}"
+					Visibility="{Binding ColumnsStatus.DisplayAveragePing,Source={StaticResource BindingProxy},Converter={StaticResource Bool2Visibility}}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource AveragePing}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding LastTCPing}" IsReadOnly="True" CellStyle="{StaticResource LastTCPingCellStyle}">
+					<DataGridTextColumn Binding="{Binding LastTCPing}" IsReadOnly="True"
+					CellStyle="{StaticResource LastTCPingCellStyle}"
+					Visibility="{Binding ColumnsStatus.DisplayLastTCPing,Source={StaticResource BindingProxy},Converter={StaticResource Bool2Visibility}}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource LastTCPing}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding MaxTCPing}" IsReadOnly="True" CellStyle="{StaticResource MaxTCPingCellStyle}">
+					<DataGridTextColumn Binding="{Binding MaxTCPing}" IsReadOnly="True"
+					CellStyle="{StaticResource MaxTCPingCellStyle}"
+					Visibility="{Binding ColumnsStatus.DisplayMaxTCPing,Source={StaticResource BindingProxy},Converter={StaticResource Bool2Visibility}}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource MaxTCPing}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding MinTCPing}" IsReadOnly="True" CellStyle="{StaticResource MinTCPingCellStyle}">
+					<DataGridTextColumn Binding="{Binding MinTCPing}" IsReadOnly="True"
+					CellStyle="{StaticResource MinTCPingCellStyle}"
+					Visibility="{Binding ColumnsStatus.DisplayMinTCPing,Source={StaticResource BindingProxy},Converter={StaticResource Bool2Visibility}}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource MinTCPing}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding AverageTCPing}" IsReadOnly="True" CellStyle="{StaticResource AverageTCPingCellStyle}">
+					<DataGridTextColumn Binding="{Binding AverageTCPing}" IsReadOnly="True" 
+					CellStyle="{StaticResource AverageTCPingCellStyle}"
+					Visibility="{Binding ColumnsStatus.DisplayAverageTCPing,Source={StaticResource BindingProxy},Converter={StaticResource Bool2Visibility}}">
 						<DataGridTextColumn.Header>
 							<TextBlock Text="{DynamicResource AverageTCPing}" />
 						</DataGridTextColumn.Header>

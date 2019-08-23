@@ -72,12 +72,12 @@ namespace UnitTest.Model
 		{
 			var columnsStatus = new ColumnsStatus
 			{
-				ShowId = false
+				DisplayId = false
 			};
 			var jsonStr = JsonSerializer.Serialize(columnsStatus);
 			Console.WriteLine(jsonStr);
 			var columnsStatusCopy = JsonSerializer.Deserialize<ColumnsStatus>(jsonStr);
-			Assert.AreEqual(columnsStatusCopy.ShowId, columnsStatus.ShowId);
+			Assert.AreEqual(columnsStatusCopy.DisplayId, columnsStatus.DisplayId);
 		}
 
 		[TestMethod]
