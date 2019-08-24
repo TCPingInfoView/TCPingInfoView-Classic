@@ -214,7 +214,7 @@ namespace TCPingInfoView.View
 			MainWindowViewModel.Config.StartWidth = Width;
 			MainWindowViewModel.Config.Topmost = Topmost;
 			MainWindowViewModel.Config.Language = I18NUtil.CurrentLanguage;
-			MainWindowViewModel.Config.EndPointInfo = MainWindowViewModel.EndPointsCollection.Select(info => (EndPointInfo)info.Clone()).ToList();
+			MainWindowViewModel.Config.EndPointInfo = MainWindowViewModel.EndPointsCollection.Select(info => (EndPointInfo)info.Clone());
 			Write.SaveConfig(MainWindowViewModel.Config);
 		}
 
