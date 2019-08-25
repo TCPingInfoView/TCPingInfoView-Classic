@@ -134,5 +134,13 @@ namespace TCPingInfoView.ViewModel
 				ShowWindow();
 			}
 		}
+
+		public void CallAllDateTimeChanged()
+		{
+			foreach (var endPointInfo in EndPointsCollection)
+			{
+				endPointInfo.CallDateTimeChanged();
+			}
+		}
 	}
 }

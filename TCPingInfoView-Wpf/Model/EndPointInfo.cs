@@ -42,6 +42,10 @@ namespace TCPingInfoView.Model
 			MaxPing = null;
 			MinPing = null;
 			OnPropertyChanged(nameof(AveragePing));
+			OnPropertyChanged(nameof(PingSucceedPercentage));
+			OnPropertyChanged(nameof(PingFailedPercentage));
+			LastPingSucceedOn = null;
+			LastPingFailedOn = null;
 
 			_totalTCPing = 0;
 			SucceedTCPingCount = 0;
@@ -50,6 +54,10 @@ namespace TCPingInfoView.Model
 			MaxTCPing = null;
 			MinTCPing = null;
 			OnPropertyChanged(nameof(AverageTCPing));
+			OnPropertyChanged(nameof(TCPingSucceedPercentage));
+			OnPropertyChanged(nameof(TCPingFailedPercentage));
+			LastTCPingSucceedOn = null;
+			LastTCPingFailedOn = null;
 
 			DisplayedImage = NoneImageSource;
 		}
@@ -99,6 +107,8 @@ namespace TCPingInfoView.Model
 		private long? _lastPing;
 		private long? _maxPing;
 		private long? _minPing;
+		private DateTime? _lastPingSucceedOn;
+		private DateTime? _lastPingFailedOn;
 
 		private long _totalTCPing;
 		private long _succeedTCPingCount;
@@ -106,6 +116,8 @@ namespace TCPingInfoView.Model
 		private long? _lastTCPing;
 		private long? _maxTCPing;
 		private long? _minTCPing;
+		private DateTime? _lastTCPingSucceedOn;
+		private DateTime? _lastTCPingFailedOn;
 
 		private string _displayedImage;
 
@@ -216,6 +228,64 @@ namespace TCPingInfoView.Model
 		}
 
 		[JsonIgnore]
+		public string PingSucceedPercentage
+		{
+			get
+			{
+				var count = SucceedPingCount + FailedPingCount;
+				if (count != 0)
+				{
+					var p = (double)SucceedPingCount / count;
+					return p > 0.0 ? p.ToString(@"P") : @"0%";
+				}
+				return null;
+			}
+		}
+
+		[JsonIgnore]
+		public string PingFailedPercentage
+		{
+			get
+			{
+				var count = SucceedPingCount + FailedPingCount;
+				if (count != 0)
+				{
+					var p = (double)FailedPingCount / count;
+					return p > 0.0 ? p.ToString(@"P") : @"0%";
+				}
+				return null;
+			}
+		}
+
+		[JsonIgnore]
+		public DateTime? LastPingSucceedOn
+		{
+			get => _lastPingSucceedOn;
+			set
+			{
+				if (_lastPingSucceedOn != value)
+				{
+					_lastPingSucceedOn = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		[JsonIgnore]
+		public DateTime? LastPingFailedOn
+		{
+			get => _lastPingFailedOn;
+			set
+			{
+				if (_lastPingFailedOn != value)
+				{
+					_lastPingFailedOn = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		[JsonIgnore]
 		public long? LastPing
 		{
 			get => _lastPing;
@@ -299,6 +369,66 @@ namespace TCPingInfoView.Model
 				if (_failedTCPingCount != value)
 				{
 					_failedTCPingCount = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		[JsonIgnore]
+		public string TCPingSucceedPercentage
+		{
+			get
+			{
+				var count = SucceedTCPingCount + FailedTCPingCount;
+				if (count != 0)
+				{
+					var p = (double)SucceedTCPingCount / count;
+					return p > 0.0 ? p.ToString(@"P") : @"0%";
+				}
+
+				return null;
+			}
+		}
+
+		[JsonIgnore]
+		public string TCPingFailedPercentage
+		{
+			get
+			{
+				var count = SucceedTCPingCount + FailedTCPingCount;
+				if (count != 0)
+				{
+					var p = (double)FailedTCPingCount / count;
+					return p > 0.0 ? p.ToString(@"P") : @"0%";
+				}
+
+				return null;
+			}
+		}
+
+		[JsonIgnore]
+		public DateTime? LastTCPingSucceedOn
+		{
+			get => _lastTCPingSucceedOn;
+			set
+			{
+				if (_lastTCPingSucceedOn != value)
+				{
+					_lastTCPingSucceedOn = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		[JsonIgnore]
+		public DateTime? LastTCPingFailedOn
+		{
+			get => _lastTCPingFailedOn;
+			set
+			{
+				if (_lastTCPingFailedOn != value)
+				{
+					_lastTCPingFailedOn = value;
 					OnPropertyChanged();
 				}
 			}
@@ -404,6 +534,7 @@ namespace TCPingInfoView.Model
 				if (tRes.PingResult.Status == IPStatus.Success)
 				{
 					++SucceedPingCount;
+					LastPingSucceedOn = tRes.Time;
 					_totalPing += tRes.PingResult.RTT;
 					LastPing = tRes.PingResult.RTT;
 
@@ -423,8 +554,11 @@ namespace TCPingInfoView.Model
 				{
 					imageStatus = PingStatus.Failed;
 					++FailedPingCount;
+					LastPingFailedOn = tRes.Time;
 					LastPing = null;
 				}
+				OnPropertyChanged(nameof(PingSucceedPercentage));
+				OnPropertyChanged(nameof(PingFailedPercentage));
 			}
 
 			if (tRes.TCPingResult != null)
@@ -432,6 +566,7 @@ namespace TCPingInfoView.Model
 				if (tRes.TCPingResult.Status == IPStatus.Success)
 				{
 					++SucceedTCPingCount;
+					LastTCPingSucceedOn = tRes.Time;
 					_totalTCPing += tRes.TCPingResult.RTT;
 					LastTCPing = tRes.TCPingResult.RTT;
 
@@ -455,8 +590,11 @@ namespace TCPingInfoView.Model
 				{
 					imageStatus = PingStatus.Failed;
 					++FailedTCPingCount;
+					LastTCPingFailedOn = tRes.Time;
 					LastTCPing = null;
 				}
+				OnPropertyChanged(nameof(TCPingSucceedPercentage));
+				OnPropertyChanged(nameof(TCPingFailedPercentage));
 			}
 
 			SetImageStatus(imageStatus);
@@ -524,6 +662,14 @@ namespace TCPingInfoView.Model
 			{
 				DisplayedImage = NoneImageSource;
 			}
+		}
+
+		public void CallDateTimeChanged()
+		{
+			OnPropertyChanged(nameof(LastPingSucceedOn));
+			OnPropertyChanged(nameof(LastPingFailedOn));
+			OnPropertyChanged(nameof(LastTCPingSucceedOn));
+			OnPropertyChanged(nameof(LastTCPingFailedOn));
 		}
 	}
 }

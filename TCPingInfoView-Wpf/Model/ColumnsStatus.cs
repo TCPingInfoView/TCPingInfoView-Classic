@@ -19,6 +19,14 @@ namespace TCPingInfoView.Model
 		private bool _displayMaxTcPing;
 		private bool _displayMinTcPing;
 		private bool _displayAverageTcPing;
+		private bool _displayPingSucceedPercentage;
+		private bool _displayPingFailedPercentage;
+		private bool _displayTCPingSucceedPercentage;
+		private bool _displayTCPingFailedPercentage;
+		private bool _displayLastPingSucceedOn;
+		private bool _displayLastPingFailedOn;
+		private bool _displayLastTCPingSucceedOn;
+		private bool _displayLastTCPingFailedOn;
 
 		private int _indexId;
 		private int _indexHostname;
@@ -33,6 +41,14 @@ namespace TCPingInfoView.Model
 		private int _indexMaxTcPing;
 		private int _indexMinTcPing;
 		private int _indexAverageTcPing;
+		private int _indexPingSucceedPercentage;
+		private int _indexPingFailedPercentage;
+		private int _indexTCPingSucceedPercentage;
+		private int _indexTCPingFailedPercentage;
+		private int _indexLastPingSucceedOn;
+		private int _indexLastPingFailedOn;
+		private int _indexLastTCPingSucceedOn;
+		private int _indexLastTCPingFailedOn;
 
 		#region Display
 
@@ -205,7 +221,113 @@ namespace TCPingInfoView.Model
 			}
 		}
 
+		public bool DisplayPingSucceedPercentage
+		{
+			get => _displayPingSucceedPercentage;
+			set
+			{
+				if (_displayPingSucceedPercentage != value)
+				{
+					_displayPingSucceedPercentage = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		public bool DisplayPingFailedPercentage
+		{
+			get => _displayPingFailedPercentage;
+			set
+			{
+				if (_displayPingFailedPercentage != value)
+				{
+					_displayPingFailedPercentage = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		public bool DisplayTCPingSucceedPercentage
+		{
+			get => _displayTCPingSucceedPercentage;
+			set
+			{
+				if (_displayTCPingSucceedPercentage != value)
+				{
+					_displayTCPingSucceedPercentage = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		public bool DisplayTCPingFailedPercentage
+		{
+			get => _displayTCPingFailedPercentage;
+			set
+			{
+				if (_displayTCPingFailedPercentage != value)
+				{
+					_displayTCPingFailedPercentage = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		public bool DisplayLastPingSucceedOn
+		{
+			get => _displayLastPingSucceedOn;
+			set
+			{
+				if (_displayLastPingSucceedOn != value)
+				{
+					_displayLastPingSucceedOn = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		public bool DisplayLastPingFailedOn
+		{
+			get => _displayLastPingFailedOn;
+			set
+			{
+				if (_displayLastPingFailedOn != value)
+				{
+					_displayLastPingFailedOn = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		public bool DisplayLastTCPingSucceedOn
+		{
+			get => _displayLastTCPingSucceedOn;
+			set
+			{
+				if (_displayLastTCPingSucceedOn != value)
+				{
+					_displayLastTCPingSucceedOn = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		public bool DisplayLastTCPingFailedOn
+		{
+			get => _displayLastTCPingFailedOn;
+			set
+			{
+				if (_displayLastTCPingFailedOn != value)
+				{
+					_displayLastTCPingFailedOn = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
 		#endregion
+
+		#region Index
 
 		public int IndexId
 		{
@@ -376,6 +498,112 @@ namespace TCPingInfoView.Model
 			}
 		}
 
+		public int IndexPingSucceedPercentage
+		{
+			get => _indexPingSucceedPercentage;
+			set
+			{
+				if (_indexPingSucceedPercentage != value)
+				{
+					_indexPingSucceedPercentage = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		public int IndexPingFailedPercentage
+		{
+			get => _indexPingFailedPercentage;
+			set
+			{
+				if (_indexPingFailedPercentage != value)
+				{
+					_indexPingFailedPercentage = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		public int IndexTCPingSucceedPercentage
+		{
+			get => _indexTCPingSucceedPercentage;
+			set
+			{
+				if (_indexTCPingSucceedPercentage != value)
+				{
+					_indexTCPingSucceedPercentage = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		public int IndexTCPingFailedPercentage
+		{
+			get => _indexTCPingFailedPercentage;
+			set
+			{
+				if (_indexTCPingFailedPercentage != value)
+				{
+					_indexTCPingFailedPercentage = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		public int IndexLastPingSucceedOn
+		{
+			get => _indexLastPingSucceedOn;
+			set
+			{
+				if (_indexLastPingSucceedOn != value)
+				{
+					_indexLastPingSucceedOn = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		public int IndexLastPingFailedOn
+		{
+			get => _indexLastPingFailedOn;
+			set
+			{
+				if (_indexLastPingFailedOn != value)
+				{
+					_indexLastPingFailedOn = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		public int IndexLastTCPingSucceedOn
+		{
+			get => _indexLastTCPingSucceedOn;
+			set
+			{
+				if (_indexLastTCPingSucceedOn != value)
+				{
+					_indexLastTCPingSucceedOn = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		public int IndexLastTCPingFailedOn
+		{
+			get => _indexLastTCPingFailedOn;
+			set
+			{
+				if (_indexLastTCPingFailedOn != value)
+				{
+					_indexLastTCPingFailedOn = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		#endregion
+
 		public ColumnsStatus()
 		{
 			_displayId = true;
@@ -391,6 +619,14 @@ namespace TCPingInfoView.Model
 			_displayMaxTcPing = false;
 			_displayMinTcPing = false;
 			_displayAverageTcPing = true;
+			_displayPingSucceedPercentage = true;
+			_displayPingFailedPercentage = false;
+			_displayTCPingSucceedPercentage = true;
+			_displayTCPingFailedPercentage = false;
+			_displayLastPingSucceedOn = false;
+			_displayLastPingFailedOn = true;
+			_displayLastTCPingSucceedOn = false;
+			_displayLastTCPingFailedOn = true;
 
 			_indexId = 0;
 			_indexHostname = 1;
@@ -405,6 +641,14 @@ namespace TCPingInfoView.Model
 			_indexMaxTcPing = 10;
 			_indexMinTcPing = 11;
 			_indexAverageTcPing = 12;
+			_indexPingSucceedPercentage = 13;
+			_indexPingFailedPercentage = 14;
+			_indexTCPingSucceedPercentage = 15;
+			_indexTCPingFailedPercentage = 16;
+			_indexLastPingSucceedOn = 17;
+			_indexLastPingFailedOn = 18;
+			_indexLastTCPingSucceedOn = 19;
+			_indexLastTCPingFailedOn = 20;
 		}
 	}
 }

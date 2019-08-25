@@ -8,7 +8,7 @@ namespace TCPingInfoView.Utils
 	{
 		private const string DefaultLanguage = @"en-US";
 
-		public static string CurrentLanguage = @"";
+		public static string CurrentLanguage;
 
 		public static readonly Dictionary<string, string> SupportLanguage = new Dictionary<string, string>
 		{
@@ -43,7 +43,6 @@ namespace TCPingInfoView.Utils
 			{
 				return str;
 			}
-
 			return null;
 		}
 	}

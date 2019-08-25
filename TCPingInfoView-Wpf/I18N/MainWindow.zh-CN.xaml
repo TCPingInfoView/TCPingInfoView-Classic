@@ -11,7 +11,8 @@
 	<sys:String x:Key="View">查看(_V)</sys:String>
 	<sys:String x:Key="AlwaysOnTop">窗口置顶(_T)</sys:String>
 	<sys:String x:Key="AutoSize">自动调整大小(_S)</sys:String>
-	<sys:String x:Key="Language">选择语言</sys:String>
+	<sys:String x:Key="ChooseColumns">选择要显示的列(_C)</sys:String>
+	<sys:String x:Key="Language">更改语言(_L)</sys:String>
 
 	<sys:String x:Key="List">列表(_L)</sys:String>
 	<sys:String x:Key="Del">删除选择行(_D)</sys:String>
@@ -37,6 +38,14 @@
 	<sys:String x:Key="MaxTCPing">最大 TCP 延迟(ms)</sys:String>
 	<sys:String x:Key="MinTCPing">最小 TCP 延迟(ms)</sys:String>
 	<sys:String x:Key="AverageTCPing">平均 TCP 延迟(ms)</sys:String>
+	<sys:String x:Key="PingSucceedPercentage">Ping 成功率</sys:String>
+	<sys:String x:Key="PingFailedPercentage">Ping 失败率</sys:String>
+	<sys:String x:Key="TCPingSucceedPercentage">TCPing 成功率</sys:String>
+	<sys:String x:Key="TCPingFailedPercentage">TCPing 失败率</sys:String>
+	<sys:String x:Key="LastPingSucceedOn">最后一次 Ping 成功时间</sys:String>
+	<sys:String x:Key="LastPingFailedOn">最后一次 Ping 失败时间</sys:String>
+	<sys:String x:Key="LastTCPingSucceedOn">最后一次 TCPing 成功时间</sys:String>
+	<sys:String x:Key="LastTCPingFailedOn">最后一次 TCPing 失败时间</sys:String>
 
 	<sys:String x:Key="NewVersionFound">发现新版本</sys:String>
 	<sys:String x:Key="AskForUpdates">是否下载新版本？</sys:String>

@@ -63,13 +63,14 @@ namespace TCPingInfoView.View
 			if (Application.LoadComponent(new Uri($@"../I18N/MainWindow.{langName}.xaml", UriKind.Relative)) is ResourceDictionary langRd)
 			{
 				Resources.MergedDictionaries.Add(langRd);
-				if (Resources.MergedDictionaries.Count > 1)
+				while (Resources.MergedDictionaries.Count > 1)
 				{
 					Resources.MergedDictionaries.RemoveAt(0);
 				}
 			}
 			I18NUtil.SetLanguage(langName);
 			LoadNotifyIconContextMenu();
+			MainWindowViewModel.CallAllDateTimeChanged();
 		}
 
 		private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
@@ -335,6 +336,17 @@ namespace TCPingInfoView.View
 			}
 		}
 
+		private void EndPointDataGrid_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+		{
+			// remove selection by clicking on a blank spot
+			var r = VisualTreeHelper.HitTest(this, e.GetPosition(this));
+			var type = r.VisualHit.GetParentOfType<Control>().GetType();
+			if (type == typeof(DataGridRow) || type == typeof(DataGrid))
+			{
+				EndPointDataGrid.UnselectAll();
+			}
+		}
+
 		#region DisplayColumns
 
 		private void DisplayIdMenuItem_OnClick(object sender, RoutedEventArgs e)
@@ -397,17 +409,46 @@ namespace TCPingInfoView.View
 			MainWindowViewModel.ColumnsStatus.DisplayAverageTCPing = !MainWindowViewModel.ColumnsStatus.DisplayAverageTCPing;
 		}
 
-		#endregion
-
-		private void EndPointDataGrid_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+		private void DisplayPingSucceedPercentageMenuItem_OnClick(object sender, RoutedEventArgs e)
 		{
-			// remove selection by clicking on a blank spot
-			var r = VisualTreeHelper.HitTest(this, e.GetPosition(this));
-			var type = r.VisualHit.GetParentOfType<Control>().GetType();
-			if (type == typeof(DataGridRow) || type == typeof(DataGrid))
-			{
-				EndPointDataGrid.UnselectAll();
-			}
+			MainWindowViewModel.ColumnsStatus.DisplayPingSucceedPercentage = !MainWindowViewModel.ColumnsStatus.DisplayPingSucceedPercentage;
 		}
+
+		private void DisplayPingFailedPercentageMenuItem_OnClick(object sender, RoutedEventArgs e)
+		{
+			MainWindowViewModel.ColumnsStatus.DisplayPingFailedPercentage = !MainWindowViewModel.ColumnsStatus.DisplayPingFailedPercentage;
+		}
+
+		private void DisplayTCPingSucceedPercentageMenuItem_OnClick(object sender, RoutedEventArgs e)
+		{
+			MainWindowViewModel.ColumnsStatus.DisplayTCPingSucceedPercentage = !MainWindowViewModel.ColumnsStatus.DisplayTCPingSucceedPercentage;
+		}
+
+		private void DisplayTCPingFailedPercentageMenuItem_OnClick(object sender, RoutedEventArgs e)
+		{
+			MainWindowViewModel.ColumnsStatus.DisplayTCPingFailedPercentage = !MainWindowViewModel.ColumnsStatus.DisplayTCPingFailedPercentage;
+		}
+
+		private void DisplayLastPingSucceedOnMenuItem_OnClick(object sender, RoutedEventArgs e)
+		{
+			MainWindowViewModel.ColumnsStatus.DisplayLastPingSucceedOn = !MainWindowViewModel.ColumnsStatus.DisplayLastPingSucceedOn;
+		}
+
+		private void DisplayLastPingFailedOnMenuItem_OnClick(object sender, RoutedEventArgs e)
+		{
+			MainWindowViewModel.ColumnsStatus.DisplayLastPingFailedOn = !MainWindowViewModel.ColumnsStatus.DisplayLastPingFailedOn;
+		}
+
+		private void DisplayLastTCPingSucceedOnMenuItem_OnClick(object sender, RoutedEventArgs e)
+		{
+			MainWindowViewModel.ColumnsStatus.DisplayLastTCPingSucceedOn = !MainWindowViewModel.ColumnsStatus.DisplayLastTCPingSucceedOn;
+		}
+
+		private void DisplayLastTCPingFailedOnMenuItem_OnClick(object sender, RoutedEventArgs e)
+		{
+			MainWindowViewModel.ColumnsStatus.DisplayLastTCPingFailedOn = !MainWindowViewModel.ColumnsStatus.DisplayLastTCPingFailedOn;
+		}
+
+		#endregion
 	}
 }

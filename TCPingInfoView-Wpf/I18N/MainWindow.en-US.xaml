@@ -11,7 +11,8 @@
 	<sys:String x:Key="View">_View</sys:String>
 	<sys:String x:Key="AlwaysOnTop">Always On _Top</sys:String>
 	<sys:String x:Key="AutoSize">Auto _Size</sys:String>
-	<sys:String x:Key="Language">Select Language</sys:String>
+	<sys:String x:Key="ChooseColumns">_Choose columns to show</sys:String>
+	<sys:String x:Key="Language">Change _language in use</sys:String>
 
 	<sys:String x:Key="List">_List</sys:String>
 	<sys:String x:Key="Del">_Delete selected row</sys:String>
@@ -37,6 +38,14 @@
 	<sys:String x:Key="MaxTCPing">Max TCPing (ms)</sys:String>
 	<sys:String x:Key="MinTCPing">Min TCPing (ms)</sys:String>
 	<sys:String x:Key="AverageTCPing">Average TCPing (ms)</sys:String>
+	<sys:String x:Key="PingSucceedPercentage">Ping Success Rate</sys:String>
+	<sys:String x:Key="PingFailedPercentage">Ping Failure Rate</sys:String>
+	<sys:String x:Key="TCPingSucceedPercentage">TCPing Success Rate</sys:String>
+	<sys:String x:Key="TCPingFailedPercentage">TCPing Failure Rate</sys:String>
+	<sys:String x:Key="LastPingSucceedOn">Last Ping Succeed On</sys:String>
+	<sys:String x:Key="LastPingFailedOn">Last Ping Failed On</sys:String>
+	<sys:String x:Key="LastTCPingSucceedOn">Last TCPing Succeed On</sys:String>
+	<sys:String x:Key="LastTCPingFailedOn">Last TCPing Failed On</sys:String>
 
 	<sys:String x:Key="NewVersionFound">New version available</sys:String>
 	<sys:String x:Key="AskForUpdates">Would you like to download the new version?</sys:String>
