@@ -46,6 +46,16 @@ namespace TCPingInfoView.View
 		private void LoadNotifyIconContextMenu()
 		{
 			NotifyIcon.ContextMenu = new ContextMenu();
+
+			// 重设窗口大小和位置
+			var resetSizeAndPosMenuItem = new MenuItem
+			{
+				Header = I18NUtil.GetWindowStringValue(this, @"ResetSizeAndPos")
+			};
+			resetSizeAndPosMenuItem.Click += ResetSizeAndPosMenuItem_OnClick;
+			NotifyIcon.ContextMenu.Items.Add(resetSizeAndPosMenuItem);
+
+			// 退出
 			var exitMenuItem = new MenuItem
 			{
 				Header = I18NUtil.GetWindowStringValue(this, @"Exit")
@@ -241,6 +251,21 @@ namespace TCPingInfoView.View
 		private void AlwaysOnTop_OnClick(object sender, RoutedEventArgs e)
 		{
 			Topmost = !Topmost;
+		}
+
+		private void ResetSizeAndPosMenuItem_OnClick(object sender, RoutedEventArgs e)
+		{
+			MainWindowViewModel.ShowWindow();
+
+			var newConfig = new Config();
+			Height = newConfig.StartHeight;
+			Width = newConfig.StartWidth;
+
+			var workArea = SystemParameters.WorkArea;
+			Left = (workArea.Width - Width) / 2 + workArea.Left;
+			Top = (workArea.Height - Height) / 2 + workArea.Top;
+
+			SaveConfig();
 		}
 
 		private void AutoSizeAndCell_OnClick(object sender, RoutedEventArgs e)
@@ -484,5 +509,6 @@ namespace TCPingInfoView.View
 		}
 
 		#endregion
+
 	}
 }

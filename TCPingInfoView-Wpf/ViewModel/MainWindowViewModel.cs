@@ -105,9 +105,9 @@ namespace TCPingInfoView.ViewModel
 			Window.Visibility = Visibility.Hidden;
 		}
 
-		public void ShowWindow(bool isClosing = true)
+		public void ShowWindow(bool notClosing = true)
 		{
-			if (isClosing)
+			if (notClosing)
 			{
 				Window.Visibility = Visibility.Visible;
 			}
