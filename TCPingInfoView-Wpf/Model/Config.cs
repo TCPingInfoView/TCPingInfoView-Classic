@@ -54,5 +54,10 @@ namespace TCPingInfoView.Model
 			ColumnsStatus = new ColumnsStatus();
 			EndPointInfo = new EndPointInfo[0];
 		}
+
+		public void Fix()
+		{
+			Language = I18NUtil.GetLanguage(Language);
+		}
 	}
 }

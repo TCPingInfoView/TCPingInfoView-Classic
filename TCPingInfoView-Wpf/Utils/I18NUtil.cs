@@ -16,6 +16,11 @@ namespace TCPingInfoView.Utils
 			{@"English (United States)", @"en-US"},
 		};
 
+		public static string GetLanguage(string name)
+		{
+			return SupportLanguage.All(s => name != s.Value) ? GetLanguage() : name;
+		}
+
 		public static string GetLanguage()
 		{
 			var name = System.Globalization.CultureInfo.CurrentCulture.Name;

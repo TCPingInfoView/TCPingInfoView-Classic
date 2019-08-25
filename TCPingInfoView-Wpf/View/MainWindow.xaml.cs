@@ -243,12 +243,46 @@ namespace TCPingInfoView.View
 			Topmost = !Topmost;
 		}
 
-		private void AutoSize_OnClick(object sender, RoutedEventArgs e)
+		private void AutoSizeAndCell_OnClick(object sender, RoutedEventArgs e)
 		{
 			foreach (var column in EndPointDataGrid.Columns)
 			{
+				column.Width = new DataGridLength(1, DataGridLengthUnitType.Pixel);
 				column.Width = new DataGridLength(1, DataGridLengthUnitType.Auto);
 			}
+			SizeToContent = SizeToContent.Width;
+			SizeToContent = SizeToContent.Manual;
+		}
+
+		private void AutoColumnWidth_OnClick(object sender, RoutedEventArgs e)
+		{
+			foreach (var column in EndPointDataGrid.Columns)
+			{
+				column.Width = new DataGridLength(1, DataGridLengthUnitType.Pixel);
+				column.Width = new DataGridLength(1, DataGridLengthUnitType.Auto);
+			}
+		}
+
+		private void AutoColumnWidthToCells_OnClick(object sender, RoutedEventArgs e)
+		{
+			foreach (var column in EndPointDataGrid.Columns)
+			{
+				column.Width = new DataGridLength(1, DataGridLengthUnitType.Pixel);
+				column.Width = new DataGridLength(1, DataGridLengthUnitType.SizeToCells);
+			}
+		}
+
+		private void AutoColumnWidthToHeader_OnClick(object sender, RoutedEventArgs e)
+		{
+			foreach (var column in EndPointDataGrid.Columns)
+			{
+				column.Width = new DataGridLength(1, DataGridLengthUnitType.Pixel);
+				column.Width = new DataGridLength(1, DataGridLengthUnitType.SizeToHeader);
+			}
+		}
+
+		private void AutoSize_OnClick(object sender, RoutedEventArgs e)
+		{
 			SizeToContent = SizeToContent.Width;
 		}
 

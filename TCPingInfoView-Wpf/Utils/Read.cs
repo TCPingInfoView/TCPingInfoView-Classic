@@ -49,7 +49,9 @@ namespace TCPingInfoView.Utils
 				var jsonStr = ReadTextFromFile(fileLocation);
 				try
 				{
-					return JsonSerializer.Deserialize<Config>(jsonStr);
+					var config = JsonSerializer.Deserialize<Config>(jsonStr);
+					config.Fix();
+					return config;
 				}
 				catch
 				{

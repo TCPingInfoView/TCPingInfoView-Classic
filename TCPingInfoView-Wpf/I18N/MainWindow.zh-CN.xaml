@@ -10,7 +10,11 @@
 
 	<sys:String x:Key="View">查看(_V)</sys:String>
 	<sys:String x:Key="AlwaysOnTop">窗口置顶(_T)</sys:String>
-	<sys:String x:Key="AutoSize">自动调整大小(_S)</sys:String>
+	<sys:String x:Key="AutoSizeAndCell">自动调整大小和列宽(_S)</sys:String>
+	<sys:String x:Key="AutoColumnWidth">自动列宽</sys:String>
+	<sys:String x:Key="AutoColumnWidthToCells">自动列宽（不包括列标题）</sys:String>
+	<sys:String x:Key="AutoColumnWidthToHeader">自动列宽（仅列标题）</sys:String>
+	<sys:String x:Key="AutoSize">自动调整大小</sys:String>
 	<sys:String x:Key="ChooseColumns">选择要显示的列(_C)</sys:String>
 	<sys:String x:Key="Language">更改语言(_L)</sys:String>
 

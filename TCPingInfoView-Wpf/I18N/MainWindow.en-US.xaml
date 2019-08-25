@@ -4,13 +4,17 @@
 	<sys:String x:Key="ResourceDictionaryName">en-US</sys:String>
 
 	<sys:String x:Key="File">_File</sys:String>
-	<sys:String x:Key="Load">_Load Form TXT</sys:String>
-	<sys:String x:Key="Add">_Add Form TXT</sys:String>
+	<sys:String x:Key="Load">_Load from TXT</sys:String>
+	<sys:String x:Key="Add">_Add from TXT</sys:String>
 	<sys:String x:Key="Exit">_Exit</sys:String>
 
 	<sys:String x:Key="View">_View</sys:String>
-	<sys:String x:Key="AlwaysOnTop">Always On _Top</sys:String>
-	<sys:String x:Key="AutoSize">Auto _Size</sys:String>
+	<sys:String x:Key="AlwaysOnTop">Always on _top</sys:String>
+	<sys:String x:Key="AutoSizeAndCell">Auto _size and column width</sys:String>
+	<sys:String x:Key="AutoColumnWidth">Auto column width</sys:String>
+	<sys:String x:Key="AutoColumnWidthToCells">Auto column width to cells</sys:String>
+	<sys:String x:Key="AutoColumnWidthToHeader">Auto column width to header</sys:String>
+	<sys:String x:Key="AutoSize">Auto size</sys:String>
 	<sys:String x:Key="ChooseColumns">_Choose columns to show</sys:String>
 	<sys:String x:Key="Language">Change _language in use</sys:String>
 

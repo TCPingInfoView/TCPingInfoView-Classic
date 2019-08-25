@@ -195,6 +195,11 @@
 				</MenuItem>
 				<MenuItem Header="{DynamicResource View}">
 					<MenuItem Header="{DynamicResource AlwaysOnTop}" IsChecked="{Binding Topmost,ElementName=Mw}" Click="AlwaysOnTop_OnClick"/>
+					<Separator />
+					<MenuItem Header="{DynamicResource AutoSizeAndCell}" Click="AutoSizeAndCell_OnClick"/>
+					<MenuItem Header="{DynamicResource AutoColumnWidth}" Click="AutoColumnWidth_OnClick"/>
+					<MenuItem Header="{DynamicResource AutoColumnWidthToCells}" Click="AutoColumnWidthToCells_OnClick"/>
+					<MenuItem Header="{DynamicResource AutoColumnWidthToHeader}" Click="AutoColumnWidthToHeader_OnClick"/>
 					<MenuItem Header="{DynamicResource AutoSize}" Click="AutoSize_OnClick"/>
 					<Separator />
 					<MenuItem Header="{DynamicResource ChooseColumns}">
