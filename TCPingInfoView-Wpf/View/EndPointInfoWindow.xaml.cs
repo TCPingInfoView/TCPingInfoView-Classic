@@ -19,6 +19,10 @@ namespace TCPingInfoView.View
 			else if (type == WindowType.Add)
 			{
 				Title = I18NUtil.GetWindowStringValue(this, @"AddEndPoint");
+				for (var i = 5; i < Grid.RowDefinitions.Count - 1; ++i)
+				{
+					Grid.RowDefinitions[i].Height = new GridLength(0);
+				}
 			}
 
 			DataContext = info;

@@ -23,13 +23,12 @@ namespace TCPingInfoView.Utils
 			return File.ReadAllText(path, Util.Utf8WithoutBom);
 		}
 
-		public static string GetFilePath()
+		public static string GetTxtFilePath()
 		{
 			var path = string.Empty;
 			var openFileDialog = new OpenFileDialog
 			{
 				Multiselect = false,
-				Title = I18NUtil.GetAppStringValue(@"SelectAddressFileTitle"),
 				Filter = I18NUtil.GetAppStringValue(@"SelectAddressFileFilter")
 			};
 			var result = openFileDialog.ShowDialog();
@@ -60,5 +59,34 @@ namespace TCPingInfoView.Utils
 			}
 			return null;
 		}
+
+		public static IEnumerable<EndPointInfo> LoadEndPoint()
+		{
+			try
+			{
+				var openFileDialog = new OpenFileDialog
+				{
+					Multiselect = false,
+					Filter = I18NUtil.GetAppStringValue(@"SelectJsonFileFilter")
+				};
+				var result = openFileDialog.ShowDialog();
+				if (result == true)
+				{
+					var path = openFileDialog.FileName;
+					if (File.Exists(path))
+					{
+						var jsonStr = ReadTextFromFile(path);
+						var config = JsonSerializer.Deserialize<SavedEndPointInfo>(jsonStr);
+						return config.EndPointInfo;
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				Util.ShowExceptionMessageBox(ex);
+			}
+			return null;
+		}
+
 	}
 }

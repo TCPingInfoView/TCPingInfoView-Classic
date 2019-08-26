@@ -3,7 +3,7 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 	<sys:String x:Key="ResourceDictionaryName">en-US</sys:String>
 
-	<sys:String x:Key="SelectAddressFileTitle">Please select the file</sys:String>
 	<sys:String x:Key="SelectAddressFileFilter">Text|*.txt|All|*.*</sys:String>
+	<sys:String x:Key="SelectJsonFileFilter">Json (*.json)|*.json|All|*.*</sys:String>
 
 </ResourceDictionary>

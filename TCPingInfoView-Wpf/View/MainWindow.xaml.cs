@@ -121,7 +121,7 @@ namespace TCPingInfoView.View
 
 		private void LoadListFromFile(bool isLoad = true)
 		{
-			var path = Read.GetFilePath();
+			var path = Read.GetTxtFilePath();
 			if (!string.IsNullOrWhiteSpace(path))
 			{
 				var rawString = Read.ReadTextFromFile(path);
@@ -532,6 +532,29 @@ namespace TCPingInfoView.View
 			if (ew.ShowDialog() == true)
 			{
 				MainWindowViewModel.EndPointsCollection.Add(info);
+			}
+		}
+
+		private void SaveEndpoint_OnClick(object sender, RoutedEventArgs e)
+		{
+			SaveConfig();
+			var saveEndpointInfo = new SavedEndPointInfo
+			{
+				EndPointInfo = MainWindowViewModel.Config.EndPointInfo
+			};
+			Write.SaveConfig(saveEndpointInfo);
+		}
+
+		private void AddEndpointFromFile_OnClick(object sender, RoutedEventArgs e)
+		{
+			var infos = Read.LoadEndPoint();
+			if (infos != null)
+			{
+				foreach (var info in infos)
+				{
+					MainWindowViewModel.EndPointsCollection.Add(info);
+				}
+				SaveConfig();
 			}
 		}
 	}

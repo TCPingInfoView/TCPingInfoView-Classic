@@ -14,7 +14,7 @@
 	<Window.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="../I18N/MainWindow.en-US.xaml" />
+				<ResourceDictionary Source="../I18N/MainWindow.zh-CN.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 
 			<valueConverter:PingToBackgroundBrushConverter x:Key="PingToBackgroundBrushConverter" />
@@ -191,8 +191,11 @@
 		<DockPanel>
 			<Menu DockPanel.Dock="Top" Background="Transparent">
 				<MenuItem Header="{DynamicResource File}">
-					<MenuItem Header="{DynamicResource Load}" Click="LoadButton_OnClick" />
-					<MenuItem Header="{DynamicResource Add}" Click="AddFromTextButton_OnClick" />
+					<MenuItem Header="{DynamicResource LoadFromTxt}" Click="LoadButton_OnClick" />
+					<MenuItem Header="{DynamicResource AddFromTxt}" Click="AddFromTextButton_OnClick" />
+					<Separator />
+					<MenuItem Header="{DynamicResource SaveEndpoint}" Click="SaveEndpoint_OnClick" />
+					<MenuItem Header="{DynamicResource AddEndpointFromFile}" Click="AddEndpointFromFile_OnClick" />
 					<Separator />
 					<MenuItem Header="{DynamicResource Exit}" Click="ExitButton_OnClick" />
 				</MenuItem>
@@ -287,7 +290,7 @@
 			</Menu>
 
 			<ToolBar DockPanel.Dock="Top" Background="Transparent" Loaded="ToolBar_Loaded">
-				<Button Style="{StaticResource PaintButton}" Click="LoadButton_OnClick">
+				<Button Style="{StaticResource PaintButton}" Click="AddEndpointFromFile_OnClick">
 					<Image Style="{StaticResource ToolbarImage}" Source="../Resources/Load.png" />
 				</Button>
 				<Button Style="{StaticResource PaintButton}" Click="AddButton_OnClick">

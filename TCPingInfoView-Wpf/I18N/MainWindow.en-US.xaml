@@ -4,8 +4,10 @@
 	<sys:String x:Key="ResourceDictionaryName">en-US</sys:String>
 
 	<sys:String x:Key="File">_File</sys:String>
-	<sys:String x:Key="Load">_Load from TXT</sys:String>
-	<sys:String x:Key="Add">_Add from TXT</sys:String>
+	<sys:String x:Key="LoadFromTxt">_Load from TXT</sys:String>
+	<sys:String x:Key="AddFromTxt">_Add from TXT</sys:String>
+	<sys:String x:Key="SaveEndpoint">_Save endpoint</sys:String>
+	<sys:String x:Key="AddEndpointFromFile">_Import endpoint</sys:String>
 	<sys:String x:Key="Exit">_Exit</sys:String>
 
 	<sys:String x:Key="View">_View</sys:String>

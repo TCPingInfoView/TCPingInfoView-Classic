@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using Microsoft.Win32;
+using System;
+using System.IO;
 using System.Text.Json;
 using TCPingInfoView.Model;
 
@@ -6,17 +8,6 @@ namespace TCPingInfoView.Utils
 {
 	public static class Write
 	{
-		public static void WriteToFile(string path, string str)
-		{
-			using (var fileS = new FileStream(path, FileMode.Create, FileAccess.Write))
-			{
-				using (var sw = new StreamWriter(fileS, Util.Utf8WithoutBom))
-				{
-					sw.Write(str);
-				}
-			}
-		}
-
 		public static void SaveConfig(Config cfg)
 		{
 			var options = new JsonSerializerOptions
@@ -29,6 +20,47 @@ namespace TCPingInfoView.Utils
 			var fileLocation = Path.Combine(Util.CurrentDirectory, Util.ConfigFileName);
 
 			File.WriteAllTextAsync(fileLocation, jsonStr, Util.Utf8WithoutBom);
+		}
+
+		public static void SaveConfig(SavedEndPointInfo cfg)
+		{
+			try
+			{
+				var path = GetFilePath();
+				if (string.IsNullOrEmpty(path))
+				{
+					return;
+				}
+				path = Path.GetFullPath(path);
+
+				var options = new JsonSerializerOptions
+				{
+					WriteIndented = true
+				};
+
+				var jsonStr = JsonSerializer.Serialize(cfg, options);
+
+				File.WriteAllTextAsync(path, jsonStr, Util.Utf8WithoutBom);
+			}
+			catch (Exception ex)
+			{
+				Util.ShowExceptionMessageBox(ex);
+			}
+		}
+
+		private static string GetFilePath()
+		{
+			var path = string.Empty;
+			var saveFileDialog = new SaveFileDialog
+			{
+				Filter = I18NUtil.GetAppStringValue(@"SelectJsonFileFilter")
+			};
+			var result = saveFileDialog.ShowDialog();
+			if (result == true)
+			{
+				path = saveFileDialog.FileName;
+			}
+			return path;
 		}
 	}
 }

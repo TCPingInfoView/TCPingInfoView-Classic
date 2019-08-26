@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Media;
 using TCPingInfoView.Utils;
 
 namespace TCPingInfoView.Model
 {
+	[Serializable]
 	public class Config
 	{
 		public double StartTop { get; set; }

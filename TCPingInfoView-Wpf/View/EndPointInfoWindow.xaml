@@ -6,8 +6,9 @@
 		xmlns:model="clr-namespace:TCPingInfoView.Model"
 		xmlns:valueConverter="clr-namespace:TCPingInfoView.ValueConverter"
 		mc:Ignorable="d"
-		Height="800" Width="500"
+		Width="500"
 		WindowStartupLocation="CenterOwner"
+		SizeToContent="Height"
 		d:DataContext="{d:DesignInstance model:EndPointInfo}">
 
 	<Window.Resources>
@@ -26,11 +27,12 @@
 			</Style>
 
 			<Style x:Key="CheckBoxStyle" TargetType="CheckBox">
-				<Setter Property="Margin" Value="5,0,5,0" />
+				<Setter Property="Margin" Value="5,0,5,10" />
 			</Style>
 
 			<Style x:Key="TextBoxStyle" TargetType="TextBox">
 				<Setter Property="Margin" Value="0,0,10,5" />
+				<Setter Property="Height" Value="20" />
 				<Setter Property="VerticalContentAlignment" Value="Center"/>
 				<Style.Triggers>
 					<Trigger Property="IsReadOnly" Value="True">
@@ -44,7 +46,7 @@
 			</Style>
 
 			<Style x:Key="ButtonStyle" TargetType="Button">
-				<Setter Property="Margin" Value="0,0,10,0" />
+				<Setter Property="Margin" Value="0,5,10,0" />
 			</Style>
 		</ResourceDictionary>
 	</Window.Resources>

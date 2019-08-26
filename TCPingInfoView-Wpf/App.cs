@@ -30,7 +30,7 @@ namespace TCPingInfoView
 		{
 			if (Interlocked.Increment(ref _exited) == 1)
 			{
-				MessageBox.Show(e.Exception.Message, UpdateChecker.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+				Util.ShowExceptionMessageBox(e.Exception);
 				Application.Current.Shutdown();
 			}
 		}

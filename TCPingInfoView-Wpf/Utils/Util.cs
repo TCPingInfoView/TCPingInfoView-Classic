@@ -7,6 +7,7 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows;
 using TCPingInfoView.Model;
 using TCPingInfoViewLib.NetUtils;
 
@@ -127,5 +128,9 @@ namespace TCPingInfoView.Utils
 			}.Start();
 		}
 
+		public static void ShowExceptionMessageBox(Exception ex)
+		{
+			MessageBox.Show(ex.Message, UpdateChecker.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+		}
 	}
 }
