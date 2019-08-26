@@ -76,8 +76,8 @@ namespace TCPingInfoView.Utils
 					if (File.Exists(path))
 					{
 						var jsonStr = ReadTextFromFile(path);
-						var config = JsonSerializer.Deserialize<SavedEndPointInfo>(jsonStr);
-						return config.EndPointInfo;
+						var config = JsonSerializer.Deserialize<IEnumerable<EndPointInfo>>(jsonStr);
+						return config;
 					}
 				}
 			}

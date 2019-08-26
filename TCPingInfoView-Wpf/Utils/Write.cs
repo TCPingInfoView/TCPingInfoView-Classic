@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using TCPingInfoView.Model;
@@ -22,7 +23,7 @@ namespace TCPingInfoView.Utils
 			File.WriteAllTextAsync(fileLocation, jsonStr, Util.Utf8WithoutBom);
 		}
 
-		public static void SaveConfig(SavedEndPointInfo cfg)
+		public static void SaveConfig(IEnumerable<EndPointInfo> cfg)
 		{
 			try
 			{

@@ -538,11 +538,7 @@ namespace TCPingInfoView.View
 		private void SaveEndpoint_OnClick(object sender, RoutedEventArgs e)
 		{
 			SaveConfig();
-			var saveEndpointInfo = new SavedEndPointInfo
-			{
-				EndPointInfo = MainWindowViewModel.Config.EndPointInfo
-			};
-			Write.SaveConfig(saveEndpointInfo);
+			Write.SaveConfig(MainWindowViewModel.Config.EndPointInfo);
 		}
 
 		private void AddEndpointFromFile_OnClick(object sender, RoutedEventArgs e)

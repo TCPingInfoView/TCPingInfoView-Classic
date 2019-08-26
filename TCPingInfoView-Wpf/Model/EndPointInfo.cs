@@ -247,30 +247,28 @@ namespace TCPingInfoView.Model
 		}
 
 		[JsonIgnore]
-		public string PingSucceedPercentage
+		public double? PingSucceedPercentage
 		{
 			get
 			{
 				var count = SucceedPingCount + FailedPingCount;
 				if (count != 0)
 				{
-					var p = (double)SucceedPingCount / count;
-					return p > 0.0 ? p.ToString(@"P") : @"0%";
+					return (double)SucceedPingCount / count;
 				}
 				return null;
 			}
 		}
 
 		[JsonIgnore]
-		public string PingFailedPercentage
+		public double? PingFailedPercentage
 		{
 			get
 			{
 				var count = SucceedPingCount + FailedPingCount;
 				if (count != 0)
 				{
-					var p = (double)FailedPingCount / count;
-					return p > 0.0 ? p.ToString(@"P") : @"0%";
+					return (double)FailedPingCount / count;
 				}
 				return null;
 			}
@@ -394,33 +392,29 @@ namespace TCPingInfoView.Model
 		}
 
 		[JsonIgnore]
-		public string TCPingSucceedPercentage
+		public double? TCPingSucceedPercentage
 		{
 			get
 			{
 				var count = SucceedTCPingCount + FailedTCPingCount;
 				if (count != 0)
 				{
-					var p = (double)SucceedTCPingCount / count;
-					return p > 0.0 ? p.ToString(@"P") : @"0%";
+					return (double)SucceedTCPingCount / count;
 				}
-
 				return null;
 			}
 		}
 
 		[JsonIgnore]
-		public string TCPingFailedPercentage
+		public double? TCPingFailedPercentage
 		{
 			get
 			{
 				var count = SucceedTCPingCount + FailedTCPingCount;
 				if (count != 0)
 				{
-					var p = (double)FailedTCPingCount / count;
-					return p > 0.0 ? p.ToString(@"P") : @"0%";
+					return (double)FailedTCPingCount / count;
 				}
-
 				return null;
 			}
 		}

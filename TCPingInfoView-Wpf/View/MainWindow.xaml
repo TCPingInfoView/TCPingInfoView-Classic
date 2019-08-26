@@ -20,6 +20,8 @@
 			<valueConverter:PingToBackgroundBrushConverter x:Key="PingToBackgroundBrushConverter" />
 			<valueConverter:PingToForegroundBrushConverter x:Key="PingToForegroundBrushConverter" />
 			<valueConverter:TCPingToForegroundBrushConverter x:Key="TCPingToForegroundBrushConverter" />
+			<valueConverter:DoubleToPercentageConverter x:Key="DoubleToPercentageConverter" />
+
 			<BooleanToVisibilityConverter x:Key="Bool2Visibility" />
 			<valueConverter:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
 			<bindingProxy:BindingProxyColumnsStatus x:Key="BindingProxy" ColumnsStatus="{Binding ColumnsStatus}" />
@@ -276,6 +278,7 @@
 				</MenuItem>
 				<MenuItem Header="{DynamicResource List}">
 					<MenuItem Header="{DynamicResource EditEndPoint}" Click="EditButton_OnClick" />
+					<MenuItem Header="{DynamicResource AddEndPoint}" Click="AddButton_OnClick" />
 					<MenuItem Header="{DynamicResource Del}" Click="DelButton_OnClick" />
 					<Separator />
 					<MenuItem Header="{DynamicResource Reset}" Click="ResetButton_OnClick" />
@@ -474,7 +477,7 @@
 							<TextBlock Text="{DynamicResource AverageTCPing}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding PingSucceedPercentage}" IsReadOnly="True"
+					<DataGridTextColumn Binding="{Binding PingSucceedPercentage,Converter={StaticResource DoubleToPercentageConverter}}" IsReadOnly="True"
 										CellStyle="{StaticResource DefaultCellStyle}"
 										Visibility="{Binding ColumnsStatus.DisplayPingSucceedPercentage,Source={StaticResource BindingProxy},Converter={StaticResource Bool2Visibility}}"
 										DisplayIndex="{Binding ColumnsStatus.IndexPingSucceedPercentage,Source={StaticResource BindingProxy},Mode=TwoWay}">
@@ -482,7 +485,7 @@
 							<TextBlock Text="{DynamicResource PingSucceedPercentage}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding PingFailedPercentage}" IsReadOnly="True"
+					<DataGridTextColumn Binding="{Binding PingFailedPercentage,Converter={StaticResource DoubleToPercentageConverter}}" IsReadOnly="True"
 										CellStyle="{StaticResource DefaultCellStyle}"
 										Visibility="{Binding ColumnsStatus.DisplayPingFailedPercentage,Source={StaticResource BindingProxy},Converter={StaticResource Bool2Visibility}}"
 										DisplayIndex="{Binding ColumnsStatus.IndexPingFailedPercentage,Source={StaticResource BindingProxy},Mode=TwoWay}">
@@ -490,7 +493,7 @@
 							<TextBlock Text="{DynamicResource PingFailedPercentage}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding TCPingSucceedPercentage}" IsReadOnly="True"
+					<DataGridTextColumn Binding="{Binding TCPingSucceedPercentage,Converter={StaticResource DoubleToPercentageConverter}}" IsReadOnly="True"
 										CellStyle="{StaticResource DefaultCellStyle}"
 										Visibility="{Binding ColumnsStatus.DisplayTCPingSucceedPercentage,Source={StaticResource BindingProxy},Converter={StaticResource Bool2Visibility}}"
 										DisplayIndex="{Binding ColumnsStatus.IndexTCPingSucceedPercentage,Source={StaticResource BindingProxy},Mode=TwoWay}">
@@ -498,7 +501,7 @@
 							<TextBlock Text="{DynamicResource TCPingSucceedPercentage}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding TCPingFailedPercentage}" IsReadOnly="True"
+					<DataGridTextColumn Binding="{Binding TCPingFailedPercentage,Converter={StaticResource DoubleToPercentageConverter}}" IsReadOnly="True"
 										CellStyle="{StaticResource DefaultCellStyle}"
 										Visibility="{Binding ColumnsStatus.DisplayTCPingFailedPercentage,Source={StaticResource BindingProxy},Converter={StaticResource Bool2Visibility}}"
 										DisplayIndex="{Binding ColumnsStatus.IndexTCPingFailedPercentage,Source={StaticResource BindingProxy},Mode=TwoWay}">
