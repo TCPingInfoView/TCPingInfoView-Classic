@@ -11,6 +11,7 @@
 	<sys:String x:Key="Exit">_Exit</sys:String>
 
 	<sys:String x:Key="View">_View</sys:String>
+	<sys:String x:Key="ShowWindow">_Show main window</sys:String>
 	<sys:String x:Key="AlwaysOnTop">Always on _top</sys:String>
 	<sys:String x:Key="ResetSizeAndPos">_Reset size and position</sys:String>
 	<sys:String x:Key="AutoSizeAndCell">Auto _size and column width</sys:String>

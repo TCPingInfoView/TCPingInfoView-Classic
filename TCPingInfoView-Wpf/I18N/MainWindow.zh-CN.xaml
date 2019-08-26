@@ -11,6 +11,7 @@
 	<sys:String x:Key="Exit">退出(_E)</sys:String>
 
 	<sys:String x:Key="View">查看(_V)</sys:String>
+	<sys:String x:Key="ShowWindow">显示主窗口(_S)</sys:String>
 	<sys:String x:Key="AlwaysOnTop">窗口置顶(_T)</sys:String>
 	<sys:String x:Key="ResetSizeAndPos">重设窗口大小和位置(_R)</sys:String>
 	<sys:String x:Key="AutoSizeAndCell">自动调整大小和列宽(_S)</sys:String>

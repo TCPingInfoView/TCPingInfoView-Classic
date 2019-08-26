@@ -557,5 +557,10 @@ namespace TCPingInfoView.View
 				SaveConfig();
 			}
 		}
+
+		private void ShowWindowMenuItem_OnClick(object sender, RoutedEventArgs e)
+		{
+			MainWindowViewModel.ShowWindow();
+		}
 	}
 }

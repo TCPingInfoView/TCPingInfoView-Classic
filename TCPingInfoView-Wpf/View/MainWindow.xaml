@@ -171,6 +171,7 @@
 									Click="DisplayLastTCPingFailedOnMenuItem_OnClick" />
 			</ContextMenu>
 			<ContextMenu x:Key="NotifyIconContextMenu">
+				<MenuItem x:Name="ShowWindow" Click="ShowWindowMenuItem_OnClick" />
 				<MenuItem x:Name="ResetSizeAndPos" Click="ResetSizeAndPosMenuItem_OnClick" />
 				<Separator />
 				<MenuItem x:Name="Exit" Click="ExitButton_OnClick" />

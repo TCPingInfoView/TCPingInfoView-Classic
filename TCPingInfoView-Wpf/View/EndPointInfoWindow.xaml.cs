@@ -23,6 +23,7 @@ namespace TCPingInfoView.View
 				{
 					Grid.RowDefinitions[i].Height = new GridLength(0);
 				}
+				ResizeMode = ResizeMode.NoResize;
 			}
 
 			DataContext = info;

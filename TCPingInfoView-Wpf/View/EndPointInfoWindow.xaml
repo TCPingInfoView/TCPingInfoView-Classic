@@ -6,7 +6,7 @@
 		xmlns:model="clr-namespace:TCPingInfoView.Model"
 		xmlns:valueConverter="clr-namespace:TCPingInfoView.ValueConverter"
 		mc:Ignorable="d"
-		Width="500"
+		Width="450"
 		WindowStartupLocation="CenterOwner"
 		SizeToContent="Height"
 		d:DataContext="{d:DesignInstance model:EndPointInfo}">
