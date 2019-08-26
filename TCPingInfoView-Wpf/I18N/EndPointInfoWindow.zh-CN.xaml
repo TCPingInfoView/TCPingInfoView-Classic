@@ -1,0 +1,39 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+	<sys:String x:Key="ResourceDictionaryName">zh-CN</sys:String>
+
+	<sys:String x:Key="EditEndPoint">编辑节点</sys:String>
+	<sys:String x:Key="AddEndPoint">添加节点</sys:String>
+
+	<sys:String x:Key="OK">确定</sys:String>
+	<sys:String x:Key="Cancel">取消</sys:String>
+
+	<sys:String x:Key="ICMP">ICMP</sys:String>
+	<sys:String x:Key="TCP">TCP</sys:String>
+	<sys:String x:Key="IsRememberIp">静态 IP 地址</sys:String>
+	<sys:String x:Key="Hostname">主机名</sys:String>
+	<sys:String x:Key="Ip">IP 地址</sys:String>
+	<sys:String x:Key="Port">端口</sys:String>
+	<sys:String x:Key="Description">备注</sys:String>
+	<sys:String x:Key="LastPing">延迟(ms)</sys:String>
+	<sys:String x:Key="MaxPing">最大延迟(ms)</sys:String>
+	<sys:String x:Key="MinPing">最小延迟(ms)</sys:String>
+	<sys:String x:Key="AveragePing">平均延迟(ms)</sys:String>
+	<sys:String x:Key="LastTCPing">TCP 延迟(ms)</sys:String>
+	<sys:String x:Key="MaxTCPing">最大 TCP 延迟(ms)</sys:String>
+	<sys:String x:Key="MinTCPing">最小 TCP 延迟(ms)</sys:String>
+	<sys:String x:Key="AverageTCPing">平均 TCP 延迟(ms)</sys:String>
+	<sys:String x:Key="PingSucceedPercentage">Ping 成功率</sys:String>
+	<sys:String x:Key="PingFailedPercentage">Ping 失败率</sys:String>
+	<sys:String x:Key="TCPingSucceedPercentage">TCPing 成功率</sys:String>
+	<sys:String x:Key="TCPingFailedPercentage">TCPing 失败率</sys:String>
+	<sys:String x:Key="LastPingSucceedOn">最后一次 Ping 成功时间</sys:String>
+	<sys:String x:Key="LastPingFailedOn">最后一次 Ping 失败时间</sys:String>
+	<sys:String x:Key="LastTCPingSucceedOn">最后一次 TCPing 成功时间</sys:String>
+	<sys:String x:Key="LastTCPingFailedOn">最后一次 TCPing 失败时间</sys:String>
+	<sys:String x:Key="SucceedPingCount">Ping 成功次数</sys:String>
+	<sys:String x:Key="FailedPingCount">Ping 失败次数</sys:String>
+	<sys:String x:Key="SucceedTCPingCount">TCPing 成功次数</sys:String>
+	<sys:String x:Key="FailedTCPingCount">TCPing 失败次数</sys:String>
+</ResourceDictionary>

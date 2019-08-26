@@ -1,14 +1,11 @@
 ﻿<Window x:Class="TCPingInfoView.View.MainWindow"
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:tb="http://www.hardcodet.net/taskbar"
 		xmlns:local="clr-namespace:TCPingInfoView.Commands"
 		xmlns:valueConverter="clr-namespace:TCPingInfoView.ValueConverter"
 		xmlns:system="clr-namespace:System;assembly=System.Runtime"
 		xmlns:bindingProxy="clr-namespace:TCPingInfoView.BindingProxy"
-		mc:Ignorable="d"
 		x:Name="Mw"
 		Title="TCPingInfoView" Height="618" Width="1000"
 		DataContext="{Binding MainWindowViewModel, ElementName=Mw}"
@@ -173,6 +170,11 @@
 									Source={StaticResource BindingProxy}}"
 									Click="DisplayLastTCPingFailedOnMenuItem_OnClick" />
 			</ContextMenu>
+			<ContextMenu x:Key="NotifyIconContextMenu">
+				<MenuItem x:Name="ResetSizeAndPos" Click="ResetSizeAndPosMenuItem_OnClick" />
+				<Separator />
+				<MenuItem x:Name="Exit" Click="ExitButton_OnClick" />
+			</ContextMenu>
 		</ResourceDictionary>
 	</Window.Resources>
 
@@ -182,6 +184,7 @@
 						ToolTipText="TCPingInfoView"
 						IconSource="../Resources/TCPing.ico"
 						MenuActivation="RightClick"
+						ContextMenu="{StaticResource NotifyIconContextMenu}"
 						DoubleClickCommand="{StaticResource ShowHideCommand}"
 						DoubleClickCommandParameter="{Binding}">
 		</tb:TaskbarIcon>
@@ -189,7 +192,7 @@
 			<Menu DockPanel.Dock="Top" Background="Transparent">
 				<MenuItem Header="{DynamicResource File}">
 					<MenuItem Header="{DynamicResource Load}" Click="LoadButton_OnClick" />
-					<MenuItem Header="{DynamicResource Add}" Click="AddButton_OnClick" />
+					<MenuItem Header="{DynamicResource Add}" Click="AddFromTextButton_OnClick" />
 					<Separator />
 					<MenuItem Header="{DynamicResource Exit}" Click="ExitButton_OnClick" />
 				</MenuItem>
@@ -268,6 +271,7 @@
 					<MenuItem x:Name="LanguageMenu" Header="{DynamicResource Language}" />
 				</MenuItem>
 				<MenuItem Header="{DynamicResource List}">
+					<MenuItem Header="{DynamicResource EditEndPoint}" Click="EditButton_OnClick" />
 					<MenuItem Header="{DynamicResource Del}" Click="DelButton_OnClick" />
 					<Separator />
 					<MenuItem Header="{DynamicResource Reset}" Click="ResetButton_OnClick" />
@@ -285,6 +289,9 @@
 			<ToolBar DockPanel.Dock="Top" Background="Transparent" Loaded="ToolBar_Loaded">
 				<Button Style="{StaticResource PaintButton}" Click="LoadButton_OnClick">
 					<Image Style="{StaticResource ToolbarImage}" Source="../Resources/Load.png" />
+				</Button>
+				<Button Style="{StaticResource PaintButton}" Click="AddButton_OnClick">
+					<Image Style="{StaticResource ToolbarImage}" Source="../Resources/Add.png" />
 				</Button>
 				<Button Style="{StaticResource PaintButton}" Click="DelButton_OnClick">
 					<Image Style="{StaticResource ToolbarImage}" Source="../Resources/Delete.png" />
@@ -332,6 +339,9 @@
 					<Style TargetType="{x:Type DataGridColumnHeader}">
 						<Setter Property="ContextMenu" Value="{StaticResource DataGridColumnHeaderContextMenu}" />
 					</Style>
+					<Style TargetType="DataGridRow">
+						<EventSetter Event="MouseDoubleClick" Handler="DataGridRow_DoubleClick" />
+					</Style>
 				</DataGrid.Resources>
 				<DataGrid.Columns>
 					<DataGridTextColumn Binding="{Binding Index}" IsReadOnly="True"
@@ -370,7 +380,7 @@
 							<TextBlock Text="{DynamicResource Ip}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding Port, Mode=TwoWay}" IsReadOnly="False"
+					<DataGridTextColumn Binding="{Binding Port}" IsReadOnly="True"
 					CellStyle="{StaticResource DefaultCellStyle}"
 					Visibility="{Binding ColumnsStatus.DisplayPort,Source={StaticResource BindingProxy},Converter={StaticResource Bool2Visibility}}"
 					DisplayIndex="{Binding ColumnsStatus.IndexPort,Source={StaticResource BindingProxy},Mode=TwoWay}"
@@ -379,7 +389,7 @@
 							<TextBlock Text="{DynamicResource Port}" />
 						</DataGridTextColumn.Header>
 					</DataGridTextColumn>
-					<DataGridTextColumn Binding="{Binding Description, Mode=TwoWay}" IsReadOnly="False"
+					<DataGridTextColumn Binding="{Binding Description}" IsReadOnly="True"
 					CellStyle="{StaticResource DefaultCellStyle}"
 					Visibility="{Binding ColumnsStatus.DisplayDescription,Source={StaticResource BindingProxy},Converter={StaticResource Bool2Visibility}}"
 					DisplayIndex="{Binding ColumnsStatus.IndexDescription,Source={StaticResource BindingProxy},Mode=TwoWay}"

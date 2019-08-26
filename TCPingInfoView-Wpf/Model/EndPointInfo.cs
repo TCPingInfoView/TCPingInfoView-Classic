@@ -148,12 +148,31 @@ namespace TCPingInfoView.Model
 				{
 					_ip = value;
 					OnPropertyChanged();
+					OnPropertyChanged(nameof(IpLong));
+					OnPropertyChanged(nameof(IpStr));
 				}
 			}
 		}
 
 		[JsonIgnore]
 		public BigInteger IpLong => Ip.ToInteger();
+
+		[JsonIgnore]
+		public string IpStr
+		{
+			get => $@"{Ip}";
+			set
+			{
+				if (string.IsNullOrWhiteSpace(value))
+				{
+					Ip = null;
+				}
+				else if (IPAddress.TryParse(value, out var ip))
+				{
+					Ip = ip;
+				}
+			}
+		}
 
 		public ushort Port
 		{

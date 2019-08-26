@@ -1,0 +1,39 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+	<sys:String x:Key="ResourceDictionaryName">en-US</sys:String>
+
+	<sys:String x:Key="EditEndPoint">Edit endpoint</sys:String>
+	<sys:String x:Key="AddEndPoint">Add endpoint</sys:String>
+
+	<sys:String x:Key="OK">OK</sys:String>
+	<sys:String x:Key="Cancel">Cancel</sys:String>
+
+	<sys:String x:Key="ICMP">ICMP</sys:String>
+	<sys:String x:Key="TCP">TCP</sys:String>
+	<sys:String x:Key="IsRememberIp">Static IP address</sys:String>
+	<sys:String x:Key="Hostname">Hostname</sys:String>
+	<sys:String x:Key="Ip">IP Address</sys:String>
+	<sys:String x:Key="Port">Port</sys:String>
+	<sys:String x:Key="Description">Description</sys:String>
+	<sys:String x:Key="LastPing">Last Ping (ms)</sys:String>
+	<sys:String x:Key="MaxPing">Max Ping </sys:String>
+	<sys:String x:Key="MinPing">Min Ping (ms)</sys:String>
+	<sys:String x:Key="AveragePing">Average Ping (ms)</sys:String>
+	<sys:String x:Key="LastTCPing">Last TCPing (ms)</sys:String>
+	<sys:String x:Key="MaxTCPing">Max TCPing (ms)</sys:String>
+	<sys:String x:Key="MinTCPing">Min TCPing (ms)</sys:String>
+	<sys:String x:Key="AverageTCPing">Average TCPing (ms)</sys:String>
+	<sys:String x:Key="PingSucceedPercentage">Ping Success Rate</sys:String>
+	<sys:String x:Key="PingFailedPercentage">Ping Failure Rate</sys:String>
+	<sys:String x:Key="TCPingSucceedPercentage">TCPing Success Rate</sys:String>
+	<sys:String x:Key="TCPingFailedPercentage">TCPing Failure Rate</sys:String>
+	<sys:String x:Key="LastPingSucceedOn">Last Ping Succeed On</sys:String>
+	<sys:String x:Key="LastPingFailedOn">Last Ping Failed On</sys:String>
+	<sys:String x:Key="LastTCPingSucceedOn">Last TCPing Succeed On</sys:String>
+	<sys:String x:Key="LastTCPingFailedOn">Last TCPing Failed On</sys:String>
+	<sys:String x:Key="SucceedPingCount">Ping Success Count</sys:String>
+	<sys:String x:Key="FailedPingCount">Ping Failure Count</sys:String>
+	<sys:String x:Key="SucceedTCPingCount">TCPing Success Count</sys:String>
+	<sys:String x:Key="FailedTCPingCount">TCPing Failure Count</sys:String>
+</ResourceDictionary>

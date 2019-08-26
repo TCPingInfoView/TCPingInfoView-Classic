@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Threading;
 using System.Windows;
 using TCPingInfoView.Utils;
 using TCPingInfoView.View;
@@ -15,7 +16,6 @@ namespace TCPingInfoView
 
 			var app = new Application();
 			app.DispatcherUnhandledException += App_DispatcherUnhandledException;
-			SetLanguage();
 
 			var win = new MainWindow();
 			app.MainWindow = win;
@@ -25,26 +25,13 @@ namespace TCPingInfoView
 			app.Run();
 		}
 
+		private static int _exited;
 		private static void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
 		{
-			MessageBox.Show(e.Exception.Message, UpdateChecker.Name, MessageBoxButton.OK, MessageBoxImage.Error);
-			Application.Current.Shutdown();
-		}
-
-		public static void SetLanguage(string langName = @"")
-		{
-			if (string.IsNullOrEmpty(langName))
+			if (Interlocked.Increment(ref _exited) == 1)
 			{
-				langName = I18NUtil.GetLanguage();
-			}
-
-			if (Application.LoadComponent(new Uri($@"../I18N/App.{langName}.xaml", UriKind.Relative)) is ResourceDictionary langRd)
-			{
-				Application.Current.Resources.MergedDictionaries.Add(langRd);
-				if (Application.Current.Resources.MergedDictionaries.Count > 1)
-				{
-					Application.Current.Resources.MergedDictionaries.RemoveAt(0);
-				}
+				MessageBox.Show(e.Exception.Message, UpdateChecker.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+				Application.Current.Shutdown();
 			}
 		}
 	}

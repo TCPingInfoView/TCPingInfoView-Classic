@@ -58,7 +58,7 @@ namespace TCPingInfoViewLib.NetUtils
 		public static async Task<ICMPingStatus> ICMPingAsync(IPAddress ip, int timeout = 1000, CancellationToken ct = default)
 		{
 			var res = new ICMPingStatus();
-			if (ip == null)
+			if (ip == null || Equals(ip, IPAddress.Any) || Equals(ip, IPAddress.IPv6Any))
 			{
 				return new ICMPingStatus { Status = IPStatus.BadDestination };
 			}
@@ -69,7 +69,15 @@ namespace TCPingInfoViewLib.NetUtils
 
 			if (await Task.WhenAny(Task.Delay(int.MaxValue, ct), task) == task)
 			{
-				var reply = await task;
+				PingReply reply;
+				try
+				{
+					reply = await task;
+				}
+				catch
+				{
+					reply = null;
+				}
 				if (reply != null && reply.Status == IPStatus.Success)
 				{
 					res.Status = reply.Status;

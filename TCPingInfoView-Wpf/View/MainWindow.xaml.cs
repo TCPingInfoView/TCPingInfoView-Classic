@@ -45,39 +45,22 @@ namespace TCPingInfoView.View
 
 		private void LoadNotifyIconContextMenu()
 		{
-			NotifyIcon.ContextMenu = new ContextMenu();
-
-			// 重设窗口大小和位置
-			var resetSizeAndPosMenuItem = new MenuItem
+			if (NotifyIcon.ContextMenu != null)
 			{
-				Header = I18NUtil.GetWindowStringValue(this, @"ResetSizeAndPos")
-			};
-			resetSizeAndPosMenuItem.Click += ResetSizeAndPosMenuItem_OnClick;
-			NotifyIcon.ContextMenu.Items.Add(resetSizeAndPosMenuItem);
-
-			// 退出
-			var exitMenuItem = new MenuItem
-			{
-				Header = I18NUtil.GetWindowStringValue(this, @"Exit")
-			};
-			exitMenuItem.Click += ExitButton_OnClick;
-			NotifyIcon.ContextMenu.Items.Add(exitMenuItem);
-		}
-
-		private void SetLanguage(string langName = @"")
-		{
-			if (string.IsNullOrEmpty(langName))
-			{
-				langName = I18NUtil.GetLanguage();
-			}
-			if (Application.LoadComponent(new Uri($@"../I18N/MainWindow.{langName}.xaml", UriKind.Relative)) is ResourceDictionary langRd)
-			{
-				Resources.MergedDictionaries.Add(langRd);
-				while (Resources.MergedDictionaries.Count > 1)
+				foreach (var obj in NotifyIcon.ContextMenu.Items)
 				{
-					Resources.MergedDictionaries.RemoveAt(0);
+					if (obj is MenuItem menuItem)
+					{
+						menuItem.Header = I18NUtil.GetWindowStringValue(this, menuItem.Name);
+					}
 				}
 			}
+		}
+
+		private void SetLanguage(string langName)
+		{
+			langName = I18NUtil.GetLanguage(langName);
+			I18NUtil.SetLanguage(Resources, @"MainWindow", langName);
 			I18NUtil.SetLanguage(langName);
 			LoadNotifyIconContextMenu();
 			MainWindowViewModel.CallAllDateTimeChanged();
@@ -335,7 +318,7 @@ namespace TCPingInfoView.View
 			MainWindowViewModel.EndPointsCollection.Clear();
 		}
 
-		private void AddButton_OnClick(object sender, RoutedEventArgs e)
+		private void AddFromTextButton_OnClick(object sender, RoutedEventArgs e)
 		{
 			LoadListFromFile(false);
 		}
@@ -385,6 +368,24 @@ namespace TCPingInfoView.View
 		private void AllowPreReleaseMenuItem_OnClick(object sender, RoutedEventArgs e)
 		{
 			MainWindowViewModel.AllowPreRelease = !MainWindowViewModel.AllowPreRelease;
+		}
+
+		private void EditEndPoint(EndPointInfo info)
+		{
+			var ew = new EndPointInfoWindow(info, EndPointInfoWindow.WindowType.Edit)
+			{
+				Owner = this
+			};
+			ew.ShowDialog();
+		}
+
+		private void EditButton_OnClick(object sender, RoutedEventArgs e)
+		{
+			var selectedItem = EndPointDataGrid.SelectedItem;
+			if (selectedItem is EndPointInfo info)
+			{
+				EditEndPoint(info);
+			}
 		}
 
 		private void DelButton_OnClick(object sender, RoutedEventArgs e)
@@ -510,5 +511,28 @@ namespace TCPingInfoView.View
 
 		#endregion
 
+		private void DataGridRow_DoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			if (sender is DataGridRow row)
+			{
+				if (row.Item is EndPointInfo info)
+				{
+					EditEndPoint(info);
+				}
+			}
+		}
+
+		private void AddButton_OnClick(object sender, RoutedEventArgs e)
+		{
+			var info = new EndPointInfo(EndPointDataGrid.Items.Count + 1);
+			var ew = new EndPointInfoWindow(info, EndPointInfoWindow.WindowType.Add)
+			{
+				Owner = this
+			};
+			if (ew.ShowDialog() == true)
+			{
+				MainWindowViewModel.EndPointsCollection.Add(info);
+			}
+		}
 	}
 }

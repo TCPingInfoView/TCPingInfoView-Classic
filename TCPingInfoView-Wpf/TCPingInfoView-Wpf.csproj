@@ -14,6 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Add.png" />
     <None Remove="Resources\Delete.png" />
     <None Remove="Resources\Exit.png" />
     <None Remove="Resources\Failed.png" />
@@ -33,6 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Add.png" />
     <Resource Include="Resources\Delete.png" />
     <Resource Include="Resources\Exit.png" />
     <Resource Include="Resources\Failed.png" />
@@ -60,6 +62,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="I18N\App.zh-CN.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="I18N\EndPointInfoWindow.en-US.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="I18N\EndPointInfoWindow.zh-CN.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

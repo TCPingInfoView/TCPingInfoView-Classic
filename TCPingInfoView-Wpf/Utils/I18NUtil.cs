@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 
@@ -29,7 +30,7 @@ namespace TCPingInfoView.Utils
 
 		public static void SetLanguage(string langName)
 		{
-			App.SetLanguage(langName);
+			SetLanguage(Application.Current.Resources, @"App", langName);
 			CurrentLanguage = langName;
 		}
 
@@ -49,6 +50,22 @@ namespace TCPingInfoView.Utils
 				return str;
 			}
 			return null;
+		}
+
+		public static void SetLanguage(ResourceDictionary resources, string filename, string langName = @"")
+		{
+			if (string.IsNullOrEmpty(langName))
+			{
+				langName = GetLanguage();
+			}
+			if (Application.LoadComponent(new Uri($@"../I18N/{filename}.{langName}.xaml", UriKind.Relative)) is ResourceDictionary langRd)
+			{
+				resources.MergedDictionaries.Add(langRd);
+				while (resources.MergedDictionaries.Count > 1)
+				{
+					resources.MergedDictionaries.RemoveAt(0);
+				}
+			}
 		}
 	}
 }

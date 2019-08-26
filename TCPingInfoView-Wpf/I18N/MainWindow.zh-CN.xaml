@@ -20,6 +20,7 @@
 	<sys:String x:Key="Language">更改语言(_L)</sys:String>
 
 	<sys:String x:Key="List">列表(_L)</sys:String>
+	<sys:String x:Key="EditEndPoint">编辑节点(_E)</sys:String>
 	<sys:String x:Key="Del">删除选择行(_D)</sys:String>
 	<sys:String x:Key="Reset">重置计数(_R)</sys:String>
 	<sys:String x:Key="Clear">清空列表(_C)</sys:String>

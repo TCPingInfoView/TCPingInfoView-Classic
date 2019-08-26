@@ -20,6 +20,7 @@
 	<sys:String x:Key="Language">Change _language in use</sys:String>
 
 	<sys:String x:Key="List">_List</sys:String>
+	<sys:String x:Key="EditEndPoint">_Edit endpoint</sys:String>
 	<sys:String x:Key="Del">_Delete selected row</sys:String>
 	<sys:String x:Key="Reset">_Reset</sys:String>
 	<sys:String x:Key="Clear">_Clear</sys:String>
