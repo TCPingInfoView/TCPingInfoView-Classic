@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Media;
 using TCPingInfoView.Utils;
+using TCPingInfoViewLib.NetUtils;
 
 namespace TCPingInfoView.Model
 {
@@ -60,6 +61,69 @@ namespace TCPingInfoView.Model
 		public void Fix()
 		{
 			Language = I18NUtil.GetLanguage(Language);
+
+			if (Interval < 1)
+			{
+				Interval = 1;
+			}
+			else if (int.MaxValue / 1000.0 < Interval)
+			{
+				Interval = int.MaxValue / 1000;
+			}
+
+			if (TCPingTimeout > Math.Min(Interval * 1000, NetTest.TCPMaxTimeout))
+			{
+				TCPingTimeout = Math.Min(Interval * 1000, NetTest.TCPMaxTimeout);
+			}
+			else if (TCPingTimeout < 1)
+			{
+				TCPingTimeout = 1;
+			}
+
+			if (LongTCPingTimeout > TCPingTimeout)
+			{
+				LongTCPingTimeout = TCPingTimeout;
+			}
+			else if (LongTCPingTimeout < 1)
+			{
+				TCPingTimeout = 1;
+			}
+
+			if (PingTimeout > Interval * 1000)
+			{
+				PingTimeout = Interval * 1000;
+			}
+			else if (PingTimeout < 1)
+			{
+				PingTimeout = 1;
+			}
+
+			if (LongPingTimeout > PingTimeout)
+			{
+				LongPingTimeout = PingTimeout;
+			}
+			else if (LongPingTimeout < 1)
+			{
+				LongPingTimeout = 1;
+			}
+
+			if (DNSTimeout > Interval * 1000)
+			{
+				DNSTimeout = Interval * 1000;
+			}
+			else if (DNSTimeout < 1)
+			{
+				DNSTimeout = 1;
+			}
+
+			if (ReverseDNSTimeout > Interval * 1000)
+			{
+				ReverseDNSTimeout = Interval * 1000;
+			}
+			else if (ReverseDNSTimeout < 1)
+			{
+				ReverseDNSTimeout = 1;
+			}
 		}
 	}
 }

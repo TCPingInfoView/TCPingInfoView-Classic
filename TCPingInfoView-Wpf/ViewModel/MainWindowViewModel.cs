@@ -107,16 +107,7 @@ namespace TCPingInfoView.ViewModel
 
 		public void ShowWindow(bool notClosing = true)
 		{
-			if (notClosing)
-			{
-				Window.Visibility = Visibility.Visible;
-			}
-			Win32.UnMinimize(Window);
-			if (!Window.Topmost)
-			{
-				Window.Topmost = true;
-				Window.Topmost = false;
-			}
+			Window.ShowWindow(notClosing);
 		}
 
 		public void TriggerShowHide()

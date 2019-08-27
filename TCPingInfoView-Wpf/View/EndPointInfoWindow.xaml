@@ -19,6 +19,7 @@
 			<SolidColorBrush x:Key="DisabledBackgroundBrush" Color="#FFF0F0F0" />
 			<valueConverter:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
 			<valueConverter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+			<valueConverter:DoubleToPercentageConverter x:Key="DoubleToPercentageConverter" />
 
 			<Style x:Key="NameTextBlock" TargetType="TextBlock">
 				<Setter Property="Height" Value="20" />
@@ -132,8 +133,8 @@
 		<TextBox Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource ReadOnlyTextBoxStyle}" Text="{Binding AveragePing,Mode=OneWay}" />
 		<TextBox Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource ReadOnlyTextBoxStyle}" Text="{Binding SucceedPingCount,Mode=OneWay}" />
 		<TextBox Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource ReadOnlyTextBoxStyle}" Text="{Binding FailedPingCount,Mode=OneWay}" />
-		<TextBox Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource ReadOnlyTextBoxStyle}" Text="{Binding PingSucceedPercentage,Mode=OneWay}" />
-		<TextBox Grid.Row="12" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource ReadOnlyTextBoxStyle}" Text="{Binding PingFailedPercentage,Mode=OneWay}" />
+		<TextBox Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource ReadOnlyTextBoxStyle}" Text="{Binding PingSucceedPercentage,Mode=OneWay,Converter={StaticResource DoubleToPercentageConverter}}" />
+		<TextBox Grid.Row="12" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource ReadOnlyTextBoxStyle}" Text="{Binding PingFailedPercentage,Mode=OneWay,Converter={StaticResource DoubleToPercentageConverter}}" />
 		<TextBox Grid.Row="13" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource ReadOnlyTextBoxStyle}" Text="{Binding LastPingSucceedOn,Mode=OneWay,Converter={StaticResource DateTimeToStringConverter}}" />
 		<TextBox Grid.Row="14" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource ReadOnlyTextBoxStyle}" Text="{Binding LastPingFailedOn,Mode=OneWay,Converter={StaticResource DateTimeToStringConverter}}" />
 		<TextBox Grid.Row="15" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource ReadOnlyTextBoxStyle}" Text="{Binding LastTCPing,Mode=OneWay}" />
@@ -142,8 +143,8 @@
 		<TextBox Grid.Row="18" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource ReadOnlyTextBoxStyle}" Text="{Binding AverageTCPing,Mode=OneWay}" />
 		<TextBox Grid.Row="19" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource ReadOnlyTextBoxStyle}" Text="{Binding SucceedTCPingCount,Mode=OneWay}" />
 		<TextBox Grid.Row="20" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource ReadOnlyTextBoxStyle}" Text="{Binding FailedTCPingCount,Mode=OneWay}" />
-		<TextBox Grid.Row="21" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource ReadOnlyTextBoxStyle}" Text="{Binding TCPingSucceedPercentage,Mode=OneWay}" />
-		<TextBox Grid.Row="22" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource ReadOnlyTextBoxStyle}" Text="{Binding TCPingFailedPercentage,Mode=OneWay}" />
+		<TextBox Grid.Row="21" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource ReadOnlyTextBoxStyle}" Text="{Binding TCPingSucceedPercentage,Mode=OneWay,Converter={StaticResource DoubleToPercentageConverter}}" />
+		<TextBox Grid.Row="22" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource ReadOnlyTextBoxStyle}" Text="{Binding TCPingFailedPercentage,Mode=OneWay,Converter={StaticResource DoubleToPercentageConverter}}" />
 		<TextBox Grid.Row="23" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource ReadOnlyTextBoxStyle}" Text="{Binding LastTCPingSucceedOn,Mode=OneWay,Converter={StaticResource DateTimeToStringConverter}}" />
 		<TextBox Grid.Row="24" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource ReadOnlyTextBoxStyle}" Text="{Binding LastTCPingFailedOn,Mode=OneWay,Converter={StaticResource DateTimeToStringConverter}}" />
 

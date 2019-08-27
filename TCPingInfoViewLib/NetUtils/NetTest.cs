@@ -12,6 +12,8 @@ namespace TCPingInfoViewLib.NetUtils
 {
 	public static class NetTest
 	{
+		public const int TCPMaxTimeout = 21000;
+
 		public static async Task<TCPingStatus> TCPingAsync(IPAddress ip, int port = 80, int timeout = 1000, CancellationToken ct = default)
 		{
 			if (ip == null)
