@@ -1,5 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Diagnostics;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net;
+using System.Windows;
 
 namespace UnitTest.Util
 {
@@ -80,12 +82,12 @@ namespace UnitTest.Util
 		public void IsOnScreenTest()
 		{
 			Assert.IsTrue(TCPingInfoView.Utils.ViewUtil.IsOnScreen(0, 0));
-			Assert.IsTrue(TCPingInfoView.Utils.ViewUtil.IsOnScreen(1920, 1080));
-			Assert.IsTrue(TCPingInfoView.Utils.ViewUtil.IsOnScreen(1920 * 2, 1080));
-			Assert.IsFalse(TCPingInfoView.Utils.ViewUtil.IsOnScreen(1920 * 2, 1080 * 2));
-			Assert.IsFalse(TCPingInfoView.Utils.ViewUtil.IsOnScreen(1920, 1080 * 2));
-			Assert.IsFalse(TCPingInfoView.Utils.ViewUtil.IsOnScreen(1920 * 2 + 1, 1080));
-			Assert.IsFalse(TCPingInfoView.Utils.ViewUtil.IsOnScreen(1920 * 2, 1080 + 1));
+			Assert.IsTrue(TCPingInfoView.Utils.ViewUtil.IsOnScreen(SystemParameters.PrimaryScreenWidth, SystemParameters.VirtualScreenHeight));
+			Assert.IsTrue(TCPingInfoView.Utils.ViewUtil.IsOnScreen(SystemParameters.VirtualScreenWidth, SystemParameters.VirtualScreenHeight));
+			Assert.IsFalse(TCPingInfoView.Utils.ViewUtil.IsOnScreen(SystemParameters.VirtualScreenWidth, SystemParameters.VirtualScreenHeight * 2));
+			Assert.IsFalse(TCPingInfoView.Utils.ViewUtil.IsOnScreen(SystemParameters.PrimaryScreenWidth, SystemParameters.VirtualScreenHeight * 2));
+			Assert.IsFalse(TCPingInfoView.Utils.ViewUtil.IsOnScreen(SystemParameters.VirtualScreenWidth + 1,SystemParameters.VirtualScreenHeight));
+			Assert.IsFalse(TCPingInfoView.Utils.ViewUtil.IsOnScreen(SystemParameters.VirtualScreenWidth,SystemParameters.VirtualScreenHeight + 1));
 			Assert.IsFalse(TCPingInfoView.Utils.ViewUtil.IsOnScreen(-1, 10));
 		}
 	}

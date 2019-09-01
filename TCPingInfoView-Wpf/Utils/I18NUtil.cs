@@ -58,13 +58,14 @@ namespace TCPingInfoView.Utils
 			{
 				langName = GetLanguage();
 			}
-			if (Application.LoadComponent(new Uri($@"../I18N/{filename}.{langName}.xaml", UriKind.Relative)) is ResourceDictionary langRd)
+			var url = new Uri($@"../I18N/{filename}.{langName}.xaml", UriKind.Relative);
+			if (resources.MergedDictionaries.Count > 0)
+			{
+				resources.MergedDictionaries[0].Source = url;
+			}
+			else if (Application.LoadComponent(url) is ResourceDictionary langRd)
 			{
 				resources.MergedDictionaries.Add(langRd);
-				while (resources.MergedDictionaries.Count > 1)
-				{
-					resources.MergedDictionaries.RemoveAt(0);
-				}
 			}
 		}
 	}
