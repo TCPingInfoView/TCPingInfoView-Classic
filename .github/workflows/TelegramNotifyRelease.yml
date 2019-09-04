@@ -1,0 +1,17 @@
+on: [release]
+
+name: Telegram Notify Release
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    name: Telegram Notify
+    steps:
+    - name: Telegram Notify
+      uses: appleboy/telegram-action@master
+      env:
+        TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+        TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
+      with:
+        args: "{{ repo }}：A new Release"
