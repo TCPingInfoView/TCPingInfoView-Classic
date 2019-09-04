@@ -14,4 +14,4 @@ jobs:
         TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
         TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
       with:
-        args: "{{ github.workspace }}： 一个新 commit"
+        args: "{{ repo }}： 一个新 commit"
