@@ -1,6 +1,6 @@
-on: [release]
+on: [watch]
 
-name: Telegram Notify
+name: Telegram Notify Watch
 
 jobs:
 
@@ -14,4 +14,4 @@ jobs:
         TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
         TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
       with:
-        args: "{{ repo }}：A new release"
+        args: "{{ repo }}：A new star"
