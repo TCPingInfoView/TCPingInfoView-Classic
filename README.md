@@ -3,16 +3,16 @@
 [![License](https://img.shields.io/github/license/HMBSbige/TCPingInfoView.svg?label=License)](https://github.com/HMBSbige/TCPingInfoView/blob/master/LICENSE)
 
 [![Steam](https://img.shields.io/github/release/HMBSbige/TCPingInfoView.svg?label=Steam)](https://store.steampowered.com/app/828090)
-[![Build status](https://ci.appveyor.com/api/projects/status/fnmqghj0gq2w6cgm/branch/steam?svg=true)](https://ci.appveyor.com/project/HMBSbige/tcpinginfoview/branch/steam)
 [![Steam release date](https://img.shields.io/github/release-date/HMBSbige/TCPingInfoView.svg?label=Released)](https://store.steampowered.com/app/828090)
 
 [![Latest](https://img.shields.io/github/release-pre/HMBSbige/TCPingInfoView.svg?label=Latest)](https://github.com/HMBSbige/TCPingInfoView/releases)
-[![Build status](https://ci.appveyor.com/api/projects/status/fnmqghj0gq2w6cgm/branch/master?svg=true)](https://ci.appveyor.com/project/HMBSbige/tcpinginfoview/branch/master)
 [![Latest release date](https://img.shields.io/github/release-date-pre/HMBSbige/TCPingInfoView.svg?label=Released)](https://github.com/HMBSbige/TCPingInfoView/releases)
 
+![](https://github.com/HMBSbige/TCPingInfoView/workflows/.NET%20Build/badge.svg)
+
 **建议运行环境**
-* Windows 10 1703 或以上
-* Microsoft.NET Framework 4.7.2 或以上
+* Windows 7 或以上
+* [.NET Core 3.0 SDK](https://dotnet.microsoft.com/download/dotnet-core/3.0)
 
 # [Steam 上购买](https://store.steampowered.com/app/828090)
 
